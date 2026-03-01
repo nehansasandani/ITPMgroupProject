@@ -55,9 +55,22 @@ ITPMgroupProject/
 🚀 Running EduSpark (Windows – PowerShell)
 🖥️ Start Backend Server
 
-C:\Users\HP\Desktop\ITPMgroupProject> cd backend
-C:\Users\HP\Desktop\ITPMgroupProject\backend> npm install
-C:\Users\HP\Desktop\ITPMgroupProject\backend> npm run dev Frontend Setup
+## 🖥️ Backend Setup
+
+```bash
+cd backend
+npm install
+npm run dev
+```
+
+Server runs at:
+```
+http://localhost:5000
+```
+
+---
+
+## 💻 Frontend Setup
 
 ```bash
 cd ../frontend
@@ -69,7 +82,6 @@ Frontend runs at:
 ```
 http://localhost:3000
 ```
-
 
 
   💻 Tech Stack
@@ -100,6 +112,7 @@ npm run dev
 cd ../frontend
 npm install
 npm run dev
+
 
 
 
