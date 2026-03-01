@@ -1,7 +1,17 @@
-EduSpark 🌟
+🌟 EduSpark
+Micro-Commitment Skill Exchange Platform for University Students
 
-EduSpark is a Micro-Commitment Skill Exchange Platform that enables university students to exchange short, skill-based support sessions. It encourages peer learning, responsible collaboration, and accountability using a MERN stack application.
+EduSpark is a MERN Stack web application that enables university students to exchange short, skill-based support sessions (15–60 minutes) in a structured and accountable way.
 
+It promotes:
+
+🎓 Peer Learning
+
+🤝 Responsible Collaboration
+
+🛡️ Trust & Accountability
+
+🏆 Gamified Skill Growth
 🔹 Project Overview
 
 Many students struggle with:
@@ -97,6 +107,7 @@ http://localhost:3000
 
 
   
+
 
 
 
