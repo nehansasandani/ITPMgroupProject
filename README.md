@@ -45,10 +45,11 @@ Authentication: JWT + Email Verification + OTP
 
 Follow these steps to run EduSpark locally.
 
-🖥️ Backend Setup
-Step 1 — Navigate to Backend Folder
-
-
-
-
 cd backend
+npm install
+npm run dev
+
+cd ../frontend
+npm install
+npm run dev
+
