@@ -23,6 +23,37 @@ Reputation, gamification, and dispute resolution
 Real-time availability and priority ranking
 
 
+
+## 📂 Project Structure
+
+```text
+ITPMgroupProject/
+│
+├── backend/
+│   ├── controllers/      # Business logic
+│   ├── models/           # MongoDB schemas
+│   ├── routes/           # API routes
+│   ├── server.js         # Express server entry
+│   └── .env              # Environment variables
+│
+├── frontend/
+│   ├── src/
+│   │   ├── components/   # Reusable UI components
+│   │   ├── pages/        # Application pages
+│   │   ├── context/      # Global state management
+│   │   └── App.jsx
+│   └── package.json
+│
+└── README.md
+```
+
+
+
+
+
+
+
+
 ## 🖥️ Backend Setup
 
 ```bash
@@ -81,5 +112,6 @@ npm run dev
 cd ../frontend
 npm install
 npm run dev
+
 
 
