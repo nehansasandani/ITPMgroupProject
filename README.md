@@ -28,7 +28,7 @@ Real-time availability and priority ranking
 
 | Layer      | Technology Used                     |
 |------------|-------------------------------------|
-| Frontend   | React.js, Redux, Tailwind CSS       |
+| Frontend   | React.js, HTML, Tailwind CSS       |
 | Backend    | Node.js, Express.js                 |
 | Database   | MongoDB                             |
 
@@ -96,15 +96,7 @@ http://localhost:3000
 ```
 
 
-  💻 Tech Stack
-
-Frontend: React.js, Redux, Tailwind CSS
-
-Backend: Node.js, Express.js
-
-Database: MongoDB
-
-Authentication: JWT + Email Verification + OTP
+  
 
 
 
@@ -113,17 +105,6 @@ Authentication: JWT + Email Verification + OTP
 
 
 
-🚀 Installation & Setup Guide
-
-Follow these steps to run EduSpark locally.
-
-cd backend
-npm install
-npm run dev
-
-cd ../frontend
-npm install
-npm run dev
 
 
 
