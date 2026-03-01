@@ -7,6 +7,7 @@ import skillRoutes from "./routes/skillRoutes.js";
 dotenv.config();
 
 const app = express();
+const userRoutes = require('./routes/userRoutes');
 
 app.use(cors());
 app.use(express.json());
@@ -19,6 +20,7 @@ app.get("/", (req, res) => {
 // Routes
 app.use("/api/skills", skillRoutes);
 
+app.use('/api', userRoutes);
 // MongoDB
 mongoose
   .connect(process.env.MONGO_URI)
