@@ -23,6 +23,35 @@ Reputation, gamification, and dispute resolution
 Real-time availability and priority ranking
 
 
+## 🖥️ Backend Setup
+
+```bash
+cd backend
+npm install
+npm run dev
+```
+
+Server runs at:
+```
+http://localhost:5000
+```
+
+---
+
+## 💻 Frontend Setup
+
+```bash
+cd ../frontend
+npm install
+npm run dev
+```
+
+Frontend runs at:
+```
+http://localhost:3000
+```
+
+
 
   💻 Tech Stack
 
@@ -52,4 +81,5 @@ npm run dev
 cd ../frontend
 npm install
 npm run dev
+
 
