@@ -24,11 +24,15 @@ Real-time availability and priority ranking
 
 
 
-💻 Tech Stack
-Layer	Technology Used
-Frontend	React.js, Redux, Tailwind CSS
-Backend	Node.js, Express.js
-Database	MongoDB
+## 💻 Tech Stack
+
+| Layer      | Technology Used                     |
+|------------|-------------------------------------|
+| Frontend   | React.js, Redux, Tailwind CSS       |
+| Backend    | Node.js, Express.js                 |
+| Database   | MongoDB                             |
+
+
 
 
 
@@ -120,6 +124,7 @@ npm run dev
 cd ../frontend
 npm install
 npm run dev
+
 
 
 
