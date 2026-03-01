@@ -1,6 +1,9 @@
-    Eduspark 🚀 – Micro-Commitment Skill Exchange Platform
-    Eduspark is a MERN stack platform that allows university students to exchange short, skill-based support sessions
 
+    Eduspark 
+    
+
+
+    
 ## 🔹 Features
 
 ### Core Features
@@ -86,4 +89,5 @@ npm run dev
 Open in browser:
 
 http://localhost:5173/
+
 
