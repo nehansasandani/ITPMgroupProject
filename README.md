@@ -35,6 +35,14 @@ Database: MongoDB
 Authentication: JWT + Email Verification + OTP
 
 
+
+
+
 cd backend
 npm install
+
+
+cd backend
+npm install
+
 
