@@ -1,5 +1,5 @@
 # 🌟 EduSpark  
-### 🎓 Micro-Commitment Skill Exchange Platform for University Students
+### 🎓  Skill Exchange Platform for University Students
 
 EduSpark is a **MERN Stack web application** designed to help university students exchange **short, skill-based support sessions (15–60 minutes)** in a structured, reliable, and accountable way.
 
@@ -124,6 +124,7 @@ http://localhost:3000
 
 
   
+
 
 
 
