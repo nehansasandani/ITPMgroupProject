@@ -5,7 +5,9 @@ import LoginPage from "./pages/auth/LoginPage";
 import RegisterPage from "./pages/auth/RegisterPage";
 import ProtectedRoute from "./components/ProtectedRoute";
 
-// placeholders for now (we will build later)
+import CreateTaskPage from "./pages/tasks/CreateTaskPage";
+import MyTasksPage from "./pages/tasks/MyTasksPage";
+
 const Placeholder = ({ title }) => (
   <div className="max-w-6xl mx-auto px-4 py-10 text-white">
     <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
@@ -28,7 +30,7 @@ export const router = createBrowserRouter([
         path: "tasks/create",
         element: (
           <ProtectedRoute>
-            <Placeholder title="Create Task" />
+            <CreateTaskPage />
           </ProtectedRoute>
         ),
       },
@@ -36,7 +38,7 @@ export const router = createBrowserRouter([
         path: "tasks/mine",
         element: (
           <ProtectedRoute>
-            <Placeholder title="My Tasks" />
+            <MyTasksPage />
           </ProtectedRoute>
         ),
       },
