@@ -5,6 +5,7 @@ import Footer from "./components/Footer";
 export default function App() {
   return (
     <div className="min-h-screen bg-slate-950">
+      <div className="bg-glow" />
       <Header />
       <main className="min-h-[75vh]">
         <Outlet />

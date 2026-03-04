@@ -20,16 +20,56 @@ body {
   color: rgba(255, 255, 255, 0.92);
 }
 
-:focus-visible {
-  outline: 2px solid rgba(255, 255, 255, 0.35);
-  outline-offset: 3px;
-  border-radius: 10px;
-}
-
 html {
   scroll-behavior: smooth;
 }
 
 ::selection {
   background: rgba(255, 255, 255, 0.18);
+}
+
+:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.35);
+  outline-offset: 3px;
+  border-radius: 10px;
+}
+
+/* ---------- Visual polish / animations (no libraries) ---------- */
+
+/* soft background glow */
+.bg-glow {
+  position: fixed;
+  inset: -20%;
+  z-index: -1;
+  background:
+    radial-gradient(700px 400px at 20% 10%, rgba(99, 102, 241, 0.20), transparent 60%),
+    radial-gradient(600px 350px at 80% 20%, rgba(34, 211, 238, 0.16), transparent 55%),
+    radial-gradient(650px 400px at 55% 80%, rgba(244, 114, 182, 0.12), transparent 55%);
+  pointer-events: none;
+}
+
+/* animated blobs */
+.blob {
+  position: absolute;
+  border-radius: 999px;
+  filter: blur(40px);
+  opacity: 0.45;
+  animation: floaty 10s ease-in-out infinite;
+}
+.blob.b1 { animation-delay: 0s; }
+.blob.b2 { animation-delay: 2.2s; }
+.blob.b3 { animation-delay: 4.6s; }
+
+@keyframes floaty {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  50% { transform: translate3d(18px, -18px, 0) scale(1.05); }
+}
+
+/* subtle appear animation */
+.fade-up {
+  animation: fadeUp 700ms ease-out both;
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
