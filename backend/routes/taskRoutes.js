@@ -1,27 +1,10 @@
 import express from "express";
-import Task from "../models/Task.js";
+import { createTask, getMyTasks } from "../controllers/taskController.js";
+import { requireAuth } from "../middleware/auth.js";
 
 const router = express.Router();
 
-router.post("/create", async (req, res) => {
-  try {
-    const { title, description, skillRequired, duration, mode, createdBy } = req.body;
-
-    const newTask = new Task({
-      title,
-      description,
-      skillRequired,
-      duration,
-      mode,
-      createdBy
-    });
-
-    const savedTask = await newTask.save();
-
-    res.status(201).json(savedTask);  // ✅ now you get _id
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-});
+router.post("/", requireAuth, createTask);
+router.get("/mine", requireAuth, getMyTasks);
 
 export default router;
