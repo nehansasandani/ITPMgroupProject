@@ -3,10 +3,11 @@ import mongoose from "mongoose";
 import cors from "cors";
 import dotenv from "dotenv";
 import skillRoutes from "./routes/skillRoutes.js";
+import ratingRoutes from "./routes/ratingRoutes.js";
 
-dotenv.config();
+dotenv.config(); // ← must be FIRST
 
-const app = express();
+const app = express(); // ← app must be created BEFORE using it
 
 app.use(cors());
 app.use(express.json());
@@ -18,6 +19,7 @@ app.get("/", (req, res) => {
 
 // Routes
 app.use("/api/skills", skillRoutes);
+app.use("/api/ratings", ratingRoutes); // ← moved to correct place
 
 // MongoDB
 mongoose
