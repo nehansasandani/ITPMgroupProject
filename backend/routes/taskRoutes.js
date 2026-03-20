@@ -3,6 +3,7 @@ import Task from "../models/Task.js";
 import User from "../models/User.js";
 import { validateTaskScope } from "../utils/taskScopeValidator.js";
 import { requireAuth } from "../middleware/auth.js";
+import { expireOverdueTasks } from "../utils/taskExpiry.js";
 
 const router = express.Router();
 
@@ -124,6 +125,8 @@ router.post("/", requireAuth, async (req, res) => {
 // GET my tasks
 router.get("/mine", requireAuth, async (req, res) => {
   try {
+    await expireOverdueTasks();
+
     const items = await Task.find({ createdBy: req.user.id })
       .populate("acceptedBy", "fullName studentId")
       .sort({ createdAt: -1 });
@@ -137,6 +140,8 @@ router.get("/mine", requireAuth, async (req, res) => {
 // GET all OPEN tasks
 router.get("/open", requireAuth, async (req, res) => {
   try {
+    await expireOverdueTasks();
+
     const items = await Task.find({ status: "OPEN" })
       .populate("createdBy", "fullName studentId")
       .sort({ createdAt: -1 });
@@ -150,6 +155,8 @@ router.get("/open", requireAuth, async (req, res) => {
 // GET tasks accepted by me
 router.get("/accepted-by-me", requireAuth, async (req, res) => {
   try {
+    await expireOverdueTasks();
+
     const items = await Task.find({ acceptedBy: req.user.id })
       .populate("createdBy", "fullName studentId")
       .sort({ updatedAt: -1 });
@@ -163,6 +170,8 @@ router.get("/accepted-by-me", requireAuth, async (req, res) => {
 // GET single task (owner only)
 router.get("/:id", requireAuth, async (req, res) => {
   try {
+    await expireOverdueTasks();
+
     const task = await Task.findOne({
       _id: req.params.id,
       createdBy: req.user.id,
@@ -181,6 +190,8 @@ router.get("/:id", requireAuth, async (req, res) => {
 // ACCEPT task
 router.patch("/:id/accept", requireAuth, async (req, res) => {
   try {
+    await expireOverdueTasks();
+
     const task = await Task.findById(req.params.id);
 
     if (!task) {
@@ -213,6 +224,8 @@ router.patch("/:id/accept", requireAuth, async (req, res) => {
 // COMPLETE task
 router.patch("/:id/complete", requireAuth, async (req, res) => {
   try {
+    await expireOverdueTasks();
+
     const task = await Task.findById(req.params.id)
       .populate("createdBy", "fullName studentId")
       .populate("acceptedBy", "fullName studentId");
@@ -248,6 +261,8 @@ router.patch("/:id/complete", requireAuth, async (req, res) => {
 // UPDATE task (only OPEN and owner only)
 router.patch("/:id", requireAuth, async (req, res) => {
   try {
+    await expireOverdueTasks();
+
     const task = await Task.findOne({
       _id: req.params.id,
       createdBy: req.user.id,
@@ -308,6 +323,8 @@ router.patch("/:id", requireAuth, async (req, res) => {
 // CANCEL task
 router.patch("/:id/cancel", requireAuth, async (req, res) => {
   try {
+    await expireOverdueTasks();
+
     const task = await Task.findOne({
       _id: req.params.id,
       createdBy: req.user.id,

@@ -22,12 +22,14 @@ function formatRemaining(expireAt) {
   const diff = new Date(expireAt).getTime() - Date.now();
   if (diff <= 0) return "Expired";
 
-  const totalHours = Math.floor(diff / (1000 * 60 * 60));
-  const days = Math.floor(totalHours / 24);
-  const hours = totalHours % 24;
+  const totalMinutes = Math.floor(diff / (1000 * 60));
+  const days = Math.floor(totalMinutes / (60 * 24));
+  const hours = Math.floor((totalMinutes % (60 * 24)) / 60);
+  const minutes = totalMinutes % 60;
 
-  if (days > 0) return `${days} day${days > 1 ? "s" : ""} ${hours}h left`;
-  return `${hours}h left`;
+  if (days > 0) return `${days} day${days > 1 ? "s" : ""} ${hours}h ${minutes}m left`;
+  if (hours > 0) return `${hours}h ${minutes}m left`;
+  return `${minutes}m left`;
 }
 
 export default function MyTasksPage() {
@@ -35,6 +37,7 @@ export default function MyTasksPage() {
   const [loading, setLoading] = useState(true);
   const [active, setActive] = useState("ALL");
   const [busyId, setBusyId] = useState("");
+  const [, setNowTick] = useState(Date.now());
 
   const [confirmCancelOpen, setConfirmCancelOpen] = useState(false);
   const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
@@ -52,6 +55,14 @@ export default function MyTasksPage() {
 
   useEffect(() => {
     loadTasks();
+  }, []);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setNowTick(Date.now());
+    }, 60000);
+
+    return () => clearInterval(timer);
   }, []);
 
   const filtered = useMemo(() => {
@@ -270,6 +281,16 @@ export default function MyTasksPage() {
                     {t.status === "MATCHED" && t.acceptedBy && (
                       <div className="text-white/60 text-xs mt-2">
                         Accepted by:{" "}
+                        <span className="text-white/75">{t.acceptedBy.fullName}</span>
+                        {t.acceptedBy.studentId && (
+                          <span className="text-white/55"> ({t.acceptedBy.studentId})</span>
+                        )}
+                      </div>
+                    )}
+
+                    {t.status === "COMPLETED" && t.acceptedBy && (
+                      <div className="text-white/60 text-xs mt-2">
+                        Completed with help from:{" "}
                         <span className="text-white/75">{t.acceptedBy.fullName}</span>
                         {t.acceptedBy.studentId && (
                           <span className="text-white/55"> ({t.acceptedBy.studentId})</span>

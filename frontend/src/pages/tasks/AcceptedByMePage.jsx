@@ -22,18 +22,22 @@ function formatRemaining(expireAt) {
   const diff = new Date(expireAt).getTime() - Date.now();
   if (diff <= 0) return "Expired";
 
-  const totalHours = Math.floor(diff / (1000 * 60 * 60));
-  const days = Math.floor(totalHours / 24);
-  const hours = totalHours % 24;
+  const totalMinutes = Math.floor(diff / (1000 * 60));
+  const days = Math.floor(totalMinutes / (60 * 24));
+  const hours = Math.floor((totalMinutes % (60 * 24)) / 60);
+  const minutes = totalMinutes % 60;
 
-  if (days > 0) return `${days} day${days > 1 ? "s" : ""} ${hours}h left`;
-  return `${hours}h left`;
+  if (days > 0) return `${days} day${days > 1 ? "s" : ""} ${hours}h ${minutes}m left`;
+  if (hours > 0) return `${hours}h ${minutes}m left`;
+  return `${minutes}m left`;
 }
 
 export default function AcceptedByMePage() {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [busyId, setBusyId] = useState("");
+  const [, setNowTick] = useState(Date.now());
+
   const [confirmCompleteOpen, setConfirmCompleteOpen] = useState(false);
   const [selectedTaskId, setSelectedTaskId] = useState("");
 
@@ -48,6 +52,14 @@ export default function AcceptedByMePage() {
 
   useEffect(() => {
     loadTasks();
+  }, []);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setNowTick(Date.now());
+    }, 60000);
+
+    return () => clearInterval(timer);
   }, []);
 
   const askComplete = (id) => {
