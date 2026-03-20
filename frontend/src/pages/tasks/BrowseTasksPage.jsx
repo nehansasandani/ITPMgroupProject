@@ -1,19 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { cancelTask, getMyTasks } from "../../api/taskApi";
-
-const STATUS_COLORS = {
-  OPEN: "border-emerald-400/20 bg-emerald-400/10 text-emerald-100",
-  MATCHED: "border-cyan-400/20 bg-cyan-400/10 text-cyan-100",
-  COMPLETED: "border-white/15 bg-white/5 text-white/80",
-  CANCELLED: "border-red-400/20 bg-red-400/10 text-red-100",
-  EXPIRED: "border-amber-400/20 bg-amber-400/10 text-amber-100",
-};
-
-function StatusChip({ status }) {
-  const cls = STATUS_COLORS[status] || "border-white/10 bg-white/5 text-white/70";
-  return <span className={`text-xs px-2 py-1 rounded-full border ${cls}`}>{status}</span>;
-}
+import { getOpenTasks } from "../../api/taskApi";
 
 function formatRemaining(expireAt) {
   if (!expireAt) return "—";
@@ -29,15 +16,14 @@ function formatRemaining(expireAt) {
   return `${hours}h left`;
 }
 
-export default function MyTasksPage() {
+export default function BrowseTasksPage() {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [active, setActive] = useState("ALL");
-  const [busyId, setBusyId] = useState("");
+  const [category, setCategory] = useState("ALL");
 
   const loadTasks = async () => {
     try {
-      const data = await getMyTasks();
+      const data = await getOpenTasks();
       setItems(data);
     } finally {
       setLoading(false);
@@ -49,27 +35,17 @@ export default function MyTasksPage() {
   }, []);
 
   const filtered = useMemo(() => {
-    if (active === "ALL") return items;
-    return items.filter((t) => t.status === active);
-  }, [items, active]);
-
-  const onCancel = async (id) => {
-    try {
-      setBusyId(id);
-      await cancelTask(id);
-      await loadTasks();
-    } finally {
-      setBusyId("");
-    }
-  };
+    if (category === "ALL") return items;
+    return items.filter((t) => t.category === category);
+  }, [items, category]);
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-10 text-white">
       <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
         <div>
-          <h1 className="text-2xl md:text-3xl font-semibold">My Tasks</h1>
+          <h1 className="text-2xl md:text-3xl font-semibold">Browse Open Tasks</h1>
           <p className="text-white/70 text-sm mt-1">
-            Manage your posted tasks, monitor deadline countdown, and cancel open tasks.
+            View open help requests from other students.
           </p>
         </div>
 
@@ -77,24 +53,24 @@ export default function MyTasksPage() {
           to="/tasks/create"
           className="px-4 py-2 rounded-xl bg-white text-slate-900 font-medium hover:bg-white/90 text-sm"
         >
-          + New Task
+          + Post New Task
         </Link>
       </div>
 
       <div className="mt-5 flex flex-wrap gap-2">
-        {["ALL", "OPEN", "MATCHED", "COMPLETED", "EXPIRED", "CANCELLED"].map((s) => {
-          const activeBtn = active === s;
+        {["ALL", "UI", "CODING", "WRITING", "REVIEW"].map((c) => {
+          const active = category === c;
           return (
             <button
-              key={s}
-              onClick={() => setActive(s)}
+              key={c}
+              onClick={() => setCategory(c)}
               className={`px-3 py-2 rounded-xl text-sm border transition ${
-                activeBtn
+                active
                   ? "bg-white text-slate-900 border-white"
                   : "border-white/15 bg-white/5 hover:bg-white/10 text-white/85"
               }`}
             >
-              {s}
+              {c}
             </button>
           );
         })}
@@ -104,18 +80,7 @@ export default function MyTasksPage() {
         {loading ? (
           <div className="p-6 text-white/70">Loading...</div>
         ) : filtered.length === 0 ? (
-          <div className="p-8">
-            <div className="text-white/85 font-semibold">No tasks found</div>
-            <p className="text-white/60 text-sm mt-1">
-              Create a clear task with a specific expected outcome.
-            </p>
-            <Link
-              to="/tasks/create"
-              className="inline-block mt-4 px-4 py-2 rounded-xl bg-white text-slate-900 font-medium hover:bg-white/90 text-sm"
-            >
-              Create Task
-            </Link>
-          </div>
+          <div className="p-8 text-white/70">No open tasks found.</div>
         ) : (
           <div className="divide-y divide-white/10">
             {filtered.map((t) => (
@@ -124,7 +89,9 @@ export default function MyTasksPage() {
                   <div className="min-w-0">
                     <div className="flex flex-wrap items-center gap-2">
                       <div className="font-semibold">{t.title}</div>
-                      <StatusChip status={t.status} />
+                      <span className="text-xs px-2 py-1 rounded-full border border-emerald-400/20 bg-emerald-400/10 text-emerald-100">
+                        OPEN
+                      </span>
                       <span className="text-xs px-2 py-1 rounded-full border border-white/10 bg-white/5 text-white/65">
                         {t.category}
                       </span>
@@ -139,7 +106,9 @@ export default function MyTasksPage() {
                       </span>
                     </div>
 
-                    <div className="text-white/70 text-sm mt-2 line-clamp-3">{t.description}</div>
+                    <div className="text-white/70 text-sm mt-2 line-clamp-3">
+                      {t.description}
+                    </div>
 
                     <div className="text-white/60 text-xs mt-2">
                       Outcome: <span className="text-white/75">{t.expectedOutcome}</span>
@@ -158,6 +127,16 @@ export default function MyTasksPage() {
                         </a>
                       </div>
                     )}
+
+                    <div className="text-white/60 text-xs mt-2">
+                      Posted by:{" "}
+                      <span className="text-white/75">
+                        {t.createdBy?.fullName || "Unknown"}
+                      </span>
+                      {t.createdBy?.studentId && (
+                        <span className="text-white/55"> ({t.createdBy.studentId})</span>
+                      )}
+                    </div>
 
                     <div className="mt-3 flex flex-wrap gap-2 text-xs text-white/70">
                       <span className="px-2 py-1 rounded-full border border-white/10 bg-white/5">
@@ -178,16 +157,10 @@ export default function MyTasksPage() {
                     </div>
                   </div>
 
-                  <div className="flex gap-2 shrink-0">
-                    {t.status === "OPEN" && (
-                      <button
-                        onClick={() => onCancel(t._id)}
-                        disabled={busyId === t._id}
-                        className="px-3 py-2 rounded-xl text-sm border border-red-400/20 bg-red-400/10 text-red-100 hover:bg-red-400/15 disabled:opacity-60"
-                      >
-                        {busyId === t._id ? "Cancelling..." : "Cancel"}
-                      </button>
-                    )}
+                  <div className="shrink-0">
+                    <button className="px-4 py-2 rounded-xl border border-white/15 bg-white/5 hover:bg-white/10 text-sm">
+                      View / Help
+                    </button>
                   </div>
                 </div>
               </div>

@@ -60,6 +60,19 @@ router.get("/mine", requireAuth, async (req, res) => {
   }
 });
 
+// GET all OPEN tasks
+router.get("/open", requireAuth, async (req, res) => {
+  try {
+    const items = await Task.find({ status: "OPEN" })
+      .populate("createdBy", "fullName studentId")
+      .sort({ createdAt: -1 });
+
+    res.json(items);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
 // CANCEL task
 router.patch("/:id/cancel", requireAuth, async (req, res) => {
   try {

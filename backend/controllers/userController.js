@@ -4,25 +4,24 @@ import { signToken } from "../utils/jwt.js";
 
 export async function register(req, res) {
   try {
-    const { fullName, email, studentId, password, role } = req.body;
+    const { fullName, email, studentId, password } = req.body;
 
-    // Basic checks
     if (!fullName || !email || !studentId || !password) {
       return res.status(400).json({ message: "Missing required fields." });
     }
 
-    // Prevent random role assignment from frontend (security)
-    // Only allow STUDENT/HELPER during registration, ADMIN should be created manually.
-    const safeRole = role === "HELPER" ? "HELPER" : "STUDENT";
+    const safeRole = "STUDENT";
 
-    // Check duplicates
     const existingEmail = await User.findOne({ email: email.toLowerCase() });
-    if (existingEmail) return res.status(409).json({ message: "Email already exists." });
+    if (existingEmail) {
+      return res.status(409).json({ message: "Email already exists." });
+    }
 
     const existingStudentId = await User.findOne({ studentId: studentId.toUpperCase() });
-    if (existingStudentId) return res.status(409).json({ message: "Student ID already exists." });
+    if (existingStudentId) {
+      return res.status(409).json({ message: "Student ID already exists." });
+    }
 
-    // Password hash
     const passwordHash = await bcrypt.hash(password, 12);
 
     const user = await User.create({
@@ -46,7 +45,6 @@ export async function register(req, res) {
       token,
     });
   } catch (err) {
-    // Mongoose validation errors show nicely
     return res.status(400).json({ message: err.message });
   }
 }

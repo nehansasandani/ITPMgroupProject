@@ -10,6 +10,11 @@ export async function getMyTasks() {
   return res.data;
 }
 
+export async function getOpenTasks() {
+  const res = await axiosInstance.get("/tasks/open");
+  return res.data;
+}
+
 export async function cancelTask(taskId) {
   const res = await axiosInstance.patch(`/tasks/${taskId}/cancel`);
   return res.data;

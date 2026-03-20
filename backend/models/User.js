@@ -32,12 +32,12 @@ const userSchema = new mongoose.Schema(
     passwordHash: {
       type: String,
       required: true,
-      select: false, // ✅ do not return password hash by default
+      select: false,
     },
 
     role: {
       type: String,
-      enum: ["STUDENT", "HELPER", "ADMIN"],
+      enum: ["STUDENT", "ADMIN"],
       default: "STUDENT",
     },
   },

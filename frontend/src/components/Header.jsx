@@ -25,7 +25,7 @@ export default function Header() {
           </div>
           <div>
             <div className="text-white font-semibold leading-tight">EduSpark</div>
-            <div className="text-white/55 text-xs -mt-0.5">Micro-commitment help</div>
+            <div className="text-white/55 text-xs -mt-0.5">Students helping students</div>
           </div>
         </Link>
 
@@ -36,6 +36,9 @@ export default function Header() {
 
           {isAuthed && (
             <>
+              <NavLink to="/tasks/browse" className={navClass}>
+                Browse Tasks
+              </NavLink>
               <NavLink to="/tasks/create" className={navClass}>
                 Create Task
               </NavLink>
@@ -65,7 +68,7 @@ export default function Header() {
               <div className="hidden md:flex items-center gap-2 px-3 py-2 rounded-xl border border-white/10 bg-white/5">
                 <span className="text-white/85 text-sm">{user?.fullName}</span>
                 <span className="text-xs px-2 py-0.5 rounded-full bg-white/10 border border-white/10 text-white/70">
-                  {role}
+                  Campus Member
                 </span>
               </div>
               <button onClick={onLogout} className={`${ui.btn} ${ui.btnSoft}`}>

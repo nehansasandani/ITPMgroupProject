@@ -11,7 +11,6 @@ const schema = z.object({
   email: z.string().email("Invalid email"),
   studentId: z.string().regex(/^(IT|BM|EN|HS)\d{8}$/, "Student ID must be like IT23323452"),
   password: z.string().min(6, "Password must be at least 6 characters"),
-  role: z.enum(["STUDENT", "HELPER"]).default("STUDENT"),
 });
 
 export default function RegisterPage() {
@@ -24,7 +23,7 @@ export default function RegisterPage() {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm({ resolver: zodResolver(schema), defaultValues: { role: "STUDENT" } });
+  } = useForm({ resolver: zodResolver(schema) });
 
   const onSubmit = async (data) => {
     setServerError("");
@@ -44,7 +43,7 @@ export default function RegisterPage() {
         <div className="rounded-3xl border border-white/10 bg-white/5 p-6 md:p-8 fade-up">
           <h2 className="text-2xl font-semibold">Create your account</h2>
           <p className="text-white/70 text-sm mt-1">
-            Register with your SLIIT Student ID and choose Student or Helper.
+            Register with your SLIIT Student ID to join EduSpark.
           </p>
 
           {serverError && (
@@ -105,20 +104,6 @@ export default function RegisterPage() {
               {errors.password && <p className="text-red-200 text-xs mt-1">{errors.password.message}</p>}
             </div>
 
-            <div>
-              <label className="text-sm text-white/80">Role</label>
-              <select
-                {...register("role")}
-                className="mt-1 w-full rounded-xl bg-slate-950/40 border border-white/10 px-3 py-2.5 outline-none focus:border-white/30 focus:ring-2 focus:ring-white/10"
-              >
-                <option value="STUDENT">Student</option>
-                <option value="HELPER">Helper</option>
-              </select>
-              <p className="text-white/50 text-xs mt-1">
-                Admin accounts should be created by the system.
-              </p>
-            </div>
-
             <button
               disabled={isSubmitting}
               className="w-full rounded-xl bg-white text-slate-900 py-2.5 font-medium hover:bg-white/90 disabled:opacity-60"
@@ -145,9 +130,9 @@ export default function RegisterPage() {
               <span className="h-2 w-2 rounded-full bg-emerald-400" />
               Join EduSpark
             </div>
-            <h3 className="mt-5 text-2xl font-semibold">Start helping, start learning</h3>
+            <h3 className="mt-5 text-2xl font-semibold">Students helping students</h3>
             <p className="mt-3 text-white/70">
-              Micro-commitment sessions reduce time waste and make help requests clearer.
+              Post clear micro-tasks, discover open requests, and collaborate through short, focused sessions.
             </p>
 
             <div className="mt-8 grid grid-cols-2 gap-3">
@@ -155,7 +140,7 @@ export default function RegisterPage() {
                 { t: "Clarity first", d: "Outcome required" },
                 { t: "Quick sessions", d: "15–60 mins" },
                 { t: "Fair platform", d: "Rules enforced" },
-                { t: "Community", d: "Students helping students" },
+                { t: "Community", d: "Everyone can help" },
               ].map((x) => (
                 <div key={x.t} className="rounded-2xl border border-white/10 bg-slate-950/30 p-4">
                   <div className="font-semibold text-sm">{x.t}</div>
