@@ -16,6 +16,15 @@ function StatusChip({ status }) {
   return <span className={`text-xs px-2 py-1 rounded-full border ${cls}`}>{status}</span>;
 }
 
+function StatCard({ label, value }) {
+  return (
+    <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
+      <div className="text-2xl font-semibold">{value}</div>
+      <div className="text-white/60 text-sm mt-1">{label}</div>
+    </div>
+  );
+}
+
 function formatRemaining(expireAt) {
   if (!expireAt) return "—";
 
@@ -69,6 +78,17 @@ export default function MyTasksPage() {
     if (active === "ALL") return items;
     return items.filter((t) => t.status === active);
   }, [items, active]);
+
+  const stats = useMemo(() => {
+    return {
+      total: items.length,
+      open: items.filter((t) => t.status === "OPEN").length,
+      matched: items.filter((t) => t.status === "MATCHED").length,
+      completed: items.filter((t) => t.status === "COMPLETED").length,
+      expired: items.filter((t) => t.status === "EXPIRED").length,
+      cancelled: items.filter((t) => t.status === "CANCELLED").length,
+    };
+  }, [items]);
 
   const askCancel = (id) => {
     setSelectedTaskId(id);
@@ -196,6 +216,16 @@ export default function MyTasksPage() {
             + New Task
           </Link>
         </div>
+      </div>
+
+      {/* Dashboard summary cards */}
+      <div className="mt-6 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
+        <StatCard label="Total" value={stats.total} />
+        <StatCard label="Open" value={stats.open} />
+        <StatCard label="Matched" value={stats.matched} />
+        <StatCard label="Completed" value={stats.completed} />
+        <StatCard label="Expired" value={stats.expired} />
+        <StatCard label="Cancelled" value={stats.cancelled} />
       </div>
 
       <div className="mt-5 flex flex-wrap gap-2">

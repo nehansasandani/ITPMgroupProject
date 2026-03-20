@@ -6,9 +6,24 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { loginUser } from "../../api/authApi";
 import { useAuth } from "../../context/AuthContext";
 
+const STUDENT_ID_REGEX = /^(IT|BM|EN|HS)\d{8}$/;
+
 const schema = z.object({
-  emailOrStudentId: z.string().min(3, "Enter email or student ID"),
-  password: z.string().min(1, "Password required"),
+  emailOrStudentId: z
+    .string()
+    .trim()
+    .min(3, "Enter your email or student ID")
+    .refine((value) => {
+      if (value.includes("@")) {
+        return z.string().email().safeParse(value).success;
+      }
+      return STUDENT_ID_REGEX.test(value.toUpperCase());
+    }, "Enter a valid email address or student ID like IT23323452"),
+
+  password: z
+    .string()
+    .min(1, "Password is required")
+    .refine((value) => !/^\s+$/.test(value), "Password cannot be empty"),
 });
 
 export default function LoginPage() {
@@ -21,12 +36,27 @@ export default function LoginPage() {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm({ resolver: zodResolver(schema) });
+  } = useForm({
+    resolver: zodResolver(schema),
+    defaultValues: {
+      emailOrStudentId: "",
+      password: "",
+    },
+  });
 
   const onSubmit = async (data) => {
     setServerError("");
+
     try {
-      const payload = await loginUser(data);
+      const normalizedInput = data.emailOrStudentId.includes("@")
+        ? data.emailOrStudentId.trim().toLowerCase()
+        : data.emailOrStudentId.trim().toUpperCase();
+
+      const payload = await loginUser({
+        emailOrStudentId: normalizedInput,
+        password: data.password,
+      });
+
       login(payload);
       navigate("/");
     } catch (err) {
@@ -40,7 +70,9 @@ export default function LoginPage() {
         {/* Form */}
         <div className="rounded-3xl border border-white/10 bg-white/5 p-6 md:p-8 fade-up">
           <h2 className="text-2xl font-semibold">Welcome back</h2>
-          <p className="text-white/70 text-sm mt-1">Login using email or student ID.</p>
+          <p className="text-white/70 text-sm mt-1">
+            Login using your email address or SLIIT student ID.
+          </p>
 
           {serverError && (
             <div className="mt-4 p-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-200 text-sm">
@@ -59,6 +91,9 @@ export default function LoginPage() {
               {errors.emailOrStudentId && (
                 <p className="text-red-200 text-xs mt-1">{errors.emailOrStudentId.message}</p>
               )}
+              <p className="text-white/50 text-xs mt-1">
+                Use your registered email or student ID.
+              </p>
             </div>
 
             <div>
@@ -111,7 +146,7 @@ export default function LoginPage() {
             </div>
             <h3 className="mt-5 text-2xl font-semibold">Clear tasks. Better matches.</h3>
             <p className="mt-3 text-white/70">
-              Post tasks with an expected outcome and finish help sessions in 15–60 minutes.
+              Post tasks with a clear expected outcome and finish help sessions in short, focused time blocks.
             </p>
 
             <div className="mt-8 grid grid-cols-2 gap-3">
@@ -119,7 +154,7 @@ export default function LoginPage() {
                 { t: "Time-boxed", d: "15–60 mins" },
                 { t: "Clarity", d: "Outcome required" },
                 { t: "Matching", d: "Skill based" },
-                { t: "Trust", d: "Ratings & disputes" },
+                { t: "Trust", d: "Controlled flow" },
               ].map((x) => (
                 <div key={x.t} className="rounded-2xl border border-white/10 bg-slate-950/30 p-4">
                   <div className="font-semibold text-sm">{x.t}</div>

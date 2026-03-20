@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { completeTask, getAcceptedByMeTasks } from "../../api/taskApi";
 import WarningModal from "../../components/WarningModal";
@@ -14,6 +14,15 @@ const STATUS_COLORS = {
 function StatusChip({ status }) {
   const cls = STATUS_COLORS[status] || "border-white/10 bg-white/5 text-white/70";
   return <span className={`text-xs px-2 py-1 rounded-full border ${cls}`}>{status}</span>;
+}
+
+function StatCard({ label, value }) {
+  return (
+    <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
+      <div className="text-2xl font-semibold">{value}</div>
+      <div className="text-white/60 text-sm mt-1">{label}</div>
+    </div>
+  );
 }
 
 function formatRemaining(expireAt) {
@@ -61,6 +70,16 @@ export default function AcceptedByMePage() {
 
     return () => clearInterval(timer);
   }, []);
+
+  const stats = useMemo(() => {
+    return {
+      total: items.length,
+      matched: items.filter((t) => t.status === "MATCHED").length,
+      completed: items.filter((t) => t.status === "COMPLETED").length,
+      expired: items.filter((t) => t.status === "EXPIRED").length,
+      cancelled: items.filter((t) => t.status === "CANCELLED").length,
+    };
+  }, [items]);
 
   const askComplete = (id) => {
     setSelectedTaskId(id);
@@ -120,6 +139,15 @@ export default function AcceptedByMePage() {
             My Tasks
           </Link>
         </div>
+      </div>
+
+      {/* Dashboard summary cards */}
+      <div className="mt-6 grid grid-cols-2 md:grid-cols-5 gap-3">
+        <StatCard label="Total" value={stats.total} />
+        <StatCard label="Matched" value={stats.matched} />
+        <StatCard label="Completed" value={stats.completed} />
+        <StatCard label="Expired" value={stats.expired} />
+        <StatCard label="Cancelled" value={stats.cancelled} />
       </div>
 
       <div className="mt-6 rounded-3xl border border-white/10 bg-white/5 overflow-hidden">

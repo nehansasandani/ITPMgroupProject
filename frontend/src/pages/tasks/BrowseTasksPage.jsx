@@ -4,6 +4,15 @@ import { acceptTask, getOpenTasks } from "../../api/taskApi";
 import { useAuth } from "../../context/AuthContext";
 import WarningModal from "../../components/WarningModal";
 
+function StatCard({ label, value }) {
+  return (
+    <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
+      <div className="text-2xl font-semibold">{value}</div>
+      <div className="text-white/60 text-sm mt-1">{label}</div>
+    </div>
+  );
+}
+
 function formatRemaining(expireAt) {
   if (!expireAt) return "—";
 
@@ -61,6 +70,16 @@ export default function BrowseTasksPage() {
     if (category === "ALL") return items;
     return items.filter((t) => t.category === category);
   }, [items, category]);
+
+  const stats = useMemo(() => {
+    return {
+      total: items.length,
+      ui: items.filter((t) => t.category === "UI").length,
+      coding: items.filter((t) => t.category === "CODING").length,
+      writing: items.filter((t) => t.category === "WRITING").length,
+      review: items.filter((t) => t.category === "REVIEW").length,
+    };
+  }, [items]);
 
   const askAccept = (task) => {
     setSelectedTask(task);
@@ -138,6 +157,15 @@ export default function BrowseTasksPage() {
         >
           + Post New Task
         </Link>
+      </div>
+
+      {/* Dashboard summary cards */}
+      <div className="mt-6 grid grid-cols-2 md:grid-cols-5 gap-3">
+        <StatCard label="Total Open" value={stats.total} />
+        <StatCard label="UI" value={stats.ui} />
+        <StatCard label="Coding" value={stats.coding} />
+        <StatCard label="Writing" value={stats.writing} />
+        <StatCard label="Review" value={stats.review} />
       </div>
 
       <div className="mt-5 flex flex-wrap gap-2">

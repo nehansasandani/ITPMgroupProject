@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 
 const STUDENT_ID_REGEX = /^(IT|BM|EN|HS)\d{8}$/;
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const userSchema = new mongoose.Schema(
   {
@@ -10,6 +11,12 @@ const userSchema = new mongoose.Schema(
       trim: true,
       minlength: 3,
       maxlength: 60,
+      validate: {
+        validator: function (value) {
+          return /^[A-Za-z\s.'-]+$/.test(value);
+        },
+        message: "Full name can only contain letters, spaces, apostrophes, dots, and hyphens.",
+      },
     },
 
     email: {
@@ -18,6 +25,7 @@ const userSchema = new mongoose.Schema(
       unique: true,
       lowercase: true,
       trim: true,
+      match: [EMAIL_REGEX, "Invalid email address"],
     },
 
     studentId: {
