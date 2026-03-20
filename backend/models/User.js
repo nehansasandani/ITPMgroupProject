@@ -40,6 +40,16 @@ const userSchema = new mongoose.Schema(
       enum: ["STUDENT", "ADMIN"],
       default: "STUDENT",
     },
+
+    abuseCount: {
+      type: Number,
+      default: 0,
+    },
+
+    cooldownUntil: {
+      type: Date,
+      default: null,
+    },
   },
   { timestamps: true }
 );

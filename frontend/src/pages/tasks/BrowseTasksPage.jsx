@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { getOpenTasks } from "../../api/taskApi";
+import { acceptTask, getOpenTasks } from "../../api/taskApi";
+import { useAuth } from "../../context/AuthContext";
+import WarningModal from "../../components/WarningModal";
 
 function formatRemaining(expireAt) {
   if (!expireAt) return "—";
@@ -17,9 +19,19 @@ function formatRemaining(expireAt) {
 }
 
 export default function BrowseTasksPage() {
+  const { user } = useAuth();
+
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [category, setCategory] = useState("ALL");
+  const [busyId, setBusyId] = useState("");
+
+  const [confirmOpen, setConfirmOpen] = useState(false);
+  const [selectedTask, setSelectedTask] = useState(null);
+
+  const [popupOpen, setPopupOpen] = useState(false);
+  const [popupTitle, setPopupTitle] = useState("");
+  const [popupMessage, setPopupMessage] = useState("");
 
   const loadTasks = async () => {
     try {
@@ -39,13 +51,73 @@ export default function BrowseTasksPage() {
     return items.filter((t) => t.category === category);
   }, [items, category]);
 
+  const askAccept = (task) => {
+    setSelectedTask(task);
+    setConfirmOpen(true);
+  };
+
+  const onAcceptConfirm = async () => {
+    if (!selectedTask) return;
+
+    try {
+      setBusyId(selectedTask._id);
+      await acceptTask(selectedTask._id);
+      setConfirmOpen(false);
+      setSelectedTask(null);
+      setPopupTitle("Task Accepted");
+      setPopupMessage("You are now matched to help with this task.");
+      setPopupOpen(true);
+      await loadTasks();
+    } catch (err) {
+      setConfirmOpen(false);
+      setSelectedTask(null);
+      setPopupTitle("Unable to Accept Task");
+      setPopupMessage(err?.response?.data?.message || "Task accept failed");
+      setPopupOpen(true);
+    } finally {
+      setBusyId("");
+    }
+  };
+
   return (
     <div className="max-w-6xl mx-auto px-4 py-10 text-white">
+      <WarningModal
+        open={confirmOpen}
+        title="Accept this task?"
+        message={
+          selectedTask
+            ? `You are about to help with "${selectedTask.title}". This will mark the task as MATCHED.`
+            : ""
+        }
+        confirmText="Yes, accept task"
+        cancelText="Back"
+        confirmVariant="primary"
+        loading={!!busyId}
+        onConfirm={onAcceptConfirm}
+        onClose={() => {
+          if (!busyId) {
+            setConfirmOpen(false);
+            setSelectedTask(null);
+          }
+        }}
+      />
+
+      <WarningModal
+        open={popupOpen}
+        title={popupTitle}
+        message={popupMessage}
+        confirmText="OK"
+        cancelText="Close"
+        confirmVariant="primary"
+        onConfirm={() => setPopupOpen(false)}
+        onClose={() => setPopupOpen(false)}
+      />
+
       <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
         <div>
           <h1 className="text-2xl md:text-3xl font-semibold">Browse Open Tasks</h1>
           <p className="text-white/70 text-sm mt-1">
-            View open help requests from other students.
+            View open help requests from other students and accept tasks you can help with.
           </p>
         </div>
 
@@ -83,88 +155,110 @@ export default function BrowseTasksPage() {
           <div className="p-8 text-white/70">No open tasks found.</div>
         ) : (
           <div className="divide-y divide-white/10">
-            {filtered.map((t) => (
-              <div key={t._id} className="p-5 hover:bg-white/5 transition">
-                <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4">
-                  <div className="min-w-0">
-                    <div className="flex flex-wrap items-center gap-2">
-                      <div className="font-semibold">{t.title}</div>
-                      <span className="text-xs px-2 py-1 rounded-full border border-emerald-400/20 bg-emerald-400/10 text-emerald-100">
-                        OPEN
-                      </span>
-                      <span className="text-xs px-2 py-1 rounded-full border border-white/10 bg-white/5 text-white/65">
-                        {t.category}
-                      </span>
-                      <span
-                        className={`text-xs px-2 py-1 rounded-full border ${
-                          t.urgency === "URGENT"
-                            ? "border-amber-300/20 bg-amber-300/10 text-amber-100"
-                            : "border-white/10 bg-white/5 text-white/65"
-                        }`}
-                      >
-                        {t.urgency}
-                      </span>
-                    </div>
+            {filtered.map((t) => {
+              const isMyOwnTask = String(t.createdBy?._id) === String(user?.id);
 
-                    <div className="text-white/70 text-sm mt-2 line-clamp-3">
-                      {t.description}
-                    </div>
-
-                    <div className="text-white/60 text-xs mt-2">
-                      Outcome: <span className="text-white/75">{t.expectedOutcome}</span>
-                    </div>
-
-                    {t.attachmentUrl && (
-                      <div className="text-white/60 text-xs mt-2">
-                        Attachment:{" "}
-                        <a
-                          href={t.attachmentUrl}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="text-cyan-300 hover:text-cyan-200 underline break-all"
+              return (
+                <div key={t._id} className="p-5 hover:bg-white/5 transition">
+                  <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4">
+                    <div className="min-w-0">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <div className="font-semibold">{t.title}</div>
+                        <span className="text-xs px-2 py-1 rounded-full border border-emerald-400/20 bg-emerald-400/10 text-emerald-100">
+                          OPEN
+                        </span>
+                        <span className="text-xs px-2 py-1 rounded-full border border-white/10 bg-white/5 text-white/65">
+                          {t.category}
+                        </span>
+                        {isMyOwnTask && (
+                          <span className="text-xs px-2 py-1 rounded-full border border-cyan-400/20 bg-cyan-400/10 text-cyan-100">
+                            My Task
+                          </span>
+                        )}
+                        <span
+                          className={`text-xs px-2 py-1 rounded-full border ${
+                            t.urgency === "URGENT"
+                              ? "border-amber-300/20 bg-amber-300/10 text-amber-100"
+                              : "border-white/10 bg-white/5 text-white/65"
+                          }`}
                         >
-                          {t.attachmentUrl}
-                        </a>
+                          {t.urgency}
+                        </span>
                       </div>
-                    )}
 
-                    <div className="text-white/60 text-xs mt-2">
-                      Posted by:{" "}
-                      <span className="text-white/75">
-                        {t.createdBy?.fullName || "Unknown"}
-                      </span>
-                      {t.createdBy?.studentId && (
-                        <span className="text-white/55"> ({t.createdBy.studentId})</span>
+                      <div className="text-white/70 text-sm mt-2 line-clamp-3">
+                        {t.description}
+                      </div>
+
+                      <div className="text-white/60 text-xs mt-2">
+                        Outcome: <span className="text-white/75">{t.expectedOutcome}</span>
+                      </div>
+
+                      {t.attachmentUrl && (
+                        <div className="text-white/60 text-xs mt-2">
+                          Attachment:{" "}
+                          <a
+                            href={t.attachmentUrl}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="text-cyan-300 hover:text-cyan-200 underline break-all"
+                          >
+                            {t.attachmentUrl}
+                          </a>
+                        </div>
+                      )}
+
+                      <div className="text-white/60 text-xs mt-2">
+                        Posted by:{" "}
+                        <span className="text-white/75">
+                          {t.createdBy?.fullName || "Unknown"}
+                        </span>
+                        {t.createdBy?.studentId && (
+                          <span className="text-white/55"> ({t.createdBy.studentId})</span>
+                        )}
+                      </div>
+
+                      <div className="mt-3 flex flex-wrap gap-2 text-xs text-white/70">
+                        <span className="px-2 py-1 rounded-full border border-white/10 bg-white/5">
+                          Skill: {t.skillRequired}
+                        </span>
+                        <span className="px-2 py-1 rounded-full border border-white/10 bg-white/5">
+                          Mode: {t.mode}
+                        </span>
+                        <span className="px-2 py-1 rounded-full border border-white/10 bg-white/5">
+                          Session: {t.duration}m
+                        </span>
+                        <span className="px-2 py-1 rounded-full border border-white/10 bg-white/5">
+                          Deadline: {t.deadlineDays} days
+                        </span>
+                        <span className="px-2 py-1 rounded-full border border-white/10 bg-white/5">
+                          {formatRemaining(t.expireAt)}
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="shrink-0">
+                      {isMyOwnTask ? (
+                        <button
+                          disabled
+                          className="px-4 py-2 rounded-xl border border-white/10 bg-white/5 text-sm text-white/40 cursor-not-allowed"
+                        >
+                          Your Task
+                        </button>
+                      ) : (
+                        <button
+                          onClick={() => askAccept(t)}
+                          disabled={busyId === t._id}
+                          className="px-4 py-2 rounded-xl border border-white/15 bg-white/5 hover:bg-white/10 text-sm disabled:opacity-60"
+                        >
+                          {busyId === t._id ? "Accepting..." : "Help / Accept"}
+                        </button>
                       )}
                     </div>
-
-                    <div className="mt-3 flex flex-wrap gap-2 text-xs text-white/70">
-                      <span className="px-2 py-1 rounded-full border border-white/10 bg-white/5">
-                        Skill: {t.skillRequired}
-                      </span>
-                      <span className="px-2 py-1 rounded-full border border-white/10 bg-white/5">
-                        Mode: {t.mode}
-                      </span>
-                      <span className="px-2 py-1 rounded-full border border-white/10 bg-white/5">
-                        Session: {t.duration}m
-                      </span>
-                      <span className="px-2 py-1 rounded-full border border-white/10 bg-white/5">
-                        Deadline: {t.deadlineDays} days
-                      </span>
-                      <span className="px-2 py-1 rounded-full border border-white/10 bg-white/5">
-                        {formatRemaining(t.expireAt)}
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="shrink-0">
-                    <button className="px-4 py-2 rounded-xl border border-white/15 bg-white/5 hover:bg-white/10 text-sm">
-                      View / Help
-                    </button>
                   </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         )}
       </div>

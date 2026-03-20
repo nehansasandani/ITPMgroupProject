@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { cancelTask, getMyTasks } from "../../api/taskApi";
+import { cancelTask, deleteTask, getMyTasks } from "../../api/taskApi";
+import WarningModal from "../../components/WarningModal";
 
 const STATUS_COLORS = {
   OPEN: "border-emerald-400/20 bg-emerald-400/10 text-emerald-100",
@@ -35,6 +36,10 @@ export default function MyTasksPage() {
   const [active, setActive] = useState("ALL");
   const [busyId, setBusyId] = useState("");
 
+  const [confirmCancelOpen, setConfirmCancelOpen] = useState(false);
+  const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
+  const [selectedTaskId, setSelectedTaskId] = useState("");
+
   const loadTasks = async () => {
     try {
       const data = await getMyTasks();
@@ -53,10 +58,34 @@ export default function MyTasksPage() {
     return items.filter((t) => t.status === active);
   }, [items, active]);
 
-  const onCancel = async (id) => {
+  const askCancel = (id) => {
+    setSelectedTaskId(id);
+    setConfirmCancelOpen(true);
+  };
+
+  const askDelete = (id) => {
+    setSelectedTaskId(id);
+    setConfirmDeleteOpen(true);
+  };
+
+  const onCancelConfirm = async () => {
     try {
-      setBusyId(id);
-      await cancelTask(id);
+      setBusyId(selectedTaskId);
+      await cancelTask(selectedTaskId);
+      setConfirmCancelOpen(false);
+      setSelectedTaskId("");
+      await loadTasks();
+    } finally {
+      setBusyId("");
+    }
+  };
+
+  const onDeleteConfirm = async () => {
+    try {
+      setBusyId(selectedTaskId);
+      await deleteTask(selectedTaskId);
+      setConfirmDeleteOpen(false);
+      setSelectedTaskId("");
       await loadTasks();
     } finally {
       setBusyId("");
@@ -65,11 +94,45 @@ export default function MyTasksPage() {
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-10 text-white">
+      <WarningModal
+        open={confirmCancelOpen}
+        title="Cancel this task?"
+        message="This will mark the task as CANCELLED. You can still delete it later if needed."
+        confirmText="Yes, cancel task"
+        cancelText="Keep task"
+        confirmVariant="danger"
+        loading={!!busyId}
+        onConfirm={onCancelConfirm}
+        onClose={() => {
+          if (!busyId) {
+            setConfirmCancelOpen(false);
+            setSelectedTaskId("");
+          }
+        }}
+      />
+
+      <WarningModal
+        open={confirmDeleteOpen}
+        title="Delete this cancelled task?"
+        message="This action is permanent. Deleted tasks cannot be restored."
+        confirmText="Delete permanently"
+        cancelText="Keep task"
+        confirmVariant="danger"
+        loading={!!busyId}
+        onConfirm={onDeleteConfirm}
+        onClose={() => {
+          if (!busyId) {
+            setConfirmDeleteOpen(false);
+            setSelectedTaskId("");
+          }
+        }}
+      />
+
       <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
         <div>
           <h1 className="text-2xl md:text-3xl font-semibold">My Tasks</h1>
           <p className="text-white/70 text-sm mt-1">
-            Manage your posted tasks, monitor deadline countdown, and cancel open tasks.
+            Manage your posted tasks, monitor deadline countdown, edit open tasks, cancel them, or delete cancelled ones.
           </p>
         </div>
 
@@ -139,7 +202,9 @@ export default function MyTasksPage() {
                       </span>
                     </div>
 
-                    <div className="text-white/70 text-sm mt-2 line-clamp-3">{t.description}</div>
+                    <div className="text-white/70 text-sm mt-2 line-clamp-3">
+                      {t.description}
+                    </div>
 
                     <div className="text-white/60 text-xs mt-2">
                       Outcome: <span className="text-white/75">{t.expectedOutcome}</span>
@@ -180,12 +245,31 @@ export default function MyTasksPage() {
 
                   <div className="flex gap-2 shrink-0">
                     {t.status === "OPEN" && (
+                      <>
+                        <Link
+                          to={`/tasks/edit/${t._id}`}
+                          className="px-3 py-2 rounded-xl text-sm border border-white/15 bg-white/5 hover:bg-white/10"
+                        >
+                          Edit
+                        </Link>
+
+                        <button
+                          onClick={() => askCancel(t._id)}
+                          disabled={busyId === t._id}
+                          className="px-3 py-2 rounded-xl text-sm border border-red-400/20 bg-red-400/10 text-red-100 hover:bg-red-400/15 disabled:opacity-60"
+                        >
+                          {busyId === t._id ? "Cancelling..." : "Cancel"}
+                        </button>
+                      </>
+                    )}
+
+                    {t.status === "CANCELLED" && (
                       <button
-                        onClick={() => onCancel(t._id)}
+                        onClick={() => askDelete(t._id)}
                         disabled={busyId === t._id}
                         className="px-3 py-2 rounded-xl text-sm border border-red-400/20 bg-red-400/10 text-red-100 hover:bg-red-400/15 disabled:opacity-60"
                       >
-                        {busyId === t._id ? "Cancelling..." : "Cancel"}
+                        {busyId === t._id ? "Deleting..." : "Delete"}
                       </button>
                     )}
                   </div>

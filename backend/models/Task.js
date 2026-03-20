@@ -64,6 +64,12 @@ const TaskSchema = new mongoose.Schema(
       required: true,
     },
 
+    acceptedBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      default: null,
+    },
+
     status: {
       type: String,
       enum: ["OPEN", "MATCHED", "COMPLETED", "CANCELLED", "EXPIRED"],
