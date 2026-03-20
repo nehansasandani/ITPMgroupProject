@@ -35,6 +35,11 @@ export async function acceptTask(taskId) {
   return res.data;
 }
 
+export async function completeTask(taskId) {
+  const res = await axiosInstance.patch(`/tasks/${taskId}/complete`);
+  return res.data;
+}
+
 export async function cancelTask(taskId) {
   const res = await axiosInstance.patch(`/tasks/${taskId}/cancel`);
   return res.data;

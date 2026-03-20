@@ -45,6 +45,9 @@ export default function Header() {
               <NavLink to="/tasks/mine" className={navClass}>
                 My Tasks
               </NavLink>
+              <NavLink to="/tasks/accepted-by-me" className={navClass}>
+                Accepted By Me
+              </NavLink>
             </>
           )}
 

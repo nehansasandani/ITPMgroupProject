@@ -210,6 +210,41 @@ router.patch("/:id/accept", requireAuth, async (req, res) => {
   }
 });
 
+// COMPLETE task
+router.patch("/:id/complete", requireAuth, async (req, res) => {
+  try {
+    const task = await Task.findById(req.params.id)
+      .populate("createdBy", "fullName studentId")
+      .populate("acceptedBy", "fullName studentId");
+
+    if (!task) {
+      return res.status(404).json({ message: "Task not found" });
+    }
+
+    if (task.status !== "MATCHED") {
+      return res.status(400).json({ message: "Only MATCHED tasks can be completed" });
+    }
+
+    const isOwner = String(task.createdBy._id) === String(req.user.id);
+    const isAcceptedUser = task.acceptedBy && String(task.acceptedBy._id) === String(req.user.id);
+
+    if (!isOwner && !isAcceptedUser) {
+      return res.status(403).json({ message: "You are not allowed to complete this task" });
+    }
+
+    task.status = "COMPLETED";
+    await task.save();
+
+    const updatedTask = await Task.findById(task._id)
+      .populate("createdBy", "fullName studentId")
+      .populate("acceptedBy", "fullName studentId");
+
+    res.json(updatedTask);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
 // UPDATE task (only OPEN and owner only)
 router.patch("/:id", requireAuth, async (req, res) => {
   try {

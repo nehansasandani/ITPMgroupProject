@@ -1,14 +1,14 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { cancelTask, completeTask, deleteTask, getMyTasks } from "../../api/taskApi";
+import { completeTask, getAcceptedByMeTasks } from "../../api/taskApi";
 import WarningModal from "../../components/WarningModal";
 
 const STATUS_COLORS = {
-  OPEN: "border-emerald-400/20 bg-emerald-400/10 text-emerald-100",
   MATCHED: "border-cyan-400/20 bg-cyan-400/10 text-cyan-100",
   COMPLETED: "border-white/15 bg-white/5 text-white/80",
   CANCELLED: "border-red-400/20 bg-red-400/10 text-red-100",
   EXPIRED: "border-amber-400/20 bg-amber-400/10 text-amber-100",
+  OPEN: "border-emerald-400/20 bg-emerald-400/10 text-emerald-100",
 };
 
 function StatusChip({ status }) {
@@ -30,20 +30,16 @@ function formatRemaining(expireAt) {
   return `${hours}h left`;
 }
 
-export default function MyTasksPage() {
+export default function AcceptedByMePage() {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [active, setActive] = useState("ALL");
   const [busyId, setBusyId] = useState("");
-
-  const [confirmCancelOpen, setConfirmCancelOpen] = useState(false);
-  const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
   const [confirmCompleteOpen, setConfirmCompleteOpen] = useState(false);
   const [selectedTaskId, setSelectedTaskId] = useState("");
 
   const loadTasks = async () => {
     try {
-      const data = await getMyTasks();
+      const data = await getAcceptedByMeTasks();
       setItems(data);
     } finally {
       setLoading(false);
@@ -54,48 +50,9 @@ export default function MyTasksPage() {
     loadTasks();
   }, []);
 
-  const filtered = useMemo(() => {
-    if (active === "ALL") return items;
-    return items.filter((t) => t.status === active);
-  }, [items, active]);
-
-  const askCancel = (id) => {
-    setSelectedTaskId(id);
-    setConfirmCancelOpen(true);
-  };
-
-  const askDelete = (id) => {
-    setSelectedTaskId(id);
-    setConfirmDeleteOpen(true);
-  };
-
   const askComplete = (id) => {
     setSelectedTaskId(id);
     setConfirmCompleteOpen(true);
-  };
-
-  const onCancelConfirm = async () => {
-    try {
-      setBusyId(selectedTaskId);
-      await cancelTask(selectedTaskId);
-      setConfirmCancelOpen(false);
-      setSelectedTaskId("");
-      await loadTasks();
-    } finally {
-      setBusyId("");
-    }
-  };
-
-  const onDeleteConfirm = async () => {
-    try {
-      setBusyId(selectedTaskId);
-      await deleteTask(selectedTaskId);
-      setConfirmDeleteOpen(false);
-      setSelectedTaskId("");
-      await loadTasks();
-    } finally {
-      setBusyId("");
-    }
   };
 
   const onCompleteConfirm = async () => {
@@ -112,40 +69,6 @@ export default function MyTasksPage() {
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-10 text-white">
-      <WarningModal
-        open={confirmCancelOpen}
-        title="Cancel this task?"
-        message="This will mark the task as CANCELLED. You can still delete it later if needed."
-        confirmText="Yes, cancel task"
-        cancelText="Keep task"
-        confirmVariant="danger"
-        loading={!!busyId}
-        onConfirm={onCancelConfirm}
-        onClose={() => {
-          if (!busyId) {
-            setConfirmCancelOpen(false);
-            setSelectedTaskId("");
-          }
-        }}
-      />
-
-      <WarningModal
-        open={confirmDeleteOpen}
-        title="Delete this cancelled task?"
-        message="This action is permanent. Deleted tasks cannot be restored."
-        confirmText="Delete permanently"
-        cancelText="Keep task"
-        confirmVariant="danger"
-        loading={!!busyId}
-        onConfirm={onDeleteConfirm}
-        onClose={() => {
-          if (!busyId) {
-            setConfirmDeleteOpen(false);
-            setSelectedTaskId("");
-          }
-        }}
-      />
-
       <WarningModal
         open={confirmCompleteOpen}
         title="Mark this task as completed?"
@@ -165,66 +88,47 @@ export default function MyTasksPage() {
 
       <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
         <div>
-          <h1 className="text-2xl md:text-3xl font-semibold">My Tasks</h1>
+          <h1 className="text-2xl md:text-3xl font-semibold">Accepted By Me</h1>
           <p className="text-white/70 text-sm mt-1">
-            Manage your posted tasks, monitor countdown, edit open tasks, cancel them, complete matched ones, and delete cancelled ones.
+            These are the tasks you accepted to help with.
           </p>
         </div>
 
         <div className="flex flex-wrap gap-2">
           <Link
-            to="/tasks/accepted-by-me"
+            to="/tasks/browse"
             className="px-4 py-2 rounded-xl border border-white/15 bg-white/5 hover:bg-white/10 text-sm"
           >
-            Accepted By Me
+            Browse Tasks
           </Link>
           <Link
-            to="/tasks/create"
+            to="/tasks/mine"
             className="px-4 py-2 rounded-xl bg-white text-slate-900 font-medium hover:bg-white/90 text-sm"
           >
-            + New Task
+            My Tasks
           </Link>
         </div>
-      </div>
-
-      <div className="mt-5 flex flex-wrap gap-2">
-        {["ALL", "OPEN", "MATCHED", "COMPLETED", "EXPIRED", "CANCELLED"].map((s) => {
-          const activeBtn = active === s;
-          return (
-            <button
-              key={s}
-              onClick={() => setActive(s)}
-              className={`px-3 py-2 rounded-xl text-sm border transition ${
-                activeBtn
-                  ? "bg-white text-slate-900 border-white"
-                  : "border-white/15 bg-white/5 hover:bg-white/10 text-white/85"
-              }`}
-            >
-              {s}
-            </button>
-          );
-        })}
       </div>
 
       <div className="mt-6 rounded-3xl border border-white/10 bg-white/5 overflow-hidden">
         {loading ? (
           <div className="p-6 text-white/70">Loading...</div>
-        ) : filtered.length === 0 ? (
+        ) : items.length === 0 ? (
           <div className="p-8">
-            <div className="text-white/85 font-semibold">No tasks found</div>
+            <div className="text-white/85 font-semibold">No accepted tasks yet</div>
             <p className="text-white/60 text-sm mt-1">
-              Create a clear task with a specific expected outcome.
+              Browse open tasks and accept one you can help with.
             </p>
             <Link
-              to="/tasks/create"
+              to="/tasks/browse"
               className="inline-block mt-4 px-4 py-2 rounded-xl bg-white text-slate-900 font-medium hover:bg-white/90 text-sm"
             >
-              Create Task
+              Browse Tasks
             </Link>
           </div>
         ) : (
           <div className="divide-y divide-white/10">
-            {filtered.map((t) => (
+            {items.map((t) => (
               <div key={t._id} className="p-5 hover:bg-white/5 transition">
                 <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4">
                   <div className="min-w-0">
@@ -267,15 +171,15 @@ export default function MyTasksPage() {
                       </div>
                     )}
 
-                    {t.status === "MATCHED" && t.acceptedBy && (
-                      <div className="text-white/60 text-xs mt-2">
-                        Accepted by:{" "}
-                        <span className="text-white/75">{t.acceptedBy.fullName}</span>
-                        {t.acceptedBy.studentId && (
-                          <span className="text-white/55"> ({t.acceptedBy.studentId})</span>
-                        )}
-                      </div>
-                    )}
+                    <div className="text-white/60 text-xs mt-2">
+                      Task owner:{" "}
+                      <span className="text-white/75">
+                        {t.createdBy?.fullName || "Unknown"}
+                      </span>
+                      {t.createdBy?.studentId && (
+                        <span className="text-white/55"> ({t.createdBy.studentId})</span>
+                      )}
+                    </div>
 
                     <div className="mt-3 flex flex-wrap gap-2 text-xs text-white/70">
                       <span className="px-2 py-1 rounded-full border border-white/10 bg-white/5">
@@ -296,43 +200,18 @@ export default function MyTasksPage() {
                     </div>
                   </div>
 
-                  <div className="flex gap-2 shrink-0">
-                    {t.status === "OPEN" && (
-                      <>
-                        <Link
-                          to={`/tasks/edit/${t._id}`}
-                          className="px-3 py-2 rounded-xl text-sm border border-white/15 bg-white/5 hover:bg-white/10"
-                        >
-                          Edit
-                        </Link>
-
-                        <button
-                          onClick={() => askCancel(t._id)}
-                          disabled={busyId === t._id}
-                          className="px-3 py-2 rounded-xl text-sm border border-red-400/20 bg-red-400/10 text-red-100 hover:bg-red-400/15 disabled:opacity-60"
-                        >
-                          {busyId === t._id ? "Cancelling..." : "Cancel"}
-                        </button>
-                      </>
-                    )}
-
-                    {t.status === "MATCHED" && (
+                  <div className="shrink-0">
+                    {t.status === "MATCHED" ? (
                       <button
                         onClick={() => askComplete(t._id)}
                         disabled={busyId === t._id}
-                        className="px-3 py-2 rounded-xl text-sm border border-cyan-400/20 bg-cyan-400/10 text-cyan-100 hover:bg-cyan-400/15 disabled:opacity-60"
+                        className="px-4 py-2 rounded-xl border border-cyan-400/20 bg-cyan-400/10 text-cyan-100 hover:bg-cyan-400/15 text-sm disabled:opacity-60"
                       >
-                        {busyId === t._id ? "Completing..." : "Complete"}
+                        {busyId === t._id ? "Completing..." : "Mark Complete"}
                       </button>
-                    )}
-
-                    {t.status === "CANCELLED" && (
-                      <button
-                        onClick={() => askDelete(t._id)}
-                        disabled={busyId === t._id}
-                        className="px-3 py-2 rounded-xl text-sm border border-red-400/20 bg-red-400/10 text-red-100 hover:bg-red-400/15 disabled:opacity-60"
-                      >
-                        {busyId === t._id ? "Deleting..." : "Delete"}
+                    ) : (
+                      <button className="px-4 py-2 rounded-xl border border-white/15 bg-white/5 text-sm text-white/70">
+                        {t.status}
                       </button>
                     )}
                   </div>
