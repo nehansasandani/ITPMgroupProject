@@ -9,3 +9,8 @@ export async function getMyTasks() {
   const res = await axiosInstance.get("/tasks/mine");
   return res.data;
 }
+
+export async function cancelTask(taskId) {
+  const res = await axiosInstance.patch(`/tasks/${taskId}/cancel`);
+  return res.data;
+}

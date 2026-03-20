@@ -4,7 +4,6 @@ import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/auth/LoginPage";
 import RegisterPage from "./pages/auth/RegisterPage";
 import ProtectedRoute from "./components/ProtectedRoute";
-
 import CreateTaskPage from "./pages/tasks/CreateTaskPage";
 import MyTasksPage from "./pages/tasks/MyTasksPage";
 
