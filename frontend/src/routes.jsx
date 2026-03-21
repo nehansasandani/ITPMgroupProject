@@ -4,9 +4,11 @@ import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/auth/LoginPage";
 import RegisterPage from "./pages/auth/RegisterPage";
 import ProtectedRoute from "./components/ProtectedRoute";
-
 import CreateTaskPage from "./pages/tasks/CreateTaskPage";
 import MyTasksPage from "./pages/tasks/MyTasksPage";
+import BrowseTasksPage from "./pages/tasks/BrowseTasksPage";
+import EditTaskPage from "./pages/tasks/EditTaskPage";
+import AcceptedByMePage from "./pages/tasks/AcceptedByMePage";
 
 const Placeholder = ({ title }) => (
   <div className="max-w-6xl mx-auto px-4 py-10 text-white">
@@ -39,6 +41,30 @@ export const router = createBrowserRouter([
         element: (
           <ProtectedRoute>
             <MyTasksPage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "tasks/browse",
+        element: (
+          <ProtectedRoute>
+            <BrowseTasksPage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "tasks/edit/:id",
+        element: (
+          <ProtectedRoute>
+            <EditTaskPage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "tasks/accepted-by-me",
+        element: (
+          <ProtectedRoute>
+            <AcceptedByMePage />
           </ProtectedRoute>
         ),
       },

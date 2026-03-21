@@ -1,10 +1,6 @@
 import mongoose from "mongoose";
 
-const ALLOWED_DURATIONS = [15, 30, 45, 60];
-const ALLOWED_MODES = ["Chat", "Meet", "Online"];
-const ALLOWED_STATUS = ["OPEN", "MATCHED", "COMPLETED", "CANCELLED", "EXPIRED"];
-
-const taskSchema = new mongoose.Schema(
+const TaskSchema = new mongoose.Schema(
   {
     title: {
       type: String,
@@ -13,6 +9,7 @@ const taskSchema = new mongoose.Schema(
       minlength: 8,
       maxlength: 80,
     },
+
     description: {
       type: String,
       required: true,
@@ -21,13 +18,25 @@ const taskSchema = new mongoose.Schema(
       maxlength: 800,
     },
 
-    // 🔥 This forces clarity (scope control)
     expectedOutcome: {
       type: String,
       required: true,
       trim: true,
       minlength: 10,
       maxlength: 200,
+    },
+
+    category: {
+      type: String,
+      enum: ["UI", "CODING", "WRITING", "REVIEW"],
+      required: true,
+      default: "CODING",
+    },
+
+    urgency: {
+      type: String,
+      enum: ["NORMAL", "URGENT"],
+      default: "NORMAL",
     },
 
     skillRequired: {
@@ -39,14 +48,13 @@ const taskSchema = new mongoose.Schema(
 
     duration: {
       type: Number,
-      required: true,
-      enum: ALLOWED_DURATIONS,
+      enum: [15, 30, 45, 60],
       default: 30,
     },
 
     mode: {
       type: String,
-      enum: ALLOWED_MODES,
+      enum: ["Chat", "Meet", "Online"],
       default: "Online",
     },
 
@@ -54,32 +62,44 @@ const taskSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
-      index: true,
+    },
+
+    acceptedBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      default: null,
     },
 
     status: {
       type: String,
-      enum: ALLOWED_STATUS,
+      enum: ["OPEN", "MATCHED", "COMPLETED", "CANCELLED", "EXPIRED"],
       default: "OPEN",
       index: true,
     },
 
-    // ⏳ TTL auto-expiry (Mongo will auto-delete after expiresAt)
-    // If you prefer NOT deleting, tell me — we’ll switch to marking EXPIRED instead.
-    expiresAt: {
+    deadlineDays: {
+      type: Number,
+      enum: [2, 3],
+      default: 2,
+    },
+
+    expireAt: {
       type: Date,
-      required: true,
-      index: { expires: 0 },
+      default: function () {
+        const days = this.deadlineDays || 2;
+        return new Date(Date.now() + days * 24 * 60 * 60 * 1000);
+      },
+      index: true,
+    },
+
+    attachmentUrl: {
+      type: String,
+      default: "",
     },
   },
   { timestamps: true }
 );
 
-export const TaskConfig = {
-  ALLOWED_DURATIONS,
-  ALLOWED_MODES,
-  ALLOWED_STATUS,
-};
+const Task = mongoose.model("Task", TaskSchema);
 
-const Task = mongoose.model("Task", taskSchema);
 export default Task;

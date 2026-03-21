@@ -2,33 +2,113 @@ import bcrypt from "bcryptjs";
 import User from "../models/User.js";
 import { signToken } from "../utils/jwt.js";
 
+const STUDENT_ID_REGEX = /^(IT|BM|EN|HS)\d{8}$/;
+const PASSWORD_REGEX =
+  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_\-+=[\]{};':"\\|,.<>/?]).{8,}$/;
+
+function validateRegisterInput({ fullName, email, studentId, password }) {
+  const errors = [];
+
+  const cleanName = (fullName || "").trim();
+  const cleanEmail = (email || "").trim().toLowerCase();
+  const cleanStudentId = (studentId || "").trim().toUpperCase();
+  const cleanPassword = password || "";
+
+  if (!cleanName) {
+    errors.push("Full name is required.");
+  } else {
+    if (cleanName.length < 3) errors.push("Full name must be at least 3 characters.");
+    if (cleanName.length > 60) errors.push("Full name must be at most 60 characters.");
+    if (!/^[A-Za-z\s.'-]+$/.test(cleanName)) {
+      errors.push("Full name can only contain letters, spaces, apostrophes, dots, and hyphens.");
+    }
+    if (/\s{2,}/.test(cleanName)) {
+      errors.push("Full name cannot contain repeated spaces.");
+    }
+  }
+
+  if (!cleanEmail) {
+    errors.push("Email is required.");
+  }
+
+  if (!cleanStudentId) {
+    errors.push("Student ID is required.");
+  } else if (!STUDENT_ID_REGEX.test(cleanStudentId)) {
+    errors.push("Student ID must be like IT23323452.");
+  }
+
+  if (!cleanPassword) {
+    errors.push("Password is required.");
+  } else {
+    if (cleanPassword.length < 8) {
+      errors.push("Password must be at least 8 characters.");
+    }
+    if (cleanPassword.length > 64) {
+      errors.push("Password must be at most 64 characters.");
+    }
+    if (/\s/.test(cleanPassword)) {
+      errors.push("Password cannot contain spaces.");
+    }
+    if (!PASSWORD_REGEX.test(cleanPassword)) {
+      errors.push(
+        "Password must include at least one uppercase letter, one lowercase letter, one number, and one special character."
+      );
+    }
+    if (cleanStudentId && cleanPassword.toUpperCase().includes(cleanStudentId)) {
+      errors.push("Password cannot contain your student ID.");
+    }
+    if (cleanEmail && cleanPassword.toLowerCase().includes(cleanEmail.split("@")[0])) {
+      errors.push("Password should not contain your email username.");
+    }
+  }
+
+  return errors;
+}
+
 export async function register(req, res) {
   try {
-    const { fullName, email, studentId, password, role } = req.body;
+    const { fullName, email, studentId, password } = req.body;
 
-    // Basic checks
     if (!fullName || !email || !studentId || !password) {
       return res.status(400).json({ message: "Missing required fields." });
     }
 
-    // Prevent random role assignment from frontend (security)
-    // Only allow STUDENT/HELPER during registration, ADMIN should be created manually.
-    const safeRole = role === "HELPER" ? "HELPER" : "STUDENT";
+    const validationErrors = validateRegisterInput({
+      fullName,
+      email,
+      studentId,
+      password,
+    });
 
-    // Check duplicates
-    const existingEmail = await User.findOne({ email: email.toLowerCase() });
-    if (existingEmail) return res.status(409).json({ message: "Email already exists." });
+    if (validationErrors.length > 0) {
+      return res.status(400).json({
+        message: "Registration validation failed.",
+        issues: validationErrors,
+      });
+    }
 
-    const existingStudentId = await User.findOne({ studentId: studentId.toUpperCase() });
-    if (existingStudentId) return res.status(409).json({ message: "Student ID already exists." });
+    const safeRole = "STUDENT";
 
-    // Password hash
+    const normalizedEmail = email.toLowerCase().trim();
+    const normalizedStudentId = studentId.toUpperCase().trim();
+    const normalizedFullName = fullName.trim().replace(/\s+/g, " ");
+
+    const existingEmail = await User.findOne({ email: normalizedEmail });
+    if (existingEmail) {
+      return res.status(409).json({ message: "Email already exists." });
+    }
+
+    const existingStudentId = await User.findOne({ studentId: normalizedStudentId });
+    if (existingStudentId) {
+      return res.status(409).json({ message: "Student ID already exists." });
+    }
+
     const passwordHash = await bcrypt.hash(password, 12);
 
     const user = await User.create({
-      fullName,
-      email: email.toLowerCase(),
-      studentId: studentId.toUpperCase(),
+      fullName: normalizedFullName,
+      email: normalizedEmail,
+      studentId: normalizedStudentId,
       passwordHash,
       role: safeRole,
     });
@@ -46,7 +126,6 @@ export async function register(req, res) {
       token,
     });
   } catch (err) {
-    // Mongoose validation errors show nicely
     return res.status(400).json({ message: err.message });
   }
 }
