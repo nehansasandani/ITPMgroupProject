@@ -2,26 +2,32 @@ import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
 import dotenv from "dotenv";
+
+// His routes
+import userRoutes from "./routes/userRoutes.js";
+
+// Your routes
 import skillRoutes from "./routes/skillRoutes.js";
 import ratingRoutes from "./routes/ratingRoutes.js";
+import reputationRoutes from "./routes/reputationRoutes.js";
 
-dotenv.config(); // ← must be FIRST
+dotenv.config();
 
-const app = express(); // ← app must be created BEFORE using it
-
-app.use(cors());
+const app = express();
+app.use(cors({ origin: true, credentials: true }));
 app.use(express.json());
 
-// Test route
-app.get("/", (req, res) => {
-  res.send("API is running ✅");
-});
+app.get("/", (req, res) => res.send("API running ✅"));
 
-// Routes
+// His routes
+app.use("/api/users", userRoutes);
+
+// Your routes
 app.use("/api/skills", skillRoutes);
-app.use("/api/ratings", ratingRoutes); // ← moved to correct place
+app.use("/api/ratings", ratingRoutes);
+app.use("/api/reputation", reputationRoutes);
 
-// MongoDB
+
 mongoose
   .connect(process.env.MONGO_URI)
   .then(() => console.log("MongoDB connected ✅"))
