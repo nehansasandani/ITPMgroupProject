@@ -1,22 +1,113 @@
-import React from "react";
-import { Routes, Route } from "react-router-dom";
+import { createBrowserRouter } from "react-router-dom";
+import App from "./App";
+import HomePage from "./pages/HomePage";
+import LoginPage from "./pages/auth/LoginPage";
+import RegisterPage from "./pages/auth/RegisterPage";
+import ProtectedRoute from "./components/ProtectedRoute";
+import CreateTaskPage from "./pages/tasks/CreateTaskPage";
+import MyTasksPage from "./pages/tasks/MyTasksPage";
+import BrowseTasksPage from "./pages/tasks/BrowseTasksPage";
+import EditTaskPage from "./pages/tasks/EditTaskPage";
+import AcceptedByMePage from "./pages/tasks/AcceptedByMePage";
 
+// ── Your module imports ──
 import SkillsPage from "./pages/profile/SkillsPage";
 import RatingForm from "./pages/reputation/RatingForm";
 import UserProfile from "./pages/reputation/UserProfile";
 
-export default function AppRoutes() {
-  return (
-    <Routes>
-      {/* Home */}
-      <Route path="/" element={<h2 style={{ color: "white", padding: "40px" }}>Home Page</h2>} />
+const Placeholder = ({ title }) => (
+  <div className="max-w-6xl mx-auto px-4 py-10 text-white">
+    <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
+      <h2 className="text-xl font-semibold">{title}</h2>
+      <p className="text-white/70 mt-2 text-sm">Page coming next…</p>
+    </div>
+  </div>
+);
 
-      {/* Skills - don't touch */}
-      <Route path="/profile/skills" element={<SkillsPage />} />
+export const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <App />,
+    children: [
+      // ── Teammate's routes ──
+      { index: true, element: <HomePage /> },
+      { path: "login", element: <LoginPage /> },
+      { path: "register", element: <RegisterPage /> },
 
-      {/* Your module */}
-      <Route path="/rate" element={<RatingForm />} />
-      <Route path="/profile" element={<UserProfile />} />
-    </Routes>
-  );
-}
+      {
+        path: "tasks/create",
+        element: (
+          <ProtectedRoute>
+            <CreateTaskPage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "tasks/mine",
+        element: (
+          <ProtectedRoute>
+            <MyTasksPage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "tasks/browse",
+        element: (
+          <ProtectedRoute>
+            <BrowseTasksPage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "tasks/edit/:id",
+        element: (
+          <ProtectedRoute>
+            <EditTaskPage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "tasks/accepted-by-me",
+        element: (
+          <ProtectedRoute>
+            <AcceptedByMePage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "admin",
+        element: (
+          <ProtectedRoute roles={["ADMIN"]}>
+            <Placeholder title="Admin Dashboard" />
+          </ProtectedRoute>
+        ),
+      },
+
+      // ── Your module routes ──
+      {
+        path: "profile/skills",
+        element: (
+          <ProtectedRoute>
+            <SkillsPage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "rate",
+        element: (
+          <ProtectedRoute>
+            <RatingForm />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "profile",
+        element: (
+          <ProtectedRoute>
+            <UserProfile />
+          </ProtectedRoute>
+        ),
+      },
+    ],
+  },
+]);
