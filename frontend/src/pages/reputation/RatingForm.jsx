@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
+import axiosInstance from "../../api/axiosInstance";
+import { useAuth } from "../../context/AuthContext";
 
 // ─── Skill categories (matches her Skill model structure) ─────────────────────
 const SKILL_CATEGORIES = {
@@ -56,8 +57,9 @@ const StarRating = ({ value, onChange }) => {
 
 // ─── Main Component ───────────────────────────────────────────────────────────
 export default function RatingForm() {
+  const { user } = useAuth();
   const MOCK_SESSION_ID = "64f832b1f1234567890abcde";
-  const MOCK_RATED_USER_ID = "64f832b1f1234567890abcde";
+  const MOCK_RATED_USER_ID = user?.id; // Rate currently logged-in user to see real-time updates on profile
 
   // Skill selection state
   const [selectedCategory, setSelectedCategory] = useState("");
@@ -72,6 +74,10 @@ export default function RatingForm() {
   const [comment, setComment] = useState("");
   const [status, setStatus] = useState(null);
   const [loading, setLoading] = useState(false);
+
+  // Validation
+  const BAD_WORDS = ["idiot", "stupid", "dumb", "lazy", "terrible", "fake", "scam", "trash", "sucks"];
+  const hasBadWords = BAD_WORDS.some(word => comment.toLowerCase().includes(word));
 
   // Reset subcategory and skill when category changes
   useEffect(() => {
@@ -94,13 +100,13 @@ export default function RatingForm() {
 
   const allRated = Object.values(ratings).every((v) => v > 0);
   const skillSelected = selectedCategory && selectedSubCategory && selectedSkill;
-  const canSubmit = allRated && skillSelected;
+  const canSubmit = allRated && skillSelected && !hasBadWords;
 
   const handleSubmit = async () => {
     if (!canSubmit) return;
     setLoading(true);
     try {
-      await axios.post("http://localhost:5000/api/ratings", {
+      await axiosInstance.post("/ratings", {
         sessionId: MOCK_SESSION_ID,
         ratedUserId: MOCK_RATED_USER_ID,
         skillCategory: selectedCategory,
@@ -261,6 +267,7 @@ export default function RatingForm() {
           maxLength={500}
           rows={3}
         />
+        {hasBadWords && <div style={styles.errorMsgSmall}>⚠ Please keep your comments respectful.</div>}
         <div style={styles.charCount}>{comment.length}/500</div>
 
         <div style={styles.divider} />
@@ -292,7 +299,7 @@ export default function RatingForm() {
           {loading ? "Submitting..." : "Submit Rating"}
         </button>
 
-        {!canSubmit && (
+        {!canSubmit && !hasBadWords && (
           <p style={styles.hint}>
             {!skillSelected
               ? "Please select a skill category first"
@@ -406,6 +413,9 @@ const styles = {
     background: "rgba(239,68,68,0.1)", border: "1px solid rgba(239,68,68,0.2)",
     color: "#f87171", borderRadius: "8px",
     padding: "10px 14px", fontSize: "13px", marginBottom: "16px",
+  },
+  errorMsgSmall: {
+    color: "#f87171", fontSize: "12px", marginTop: "6px", fontStyle: "italic", textAlign: "left"
   },
   submitBtn: {
     width: "100%", padding: "15px",

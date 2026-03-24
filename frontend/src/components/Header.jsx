@@ -68,12 +68,12 @@ export default function Header() {
             </div>
           ) : (
             <div className="flex items-center gap-2 ml-3">
-              <div className="hidden md:flex items-center gap-2 px-3 py-2 rounded-xl border border-white/10 bg-white/5">
+              <Link to="/profile" className="hidden md:flex items-center gap-2 px-3 py-2 rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 transition cursor-pointer">
                 <span className="text-white/85 text-sm">{user?.fullName}</span>
                 <span className="text-xs px-2 py-0.5 rounded-full bg-white/10 border border-white/10 text-white/70">
                   Campus Member
                 </span>
-              </div>
+              </Link>
               <button onClick={onLogout} className={`${ui.btn} ${ui.btnSoft}`}>
                 Logout
               </button>

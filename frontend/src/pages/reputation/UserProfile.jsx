@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { getReputation, getUserRatings } from "../../api/Reputation.js";
-
-const CURRENT_USER_ID = "64f832b1f1234567890abcde"; // replace with real auth later
+import { useAuth } from "../../context/AuthContext";
 
 const BADGE_ICONS = {
   "Reliable": "🛡️",
@@ -64,12 +63,7 @@ const MiniBar = ({ label, value }) => (
 );
 
 export default function UserProfile() {
-  const [user] = useState({
-    fullName: "Nethmi Perera",
-    email: "nethmi@email.com",
-    studentId: "IT23323452",
-    role: "STUDENT",
-  });
+  const { user } = useAuth();
 
   const [reputation, setReputation] = useState({
     score: 50, noShowCount: 0, cooldownUntil: null, badges: [], categoryScores: [],
@@ -82,9 +76,10 @@ export default function UserProfile() {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        if (!user?.id) return;
         const [repData, ratingsData] = await Promise.all([
-          getReputation(CURRENT_USER_ID),
-          getUserRatings(CURRENT_USER_ID),
+          getReputation(user.id),
+          getUserRatings(user.id),
         ]);
         setReputation(repData);
         setRatings(ratingsData);
@@ -95,7 +90,7 @@ export default function UserProfile() {
       }
     };
     fetchData();
-  }, []);
+  }, [user]);
 
   if (loading) {
     return (

@@ -7,13 +7,9 @@ import {
 
 const router = express.Router();
 
-// Mock auth
-const mockAuth = (req, res, next) => {
-  req.userId = new mongoose.Types.ObjectId("64f832b1f1234567890abcde");
-  next();
-};
+import { requireAuth } from "../middleware/auth.js";
 
-router.use(mockAuth);
+router.use(requireAuth);
 
 router.get("/:userId", getReputation);
 router.get("/ratings/:userId", getUserRatingsWithDetails);

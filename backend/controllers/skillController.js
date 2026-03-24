@@ -3,7 +3,7 @@ import Skill from "../models/Skill.js";
 // GET
 export const getMySkills = async (req, res) => {
   try {
-    const userId = req.userId;
+    const userId = req.user.id;
 
     const skills = await Skill.find({ userId }).sort({ createdAt: -1 });
 
@@ -17,7 +17,7 @@ export const getMySkills = async (req, res) => {
 // POST
 export const addSkill = async (req, res) => {
   try {
-    const userId = req.userId;
+    const userId = req.user.id;
     const { category, subCategory, skill, level } = req.body;
 
     if (!category || !subCategory || !skill || !level) {
@@ -43,7 +43,7 @@ export const addSkill = async (req, res) => {
 // DELETE
 export const removeSkill = async (req, res) => {
   try {
-    const userId = req.userId;
+    const userId = req.user.id;
     const skillId = req.params.id;
 
     await Skill.deleteOne({ _id: skillId, userId });

@@ -7,13 +7,28 @@ const updateReputationScore = async (userId) => {
   const ratings = await Rating.find({ ratedUserId: userId });
   if (ratings.length === 0) return;
 
-  // 1. Overall score (0-100)
-  const overall =
-    ratings.reduce((sum, r) => {
-      return sum + (r.clarity + r.effort + r.timeCommitment + r.communication) / 4;
-    }, 0) / ratings.length;
+  // 1. Dynamic Score Engine (Plus/Minus & Time Decay)
+  let sumMarks = 0;
+  const now = Date.now();
 
-  const score = Math.round((overall / 5) * 100);
+  ratings.forEach(r => {
+    const avg = (r.clarity + r.effort + r.timeCommitment + r.communication) / 4;
+    
+    // Delta from standard base 3.0. A 5-star avg = +2, a 1-star avg = -2
+    const delta = avg - 3.0;
+    
+    // Convert to plus/minus marks. (E.g. max +10 or -10 points per rating)
+    const points = delta * 5; 
+    
+    // Time decay: 30-day half-life so older mistakes naturally fade
+    const ageDays = (now - new Date(r.createdAt || now).getTime()) / (1000 * 60 * 60 * 24);
+    const weight = Math.exp(-ageDays / 30);
+    
+    sumMarks += points * weight;
+  });
+
+  const rawScore = 50 + sumMarks;
+  const score = Math.max(0, Math.min(100, Math.round(rawScore)));
 
   // 2. Per category breakdown
   const categoryMap = {};
@@ -53,14 +68,17 @@ const updateReputationScore = async (userId) => {
     ratingCount: c.clarity.length,
   }));
 
-  // 3. Auto assign badges
+  // 3. Auto assign dynamic badges
   const badges = [];
-  if (score >= 80) badges.push("Top Contributor");
-  if (score >= 70) badges.push("Reliable");
+  if (score >= 85) badges.push("Top Contributor");
+  if (score >= 70 && score < 85) badges.push("Reliable");
+  if (score <= 40) badges.push("Needs Improvement");
+
   const commScores = ratings.map((r) => r.communication);
-  if (avg(commScores) >= 4.5) badges.push("Top Communicator");
+  if (avg(commScores) >= 4.5 && ratings.length >= 3) badges.push("Top Communicator");
+  
   const timeScores = ratings.map((r) => r.timeCommitment);
-  if (avg(timeScores) >= 4.5) badges.push("Punctual");
+  if (avg(timeScores) >= 4.5 && ratings.length >= 3) badges.push("Punctual");
 
   // 4. Save
   await Reputation.findOneAndUpdate(
@@ -71,6 +89,8 @@ const updateReputationScore = async (userId) => {
 };
 
 // ─── POST /api/ratings ────────────────────────────────────────────────────────
+const BAD_WORDS = ["idiot", "stupid", "dumb", "lazy", "terrible", "fake", "scam", "trash", "sucks"];
+
 export const submitRating = async (req, res) => {
   try {
     const {
@@ -80,7 +100,12 @@ export const submitRating = async (req, res) => {
       comment,
     } = req.body;
 
-    const raterId = req.userId; // from mockAuth (replace with req.user.id when JWT ready)
+    // Reject bad words natively
+    if (comment && BAD_WORDS.some(w => comment.toLowerCase().includes(w))) {
+      return res.status(400).json({ message: "Inappropriate language restricted automatically." });
+    }
+
+    const raterId = req.user.id;
 
     const rating = await Rating.create({
       sessionId, raterId, ratedUserId,
