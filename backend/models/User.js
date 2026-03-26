@@ -58,6 +58,25 @@ const userSchema = new mongoose.Schema(
       type: Date,
       default: null,
     },
+
+    // Editable Profile Fields
+    bio: {
+      type: String,
+      maxlength: 200,
+      default: "",
+    },
+    githubUrl: {
+      type: String,
+      default: "",
+    },
+    linkedinUrl: {
+      type: String,
+      default: "",
+    },
+    profilePic: {
+      type: String,
+      default: "",
+    },
   },
   { timestamps: true }
 );

@@ -13,17 +13,17 @@ const updateReputationScore = async (userId) => {
 
   ratings.forEach(r => {
     const avg = (r.clarity + r.effort + r.timeCommitment + r.communication) / 4;
-    
+
     // Delta from standard base 3.0. A 5-star avg = +2, a 1-star avg = -2
     const delta = avg - 3.0;
-    
+
     // Convert to plus/minus marks. (E.g. max +10 or -10 points per rating)
-    const points = delta * 5; 
-    
+    const points = delta * 5;
+
     // Time decay: 30-day half-life so older mistakes naturally fade
     const ageDays = (now - new Date(r.createdAt || now).getTime()) / (1000 * 60 * 60 * 24);
     const weight = Math.exp(-ageDays / 30);
-    
+
     sumMarks += points * weight;
   });
 
@@ -76,7 +76,7 @@ const updateReputationScore = async (userId) => {
 
   const commScores = ratings.map((r) => r.communication);
   if (avg(commScores) >= 4.5 && ratings.length >= 3) badges.push("Top Communicator");
-  
+
   const timeScores = ratings.map((r) => r.timeCommitment);
   if (avg(timeScores) >= 4.5 && ratings.length >= 3) badges.push("Punctual");
 
@@ -89,7 +89,7 @@ const updateReputationScore = async (userId) => {
 };
 
 // ─── POST /api/ratings ────────────────────────────────────────────────────────
-const BAD_WORDS = ["idiot", "stupid", "dumb", "lazy", "terrible", "fake", "scam", "trash", "sucks"];
+const BAD_WORDS = ["idiot", "stupid", "dumb", "lazy", "terrible", "fake", "scam", "trash", "sucks", "mad"];
 
 export const submitRating = async (req, res) => {
   try {

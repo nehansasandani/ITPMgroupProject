@@ -36,3 +36,20 @@ export const getUserRatingsWithDetails = async (req, res) => {
     res.status(500).json({ message: "Error fetching ratings", error: error.message });
   }
 };
+
+// GET /api/reputation/leaderboard
+export const getLeaderboard = async (req, res) => {
+  try {
+    const leaderboard = await Reputation.find()
+      .sort({ score: -1, "userId.fullName": 1 }) // Tie-breaker sort
+      .limit(50)
+      .populate("userId", "fullName studentId role profilePic");
+    
+    // Filter out potential orphans
+    const valid = leaderboard.filter(r => r.userId != null);
+    
+    res.status(200).json(valid);
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching leaderboard", error: error.message });
+  }
+};

@@ -14,6 +14,7 @@ import AcceptedByMePage from "./pages/tasks/AcceptedByMePage";
 import SkillsPage from "./pages/profile/SkillsPage";
 import RatingForm from "./pages/reputation/RatingForm";
 import UserProfile from "./pages/reputation/UserProfile";
+import LeaderboardPage from "./pages/reputation/LeaderboardPage";
 
 const Placeholder = ({ title }) => (
   <div className="max-w-6xl mx-auto px-4 py-10 text-white">
@@ -105,6 +106,14 @@ export const router = createBrowserRouter([
         element: (
           <ProtectedRoute>
             <UserProfile />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "leaderboard",
+        element: (
+          <ProtectedRoute>
+            <LeaderboardPage />
           </ProtectedRoute>
         ),
       },

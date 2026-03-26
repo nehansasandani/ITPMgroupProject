@@ -7,6 +7,7 @@ const skillSchema = new mongoose.Schema(
     subCategory: { type: String, required: true },
     skill: { type: String, required: true },
     level: { type: String, required: true },
+    isVerified: { type: Boolean, default: false },
   },
   { timestamps: true }
 );
