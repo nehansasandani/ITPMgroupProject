@@ -1,6 +1,8 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
+import dns from "dns";
+dns.setServers(["8.8.8.8", "8.8.4.4"]);
 
 import matchRoutes from "./routes/matchRoutes.js";
 import taskRoutes from "./routes/taskRoutes.js";
@@ -39,3 +41,4 @@ setInterval(checkTimeouts, 60 * 1000);
 
 // Task expiry check every 1 minute
 setInterval(expireOverdueTasks, 60 * 1000);
+
