@@ -1,5 +1,6 @@
 import express from "express";
 import Task from "../models/Task.js";
+<<<<<<< HEAD
 import User from "../models/User.js";
 import Session from "../models/Session.js";
 import { validateTaskScope } from "../utils/taskScopeValidator.js";
@@ -411,6 +412,29 @@ router.delete("/:id", requireAuth, async (req, res) => {
     res.json({ message: "Task deleted successfully" });
   } catch (err) {
     res.status(500).json({ message: err.message });
+=======
+
+const router = express.Router();
+
+router.post("/create", async (req, res) => {
+  try {
+    const { title, description, skillRequired, duration, mode, createdBy } = req.body;
+
+    const newTask = new Task({
+      title,
+      description,
+      skillRequired,
+      duration,
+      mode,
+      createdBy
+    });
+
+    const savedTask = await newTask.save();
+
+    res.status(201).json(savedTask);  // ✅ now you get _id
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+>>>>>>> 08e70d92df1c961d98bae932ea2bc8d40ab4ab89
   }
 });
 

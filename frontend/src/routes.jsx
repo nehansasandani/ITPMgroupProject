@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { createBrowserRouter } from "react-router-dom";
 import App from "./App";
 import HomePage from "./pages/HomePage";
@@ -116,3 +117,22 @@ export const router = createBrowserRouter([
     ],
   },
 ]);
+=======
+import React from "react";
+import { Routes, Route } from "react-router-dom";
+
+// Import your pages
+import SkillsPage from "./pages/profile/SkillsPage";
+
+export default function AppRoutes() {
+  return (
+    <Routes>
+      {/* Home */}
+      <Route path="/" element={<h2>Home Page</h2>} />
+
+      {/* Skills page */}
+      <Route path="/profile/skills" element={<SkillsPage />} />
+    </Routes>
+  );
+}
+>>>>>>> 08e70d92df1c961d98bae932ea2bc8d40ab4ab89

@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 
+<<<<<<< HEAD
 const STUDENT_ID_REGEX = /^(IT|BM|EN|HS)\d{8}$/;
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -78,6 +79,16 @@ const userSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+=======
+const userSchema = mongoose.Schema({
+  name: { type: String, required: true },
+  email: { type: String, required: true, unique: true },
+  skills: [{ type: String }], // e.g., ['UI', 'Coding', 'Writing']
+  reputation: { type: Number, default: 0 },
+  isAvailable: { type: Boolean, default: false },
+  ongoingTask: { type: mongoose.Schema.Types.ObjectId, ref: "Task" },
+});
+>>>>>>> 08e70d92df1c961d98bae932ea2bc8d40ab4ab89
 
 const User = mongoose.model("User", userSchema);
 export default User;

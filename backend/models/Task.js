@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 
+<<<<<<< HEAD
 const TaskSchema = new mongoose.Schema(
   {
     title: {
@@ -110,4 +111,19 @@ const TaskSchema = new mongoose.Schema(
 
 const Task = mongoose.model("Task", TaskSchema);
 
+=======
+const taskSchema = mongoose.Schema({
+  title: { type: String, required: true },
+  description: { type: String },
+  skillRequired: { type: String, required: true },
+  duration: { type: Number, default: 30 }, // minutes
+  mode: { type: String, enum: ["Chat", "Meet", "Online"], default: "Online" },
+  createdBy: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+  status: { type: String, enum: ["Pending", "Matched", "Completed"], default: "Pending" },
+  createdAt: { type: Date, default: Date.now },
+  expireAt: { type: Date, default: () => new Date(+new Date() + 2*24*60*60*1000) } // 2 days expiration
+});
+
+const Task = mongoose.model("Task", taskSchema);
+>>>>>>> 08e70d92df1c961d98bae932ea2bc8d40ab4ab89
 export default Task;

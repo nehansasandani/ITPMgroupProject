@@ -3,6 +3,7 @@ node_modules/
 
 # Env files
 .env
+<<<<<<< HEAD
 .env.local
 .env.*.local
 
@@ -57,3 +58,8 @@ temp/
 .turbo/
 .next/
 out/
+=======
+
+# Logs
+*.log
+>>>>>>> 08e70d92df1c961d98bae932ea2bc8d40ab4ab89

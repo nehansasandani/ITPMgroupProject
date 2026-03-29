@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { skillData, skillLevels } from "../../utils/skillData";
 import { addSkill, getMySkills, removeSkill } from "../../api/skillApi";
+<<<<<<< HEAD
 import { ui } from "../../styles/ui";
 
 const LEVEL_COLORS = {
@@ -26,6 +27,10 @@ function LevelBadge({ level }) {
     </span>
   );
 }
+=======
+import { FaTrash } from "react-icons/fa";
+import "./SkillsPage.css";
+>>>>>>> 08e70d92df1c961d98bae932ea2bc8d40ab4ab89
 
 export default function SkillsPage() {
   const [skills, setSkills] = useState([]);
@@ -37,10 +42,13 @@ export default function SkillsPage() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
+<<<<<<< HEAD
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [nameError, setNameError] = useState("");
   const [emailError, setEmailError] = useState("");
+=======
+>>>>>>> 08e70d92df1c961d98bae932ea2bc8d40ab4ab89
 
   useEffect(() => {
     loadSkills();
@@ -71,21 +79,33 @@ export default function SkillsPage() {
   const resetMessages = () => {
     setError("");
     setSuccess("");
+<<<<<<< HEAD
     setNameError("");
     setEmailError("");
   };
 
   const isDuplicate = () =>
     skills.some(
+=======
+  };
+
+  const isDuplicate = () => {
+    return skills.some(
+>>>>>>> 08e70d92df1c961d98bae932ea2bc8d40ab4ab89
       (s) =>
         s.category === category &&
         s.subCategory === subCategory &&
         s.skill === skill
     );
+<<<<<<< HEAD
+=======
+  };
+>>>>>>> 08e70d92df1c961d98bae932ea2bc8d40ab4ab89
 
   const handleAddSkill = async (e) => {
     e.preventDefault();
     resetMessages();
+<<<<<<< HEAD
 
     if (!name.trim()) return setNameError("Full name is required.");
     if (name.trim().length < 2) return setNameError("Name must be at least 2 characters.");
@@ -101,6 +121,20 @@ export default function SkillsPage() {
     try {
       setLoading(true);
       const data = await addSkill({ category, subCategory, skill, level });
+=======
+    if (!category || !subCategory || !skill || !level) {
+      setError("Please select all fields.");
+      return;
+    }
+    if (isDuplicate()) {
+      setError("This skill is already added.");
+      return;
+    }
+    try {
+      setLoading(true);
+      const payload = { category, subCategory, skill, level };
+      const data = await addSkill(payload);
+>>>>>>> 08e70d92df1c961d98bae932ea2bc8d40ab4ab89
       setSkills(data.skills);
       setSuccess("Skill added successfully!");
       setCategory("");
@@ -120,7 +154,11 @@ export default function SkillsPage() {
       setLoading(true);
       const data = await removeSkill(skillId);
       setSkills(data.skills);
+<<<<<<< HEAD
       setSuccess("Skill removed.");
+=======
+      setSuccess("Skill removed successfully!");
+>>>>>>> 08e70d92df1c961d98bae932ea2bc8d40ab4ab89
     } catch {
       setError("Failed to remove skill.");
     } finally {
@@ -135,6 +173,7 @@ export default function SkillsPage() {
       s.category.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+<<<<<<< HEAD
   const selectCls =
     "mt-1 w-full rounded-xl bg-slate-950/40 border border-white/10 px-3 py-2.5 outline-none focus:border-white/30 focus:ring-2 focus:ring-white/10 disabled:opacity-40 disabled:cursor-not-allowed";
 
@@ -414,6 +453,189 @@ export default function SkillsPage() {
                       </svg>
                     </button>
                   </div>
+=======
+  const levelColors = {
+    Beginner: "#fbc02d",
+    Intermediate: "#ff9800",
+    Expert: "#4caf50",
+  };
+
+  // Map some icons for each skill category (just example)
+  const skillIcons = {
+    Programming: "💻",
+    Design: "🎨",
+    Marketing: "📈",
+    Writing: "✍️",
+    Math: "📊",
+  };
+
+  return (
+    <div style={styles.page}>
+      <div style={styles.container}>
+        {/* Title */}
+        <div style={styles.titleWrapper}>
+          <h2 style={styles.title}>My Skills</h2>
+          <p style={styles.subtitle}>
+            Add your skills so the system can match you with tasks.
+          </p>
+        </div>
+
+        {/* Messages */}
+        {error && <div style={styles.error}>{error}</div>}
+        {success && <div style={styles.success}>{success}</div>}
+
+        {/* Skill Form */}
+        <form onSubmit={handleAddSkill} style={styles.form}>
+          <div style={styles.field}>
+            <label style={styles.label}>Category</label>
+            <select
+              value={category}
+              onChange={(e) => {
+                setCategory(e.target.value);
+                setSubCategory("");
+                setSkill("");
+              }}
+              style={styles.select}
+            >
+              <option value="">-- Select Category --</option>
+              {skillData.map((c) => (
+                <option key={c.category} value={c.category}>
+                  {c.category}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div style={styles.field}>
+            <label style={styles.label}>Subcategory</label>
+            <select
+              value={subCategory}
+              onChange={(e) => {
+                setSubCategory(e.target.value);
+                setSkill("");
+              }}
+              disabled={!category}
+              style={{
+                ...styles.select,
+                backgroundColor: !category ? "#f0f0f0" : "#fff",
+              }}
+            >
+              <option value="">-- Select Subcategory --</option>
+              {subCategories.map((s) => (
+                <option key={s.name} value={s.name}>
+                  {s.name}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div style={styles.field}>
+            <label style={styles.label}>Skill</label>
+            <select
+              value={skill}
+              onChange={(e) => setSkill(e.target.value)}
+              disabled={!subCategory}
+              style={{
+                ...styles.select,
+                backgroundColor: !subCategory ? "#f0f0f0" : "#fff",
+              }}
+            >
+              <option value="">-- Select Skill --</option>
+              {skillsList.map((sk) => (
+                <option key={sk} value={sk}>
+                  {sk}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div style={styles.field}>
+            <label style={styles.label}>Skill Level</label>
+            <select
+              value={level}
+              onChange={(e) => setLevel(e.target.value)}
+              style={styles.select}
+            >
+              {skillLevels.map((lvl) => (
+                <option key={lvl} value={lvl}>
+                  {lvl}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <button type="submit" style={styles.button} disabled={loading}>
+            {loading ? "Saving..." : "Add Skill"}
+          </button>
+        </form>
+
+        {/* Search */}
+        {skills.length > 0 && (
+          <input
+            type="text"
+            placeholder="Search skills..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            style={styles.search}
+          />
+        )}
+
+        {/* Skill List */}
+        <div style={styles.listSection}>
+          <h3 style={styles.listTitle}>Saved Skills</h3>
+          {loading && skills.length === 0 ? (
+            <p style={styles.text}>Loading...</p>
+          ) : filteredSkills.length === 0 ? (
+            <p style={styles.text}>
+              {skills.length === 0
+                ? "No skills added yet."
+                : "No skills match your search."}
+            </p>
+          ) : (
+            <div style={styles.skillGrid}>
+              {filteredSkills.map((s) => (
+                <div
+                  key={s._id}
+                  style={{
+                    ...styles.skillCard,
+                    borderLeft: `6px solid ${levelColors[s.level]}`,
+                  }}
+                  onMouseEnter={(e) =>
+                    (e.currentTarget.style.transform = "translateY(-5px)")
+                  }
+                  onMouseLeave={(e) =>
+                    (e.currentTarget.style.transform = "translateY(0px)")
+                  }
+                >
+                  {/* Skill Icon + Info */}
+                  <div style={styles.skillInfo}>
+                    <span style={styles.icon}>
+                      {skillIcons[s.category] || "⭐"}
+                    </span>
+                    <div>
+                      <p style={styles.skillName}>
+                        {s.category} → {s.subCategory} → <b>{s.skill}</b>
+                      </p>
+                      <span
+                        style={{
+                          ...styles.levelBadge,
+                          backgroundColor: levelColors[s.level],
+                        }}
+                      >
+                        {s.level}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Remove Button */}
+                  <button
+                    onClick={() => handleRemoveSkill(s._id)}
+                    style={styles.removeBtn}
+                    disabled={loading}
+                  >
+                    <FaTrash />
+                  </button>
+>>>>>>> 08e70d92df1c961d98bae932ea2bc8d40ab4ab89
                 </div>
               ))}
             </div>
@@ -424,3 +646,116 @@ export default function SkillsPage() {
   );
 }
 
+<<<<<<< HEAD
+=======
+// --- Styles ---
+const styles = {
+  page: {
+    minHeight: "100vh",
+    background: "linear-gradient(135deg, #eef2fb, #f7f9fc)",
+    display: "flex",
+    justifyContent: "center",
+    padding: "40px 20px",
+    fontFamily: "'Poppins', sans-serif",
+  },
+  container: {
+    width: "100%",
+    maxWidth: "800px",
+    background: "#fff",
+    borderRadius: "20px",
+    padding: "30px 40px",
+    boxShadow: "0 20px 50px rgba(0,0,0,0.1)",
+    display: "flex",
+    flexDirection: "column",
+    gap: "25px",
+  },
+  titleWrapper: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    textAlign: "center",
+    gap: "4px",
+  },
+  title: {
+    fontSize: "36px",
+    fontWeight: "700",
+    background: "linear-gradient(90deg, #6a11cb, #2575fc, #6a11cb)",
+    WebkitBackgroundClip: "text",
+    WebkitTextFillColor: "transparent",
+    margin: 0,
+  },
+  subtitle: { fontSize: "14px", color: "#555", margin: 0, opacity: 0.9 },
+  error: {
+    background: "#ffe5e5",
+    padding: "12px",
+    borderRadius: "12px",
+    color: "#b30000",
+  },
+  success: {
+    background: "#e8fff0",
+    padding: "12px",
+    borderRadius: "12px",
+    color: "#007a2f",
+  },
+  form: { display: "flex", flexDirection: "column", gap: "20px" },
+  field: { display: "flex", flexDirection: "column", gap: "6px" },
+  label: { fontWeight: "600", fontSize: "14px" },
+  select: {
+    padding: "12px",
+    borderRadius: "12px",
+    border: "1px solid #ddd",
+    outline: "none",
+  },
+  button: {
+    padding: "14px",
+    border: "none",
+    borderRadius: "16px",
+    cursor: "pointer",
+    fontWeight: "600",
+    background: "linear-gradient(90deg, #6a11cb, #2575fc)",
+    color: "#fff",
+  },
+  search: {
+    padding: "12px",
+    borderRadius: "14px",
+    border: "1px solid #ddd",
+    width: "100%",
+  },
+  listSection: { display: "flex", flexDirection: "column", gap: "15px" },
+  listTitle: { fontSize: "20px", fontWeight: "600" },
+  text: { color: "#666", fontSize: "14px" },
+  skillGrid: { display: "flex", flexDirection: "column", gap: "15px" },
+  skillCard: {
+    borderRadius: "16px",
+    padding: "18px",
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    backgroundColor: "#fff",
+    boxShadow: "0 8px 25px rgba(0,0,0,0.05)",
+    transition: "0.3s all",
+  },
+  skillInfo: { display: "flex", alignItems: "center", gap: "12px" },
+  skillName: { margin: 0, fontSize: "15px", fontWeight: "500" },
+  levelBadge: {
+    padding: "4px 10px",
+    borderRadius: "12px",
+    color: "#fff",
+    fontWeight: "600",
+    fontSize: "12px",
+    textTransform: "uppercase",
+  },
+  removeBtn: {
+    background: "#ffecec",
+    border: "1px solid #ffbdbd",
+    padding: "8px 12px",
+    borderRadius: "12px",
+    cursor: "pointer",
+    color: "#b30000",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  icon: { fontSize: "28px" },
+};
+>>>>>>> 08e70d92df1c961d98bae932ea2bc8d40ab4ab89
