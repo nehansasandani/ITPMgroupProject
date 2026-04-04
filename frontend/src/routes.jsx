@@ -15,6 +15,12 @@ import SkillsPage from "./pages/profile/SkillsPage";
 import RatingForm from "./pages/reputation/RatingForm";
 import UserProfile from "./pages/reputation/UserProfile";
 import LeaderboardPage from "./pages/reputation/LeaderboardPage";
+import AdminLoginPage from "./pages/admin/AdminLoginPage";
+import AdminLayout from "./components/admin/AdminLayout";
+import DashboardPage from "./pages/admin/DashboardPage";
+import UsersPage from "./pages/admin/UsersPage";
+import SessionsPage from "./pages/admin/SessionsPage";
+import DisputesPage from "./pages/admin/DisputesPage";
 
 const Placeholder = ({ title }) => (
   <div className="max-w-6xl mx-auto px-4 py-10 text-white">
@@ -34,6 +40,7 @@ export const router = createBrowserRouter([
       { index: true, element: <HomePage /> },
       { path: "login", element: <LoginPage /> },
       { path: "register", element: <RegisterPage /> },
+      { path: "admin/login", element: <AdminLoginPage /> },
 
       {
         path: "tasks/create",
@@ -117,6 +124,20 @@ export const router = createBrowserRouter([
           </ProtectedRoute>
         ),
       },
+    ],
+  },
+  {
+    path: "/admin",
+    element: (
+      <ProtectedRoute roles={["ADMIN"]}>
+        <AdminLayout />
+      </ProtectedRoute>
+    ),
+    children: [
+      { index: true, element: <DashboardPage /> },
+      { path: "users", element: <UsersPage /> },
+      { path: "sessions", element: <SessionsPage /> },
+      { path: "disputes", element: <DisputesPage /> },
     ],
   },
 ]);

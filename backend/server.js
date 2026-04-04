@@ -3,6 +3,9 @@ import "dotenv/config"; // ← FIRST - loads .env before everything
 import express from "express";
 import cors from "cors";
 import mongoose from "mongoose";
+import dotenv from "dotenv";
+import dns from "dns";
+dns.setServers(["8.8.8.8", "8.8.4.4"]);
 
 // Teammate's routes
 import matchRoutes from "./routes/matchRoutes.js";
@@ -51,4 +54,7 @@ app.listen(PORT, () => {
 
 // ── Intervals ──
 setInterval(checkTimeouts, 60 * 1000);
+
+// Task expiry check every 1 minute
 setInterval(expireOverdueTasks, 60 * 1000);
+
