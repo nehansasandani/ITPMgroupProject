@@ -1,9 +1,10 @@
 import Skill from "../models/Skill.js";
+import { getQuestionsForSkill, evaluateQuiz } from "../data/quizData.js";
 
 // GET
 export const getMySkills = async (req, res) => {
   try {
-    const userId = req.userId;
+    const userId = req.user.id;
 
     const skills = await Skill.find({ userId }).sort({ createdAt: -1 });
 
@@ -17,7 +18,7 @@ export const getMySkills = async (req, res) => {
 // POST
 export const addSkill = async (req, res) => {
   try {
-    const userId = req.userId;
+    const userId = req.user.id;
     const { category, subCategory, skill, level } = req.body;
 
     if (!category || !subCategory || !skill || !level) {
@@ -43,7 +44,7 @@ export const addSkill = async (req, res) => {
 // DELETE
 export const removeSkill = async (req, res) => {
   try {
-    const userId = req.userId;
+    const userId = req.user.id;
     const skillId = req.params.id;
 
     await Skill.deleteOne({ _id: skillId, userId });
@@ -52,7 +53,47 @@ export const removeSkill = async (req, res) => {
 
     res.status(200).json({ skills });
   } catch (err) {
-    console.log("DELETE skill error:", err.message);
+    res.status(500).json({ message: err.message });
+  }
+};
+
+// GET /api/skills/quiz/:skillName
+export const getQuizForSkill = async (req, res) => {
+  try {
+    const skillName = req.params.skillName;
+    const questions = getQuestionsForSkill(skillName);
+    res.status(200).json(questions);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+// POST /api/skills/quiz/submit
+export const submitQuiz = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const { skillName, answers, skillId } = req.body;
+    
+    if (!skillName || !answers || !skillId) {
+      return res.status(400).json({ message: "Missing required fields" });
+    }
+
+    const score = evaluateQuiz(skillName, answers);
+    
+    // Pass condition: 4/5 or more
+    const passed = score >= 4;
+
+    if (passed) {
+      await Skill.findOneAndUpdate(
+        { _id: skillId, userId },
+        { isVerified: true }
+      );
+    }
+    
+    const skills = await Skill.find({ userId }).sort({ createdAt: -1 });
+
+    res.status(200).json({ score, passed, skills });
+  } catch (err) {
     res.status(500).json({ message: err.message });
   }
 };

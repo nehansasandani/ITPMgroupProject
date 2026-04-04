@@ -1,5 +1,5 @@
 import express from "express";
-import { register, login } from "../controllers/userController.js";
+import { register, login, updateProfile } from "../controllers/userController.js";
 import { requireAuth, requireRole } from "../middleware/auth.js";
 
 const router = express.Router();
@@ -8,10 +8,11 @@ const router = express.Router();
 router.post("/register", register);
 router.post("/login", login);
 
-// Protected example route (for testing)
+// Protected routes
 router.get("/me", requireAuth, async (req, res) => {
   res.json({ message: "You are authenticated ✅", user: req.user });
 });
+router.put("/me", requireAuth, updateProfile);
 
 // Admin-only example route
 router.get("/admin-only", requireAuth, requireRole("ADMIN"), (req, res) => {

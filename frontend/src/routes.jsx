@@ -10,6 +10,11 @@ import BrowseTasksPage from "./pages/tasks/BrowseTasksPage";
 import EditTaskPage from "./pages/tasks/EditTaskPage";
 import AcceptedByMePage from "./pages/tasks/AcceptedByMePage";
 
+// ── Your module imports ──
+import SkillsPage from "./pages/profile/SkillsPage";
+import RatingForm from "./pages/reputation/RatingForm";
+import UserProfile from "./pages/reputation/UserProfile";
+import LeaderboardPage from "./pages/reputation/LeaderboardPage";
 import AdminLoginPage from "./pages/admin/AdminLoginPage";
 import AdminLayout from "./components/admin/AdminLayout";
 import DashboardPage from "./pages/admin/DashboardPage";
@@ -31,6 +36,7 @@ export const router = createBrowserRouter([
     path: "/",
     element: <App />,
     children: [
+      // ── Teammate's routes ──
       { index: true, element: <HomePage /> },
       { path: "login", element: <LoginPage /> },
       { path: "register", element: <RegisterPage /> },
@@ -73,6 +79,48 @@ export const router = createBrowserRouter([
         element: (
           <ProtectedRoute>
             <AcceptedByMePage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "admin",
+        element: (
+          <ProtectedRoute roles={["ADMIN"]}>
+            <Placeholder title="Admin Dashboard" />
+          </ProtectedRoute>
+        ),
+      },
+
+      // ── Your module routes ──
+      {
+        path: "profile/skills",
+        element: (
+          <ProtectedRoute>
+            <SkillsPage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "rate",
+        element: (
+          <ProtectedRoute>
+            <RatingForm />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "profile",
+        element: (
+          <ProtectedRoute>
+            <UserProfile />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "leaderboard",
+        element: (
+          <ProtectedRoute>
+            <LeaderboardPage />
           </ProtectedRoute>
         ),
       },
