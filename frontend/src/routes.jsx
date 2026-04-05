@@ -24,7 +24,6 @@ import UserProfile from "./pages/reputation/UserProfile";
 import AdminLoginPage from "./pages/admin/AdminLoginPage";
 import AdminDashboardPage from "./pages/admin/DashboardPage";
 import AdminUsersPage from "./pages/admin/UsersPage";
-import AdminSessionsPage from "./pages/admin/SessionsPage";
 import AdminDisputesPage from "./pages/admin/DisputesPage";
 
 export default function AppRoutes() {
@@ -63,7 +62,6 @@ export default function AppRoutes() {
         <Route path="/admin/login" element={<AdminLoginPage />} />
   <Route path="/admin" element={<AdminDashboardPage />} />
   <Route path="/admin/users" element={<AdminUsersPage />} />
-  <Route path="/admin/sessions" element={<AdminSessionsPage />} />
   <Route path="/admin/disputes" element={<AdminDisputesPage />} />
 
         {/* Fallback */}

@@ -15,6 +15,7 @@ import userRoutes from "./routes/userRoutes.js";
 
 // Your routes
 import skillRoutes from "./routes/skillRoutes.js";
+import reputationRoutes from "./routes/reputationRoutes.js";
 
 // Teammate's utils
 import { connectDB } from "./config/db.js";
@@ -34,6 +35,9 @@ app.get("/", (req, res) => res.send("API running ✅"));
 app.use("/api/match", matchRoutes);
 app.use("/api/tasks", taskRoutes);
 app.use("/api/users", userRoutes);
+
+// ── Reputation routes ──
+app.use("/api/reputation", reputationRoutes);
 
 // ── Your routes ──
 app.use("/api/skills", skillRoutes);
