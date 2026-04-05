@@ -1,5 +1,4 @@
 import express from "express";
-<<<<<<< HEAD
 import {
   getRankedCandidates,
   getTopHelper,
@@ -24,13 +23,5 @@ router.get("/my-requests", requireAuth, getMyMatchRequests);
 router.get("/my-task-matches", requireAuth, getMyTaskMatches);
 router.get("/session/:taskId", requireAuth, getSessionByTask);
 router.get("/my-sessions", requireAuth, getMySessions);
-=======
-import { createMatch, acceptMatch } from "../controllers/matchController.js";
-
-const router = express.Router();
-
-router.post("/create", createMatch);
-router.post("/accept", acceptMatch);
->>>>>>> 08e70d92df1c961d98bae932ea2bc8d40ab4ab89
 
 export default router;
