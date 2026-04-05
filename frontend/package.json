@@ -10,10 +10,6 @@
     "preview": "vite preview"
   },
   "dependencies": {
-<<<<<<< HEAD
-    "@hookform/resolvers": "^5.2.2",
-=======
-<<<<<<< HEAD
     "@hookform/resolvers": "^5.2.2",
     "axios": "^1.13.4",
     "react": "^19.2.4",
@@ -30,28 +26,6 @@
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^5.1.1",
     "autoprefixer": "^10.4.27",
-=======
->>>>>>> 48b3336cc9a453f89e85f53cd724c10f58b43e99
-    "axios": "^1.13.4",
-    "react": "^19.2.4",
-    "react-dom": "^19.2.4",
-    "react-hook-form": "^7.71.2",
-    "react-icons": "^5.5.0",
-    "react-router-dom": "^7.13.1",
-    "zod": "^4.3.6"
-  },
-  "devDependencies": {
-    "@eslint/js": "^9.39.1",
-    "@tailwindcss/postcss": "^4.2.1",
-    "@types/react": "^19.2.5",
-    "@types/react-dom": "^19.2.3",
-    "@vitejs/plugin-react": "^5.1.1",
-<<<<<<< HEAD
-    "autoprefixer": "^10.4.27",
-=======
-    "autoprefixer": "^10.4.24",
->>>>>>> 08e70d92df1c961d98bae932ea2bc8d40ab4ab89
->>>>>>> 48b3336cc9a453f89e85f53cd724c10f58b43e99
     "eslint": "^9.39.1",
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.4.24",
