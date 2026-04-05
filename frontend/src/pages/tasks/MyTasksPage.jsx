@@ -1,10 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { cancelTask, completeTask, deleteTask, getMyTasks } from "../../api/taskApi";
-<<<<<<< HEAD
-=======
 import { getTopHelper } from "../../api/matchApi";
->>>>>>> 48b3336cc9a453f89e85f53cd724c10f58b43e99
 import WarningModal from "../../components/WarningModal";
 
 const STATUS_COLORS = {
@@ -45,8 +42,6 @@ function formatRemaining(expireAt) {
   return `${minutes}m left`;
 }
 
-<<<<<<< HEAD
-=======
 // Shows the algorithm's top-ranked helper for an OPEN task
 function TopHelperBadge({ taskId }) {
   const [state, setState] = useState("idle"); // idle | loading | done
@@ -90,8 +85,6 @@ function TopHelperBadge({ taskId }) {
     </div>
   );
 }
-
->>>>>>> 48b3336cc9a453f89e85f53cd724c10f58b43e99
 export default function MyTasksPage() {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -395,9 +388,6 @@ export default function MyTasksPage() {
                       <span className="px-2 py-1 rounded-full border border-white/10 bg-white/5">
                         {formatRemaining(t.expireAt)}
                       </span>
-<<<<<<< HEAD
-                    </div>
-=======
                       {t.mode === "Meet" && t.venue && (
                         <span className="px-2 py-1 rounded-full border border-amber-400/20 bg-amber-400/10 text-amber-200">
                           📍 {t.venue}
@@ -410,22 +400,18 @@ export default function MyTasksPage() {
                         <TopHelperBadge taskId={t._id} />
                       </div>
                     )}
->>>>>>> 48b3336cc9a453f89e85f53cd724c10f58b43e99
                   </div>
 
                   <div className="flex gap-2 shrink-0">
                     {t.status === "OPEN" && (
                       <>
                         <Link
-<<<<<<< HEAD
-=======
                           to={`/match`}
                           className="px-3 py-2 rounded-xl text-sm border border-violet-400/20 bg-violet-400/10 text-violet-200 hover:bg-violet-400/15"
                         >
                           Find Match
                         </Link>
                         <Link
->>>>>>> 48b3336cc9a453f89e85f53cd724c10f58b43e99
                           to={`/tasks/edit/${t._id}`}
                           className="px-3 py-2 rounded-xl text-sm border border-white/15 bg-white/5 hover:bg-white/10"
                         >
@@ -443,15 +429,6 @@ export default function MyTasksPage() {
                     )}
 
                     {t.status === "MATCHED" && (
-<<<<<<< HEAD
-                      <button
-                        onClick={() => askComplete(t._id)}
-                        disabled={busyId === t._id}
-                        className="px-3 py-2 rounded-xl text-sm border border-cyan-400/20 bg-cyan-400/10 text-cyan-100 hover:bg-cyan-400/15 disabled:opacity-60"
-                      >
-                        {busyId === t._id ? "Completing..." : "Complete"}
-                      </button>
-=======
                       <>
                         <Link
                           to={`/session/${t._id}`}
@@ -467,7 +444,6 @@ export default function MyTasksPage() {
                           {busyId === t._id ? "Completing..." : "Complete"}
                         </button>
                       </>
->>>>>>> 48b3336cc9a453f89e85f53cd724c10f58b43e99
                     )}
 
                     {t.status === "CANCELLED" && (

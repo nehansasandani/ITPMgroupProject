@@ -2,10 +2,6 @@ import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { acceptTask, getOpenTasks } from "../../api/taskApi";
 import { useAuth } from "../../context/AuthContext";
-<<<<<<< HEAD
-import WarningModal from "../../components/WarningModal";
-=======
->>>>>>> 48b3336cc9a453f89e85f53cd724c10f58b43e99
 
 function StatCard({ label, value }) {
   return (
@@ -32,8 +28,6 @@ function formatRemaining(expireAt) {
   return `${minutes}m left`;
 }
 
-<<<<<<< HEAD
-=======
 /* ── Task Detail Accept Modal ───────────────────────────────────────────── */
 function TaskAcceptModal({ task, busy, onConfirm, onClose }) {
   if (!task) return null;
@@ -153,8 +147,6 @@ function SuccessToast({ message, onClose }) {
     </div>
   );
 }
-
->>>>>>> 48b3336cc9a453f89e85f53cd724c10f58b43e99
 export default function BrowseTasksPage() {
   const { user } = useAuth();
 
@@ -164,18 +156,9 @@ export default function BrowseTasksPage() {
   const [busyId, setBusyId] = useState("");
   const [, setNowTick] = useState(Date.now());
 
-<<<<<<< HEAD
-  const [confirmOpen, setConfirmOpen] = useState(false);
-  const [selectedTask, setSelectedTask] = useState(null);
-
-  const [popupOpen, setPopupOpen] = useState(false);
-  const [popupTitle, setPopupTitle] = useState("");
-  const [popupMessage, setPopupMessage] = useState("");
-=======
   const [selectedTask, setSelectedTask] = useState(null);
   const [successMsg, setSuccessMsg] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
->>>>>>> 48b3336cc9a453f89e85f53cd724c10f58b43e99
 
   const loadTasks = async () => {
     try {
@@ -215,12 +198,8 @@ export default function BrowseTasksPage() {
 
   const askAccept = (task) => {
     setSelectedTask(task);
-<<<<<<< HEAD
-    setConfirmOpen(true);
-=======
     setSuccessMsg("");
     setErrorMsg("");
->>>>>>> 48b3336cc9a453f89e85f53cd724c10f58b43e99
   };
 
   const onAcceptConfirm = async () => {
@@ -229,27 +208,12 @@ export default function BrowseTasksPage() {
     try {
       setBusyId(selectedTask._id);
       await acceptTask(selectedTask._id);
-<<<<<<< HEAD
-      setConfirmOpen(false);
-      setSelectedTask(null);
-      setPopupTitle("Task Accepted");
-      setPopupMessage("You are now matched to help with this task.");
-      setPopupOpen(true);
-      await loadTasks();
-    } catch (err) {
-      setConfirmOpen(false);
-      setSelectedTask(null);
-      setPopupTitle("Unable to Accept Task");
-      setPopupMessage(err?.response?.data?.message || "Task accept failed");
-      setPopupOpen(true);
-=======
       setSelectedTask(null);
       setSuccessMsg("The task has been confirmed.");
       loadTasks();
     } catch (err) {
       setSelectedTask(null);
       setErrorMsg(err?.response?.data?.message || "Task accept failed.");
->>>>>>> 48b3336cc9a453f89e85f53cd724c10f58b43e99
     } finally {
       setBusyId("");
     }
@@ -257,39 +221,6 @@ export default function BrowseTasksPage() {
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-10 text-white">
-<<<<<<< HEAD
-      <WarningModal
-        open={confirmOpen}
-        title="Accept this task?"
-        message={
-          selectedTask
-            ? `You are about to help with "${selectedTask.title}". This will mark the task as MATCHED.`
-            : ""
-        }
-        confirmText="Yes, accept task"
-        cancelText="Back"
-        confirmVariant="primary"
-        loading={!!busyId}
-        onConfirm={onAcceptConfirm}
-        onClose={() => {
-          if (!busyId) {
-            setConfirmOpen(false);
-            setSelectedTask(null);
-          }
-        }}
-      />
-
-      <WarningModal
-        open={popupOpen}
-        title={popupTitle}
-        message={popupMessage}
-        confirmText="OK"
-        cancelText="Close"
-        confirmVariant="primary"
-        onConfirm={() => setPopupOpen(false)}
-        onClose={() => setPopupOpen(false)}
-      />
-=======
       {/* Task detail accept modal */}
       {selectedTask && (
         <TaskAcceptModal
@@ -314,7 +245,6 @@ export default function BrowseTasksPage() {
           </button>
         </div>
       )}
->>>>>>> 48b3336cc9a453f89e85f53cd724c10f58b43e99
 
       <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
         <div>
@@ -446,14 +376,11 @@ export default function BrowseTasksPage() {
                         <span className="px-2 py-1 rounded-full border border-white/10 bg-white/5">
                           {formatRemaining(t.expireAt)}
                         </span>
-<<<<<<< HEAD
-=======
                         {t.mode === "Meet" && t.venue && (
                           <span className="px-2 py-1 rounded-full border border-amber-400/20 bg-amber-400/10 text-amber-200">
                             📍 {t.venue}
                           </span>
                         )}
->>>>>>> 48b3336cc9a453f89e85f53cd724c10f58b43e99
                       </div>
                     </div>
 

@@ -28,13 +28,10 @@ const schema = z.object({
   mode: z.enum(["Online", "Chat", "Meet"]),
   deadlineDays: z.number().refine((v) => DEADLINES.includes(v), "Invalid deadline"),
   attachmentUrl: z.string().optional(),
-<<<<<<< HEAD
-=======
   venue: z.string().max(100, "Max 100 characters").optional(),
 }).refine((d) => d.mode !== "Meet" || (d.venue && d.venue.trim().length >= 3), {
   message: "Venue is required for in-person meetings (min 3 characters)",
   path: ["venue"],
->>>>>>> 48b3336cc9a453f89e85f53cd724c10f58b43e99
 });
 
 function getScopeWarnings({ title, description, expectedOutcome }) {
@@ -94,10 +91,7 @@ export default function CreateTaskPage() {
       mode: "Online",
       deadlineDays: 2,
       attachmentUrl: "",
-<<<<<<< HEAD
-=======
       venue: "",
->>>>>>> 48b3336cc9a453f89e85f53cd724c10f58b43e99
     },
   });
 
@@ -375,8 +369,6 @@ export default function CreateTaskPage() {
               />
             </Field>
 
-<<<<<<< HEAD
-=======
             {values.mode === "Meet" && (
               <Field
                 label="Meeting Venue"
@@ -392,7 +384,6 @@ export default function CreateTaskPage() {
               </Field>
             )}
 
->>>>>>> 48b3336cc9a453f89e85f53cd724c10f58b43e99
             <button
               disabled={isSubmitting}
               className="w-full rounded-xl bg-white text-slate-900 py-2.5 font-medium hover:bg-white/90 disabled:opacity-60"
