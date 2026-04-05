@@ -28,6 +28,13 @@ const schema = z.object({
   mode: z.enum(["Online", "Chat", "Meet"]),
   deadlineDays: z.number().refine((v) => DEADLINES.includes(v), "Invalid deadline"),
   attachmentUrl: z.string().optional(),
+<<<<<<< HEAD
+=======
+  venue: z.string().max(100, "Max 100 characters").optional(),
+}).refine((d) => d.mode !== "Meet" || (d.venue && d.venue.trim().length >= 3), {
+  message: "Venue is required for in-person meetings (min 3 characters)",
+  path: ["venue"],
+>>>>>>> 48b3336cc9a453f89e85f53cd724c10f58b43e99
 });
 
 function getScopeWarnings({ title, description, expectedOutcome }) {
@@ -87,6 +94,10 @@ export default function CreateTaskPage() {
       mode: "Online",
       deadlineDays: 2,
       attachmentUrl: "",
+<<<<<<< HEAD
+=======
+      venue: "",
+>>>>>>> 48b3336cc9a453f89e85f53cd724c10f58b43e99
     },
   });
 
@@ -364,6 +375,24 @@ export default function CreateTaskPage() {
               />
             </Field>
 
+<<<<<<< HEAD
+=======
+            {values.mode === "Meet" && (
+              <Field
+                label="Meeting Venue"
+                hint="Specify the exact campus location (e.g. Library Room 3B, CS Lab 2, Canteen)."
+                error={errors.venue?.message}
+              >
+                <input
+                  {...register("venue")}
+                  className="mt-1 w-full rounded-xl bg-slate-950/40 border border-amber-400/20 px-3 py-2.5 outline-none focus:border-amber-400/40 focus:ring-2 focus:ring-amber-400/10"
+                  placeholder="e.g. Library Study Room 3B"
+                  maxLength={100}
+                />
+              </Field>
+            )}
+
+>>>>>>> 48b3336cc9a453f89e85f53cd724c10f58b43e99
             <button
               disabled={isSubmitting}
               className="w-full rounded-xl bg-white text-slate-900 py-2.5 font-medium hover:bg-white/90 disabled:opacity-60"

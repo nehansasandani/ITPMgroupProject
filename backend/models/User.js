@@ -65,17 +65,53 @@ const userSchema = new mongoose.Schema(
       maxlength: 200,
       default: "",
     },
+
     githubUrl: {
       type: String,
       default: "",
     },
+
     linkedinUrl: {
       type: String,
       default: "",
     },
+
     profilePic: {
       type: String,
       default: "",
+    },
+
+    // Skill Matching Fields
+    skills: [{
+      type: String,
+    }],
+
+    reputation: {
+      type: Number,
+      default: 0,
+      min: 0,
+      max: 5,
+    },
+
+    completedTasksCount: {
+      type: Number,
+      default: 0,
+    },
+
+    isAvailable: {
+      type: Boolean,
+      default: false,
+    },
+
+    ongoingTask: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Task",
+      default: null,
+    },
+
+    lastActive: {
+      type: Date,
+      default: Date.now,
     },
   },
   { timestamps: true }

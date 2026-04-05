@@ -126,6 +126,9 @@ export async function register(req, res) {
         githubUrl: user.githubUrl,
         linkedinUrl: user.linkedinUrl,
         profilePic: user.profilePic,
+        skills: user.skills,
+        reputation: user.reputation,
+        completedTasksCount: user.completedTasksCount,
       },
       token,
     });
@@ -166,6 +169,9 @@ export async function login(req, res) {
         githubUrl: user.githubUrl,
         linkedinUrl: user.linkedinUrl,
         profilePic: user.profilePic,
+        skills: user.skills,
+        reputation: user.reputation,
+        completedTasksCount: user.completedTasksCount,
       },
       token,
     });
@@ -210,6 +216,9 @@ export async function updateProfile(req, res) {
         githubUrl: user.githubUrl,
         linkedinUrl: user.linkedinUrl,
         profilePic: user.profilePic,
+        skills: user.skills,
+        reputation: user.reputation,
+        completedTasksCount: user.completedTasksCount,
       },
       token
     });

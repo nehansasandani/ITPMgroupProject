@@ -3,6 +3,10 @@ node_modules/
 
 # Env files
 .env
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 48b3336cc9a453f89e85f53cd724c10f58b43e99
 .env.local
 .env.*.local
 
@@ -57,3 +61,11 @@ temp/
 .turbo/
 .next/
 out/
+<<<<<<< HEAD
+=======
+=======
+
+# Logs
+*.log
+>>>>>>> 08e70d92df1c961d98bae932ea2bc8d40ab4ab89
+>>>>>>> 48b3336cc9a453f89e85f53cd724c10f58b43e99

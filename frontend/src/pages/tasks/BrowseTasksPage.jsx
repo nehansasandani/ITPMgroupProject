@@ -2,7 +2,10 @@ import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { acceptTask, getOpenTasks } from "../../api/taskApi";
 import { useAuth } from "../../context/AuthContext";
+<<<<<<< HEAD
 import WarningModal from "../../components/WarningModal";
+=======
+>>>>>>> 48b3336cc9a453f89e85f53cd724c10f58b43e99
 
 function StatCard({ label, value }) {
   return (
@@ -29,6 +32,129 @@ function formatRemaining(expireAt) {
   return `${minutes}m left`;
 }
 
+<<<<<<< HEAD
+=======
+/* ── Task Detail Accept Modal ───────────────────────────────────────────── */
+function TaskAcceptModal({ task, busy, onConfirm, onClose }) {
+  if (!task) return null;
+
+  return (
+    <div className="fixed inset-0 z-100 flex items-center justify-center px-4">
+      <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose} />
+
+      <div className="relative w-full max-w-lg rounded-3xl border border-white/10 bg-slate-950 p-6 text-white shadow-2xl max-h-[90vh] overflow-y-auto">
+        <h3 className="text-lg font-semibold">Accept Task</h3>
+
+        {/* Task title & badges */}
+        <div className="mt-4 flex flex-wrap items-center gap-2">
+          <span className="font-medium">{task.title}</span>
+          <span className="text-xs px-2 py-0.5 rounded-full border border-emerald-400/20 bg-emerald-400/10 text-emerald-100">
+            {task.category}
+          </span>
+          <span
+            className={`text-xs px-2 py-0.5 rounded-full border ${
+              task.urgency === "URGENT"
+                ? "border-amber-300/20 bg-amber-300/10 text-amber-100"
+                : "border-white/10 bg-white/5 text-white/65"
+            }`}
+          >
+            {task.urgency}
+          </span>
+        </div>
+
+        {/* Description */}
+        <div className="mt-3">
+          <div className="text-xs text-white/50 uppercase tracking-wide mb-1">Description</div>
+          <p className="text-sm text-white/80 leading-relaxed">{task.description}</p>
+        </div>
+
+        {/* Expected outcome */}
+        <div className="mt-3">
+          <div className="text-xs text-white/50 uppercase tracking-wide mb-1">Expected Outcome</div>
+          <p className="text-sm text-white/80">{task.expectedOutcome}</p>
+        </div>
+
+        {/* Seeker (poster) details */}
+        <div className="mt-4 rounded-2xl border border-white/10 bg-white/5 p-4">
+          <div className="text-xs text-white/50 uppercase tracking-wide mb-2">Task Seeker</div>
+          <div className="text-sm text-white/90 font-medium">
+            {task.createdBy?.fullName || "Unknown"}
+          </div>
+          {task.createdBy?.studentId && (
+            <div className="text-xs text-white/60 mt-0.5">{task.createdBy.studentId}</div>
+          )}
+          {task.createdBy?.email && (
+            <div className="text-xs text-white/60 mt-0.5">{task.createdBy.email}</div>
+          )}
+        </div>
+
+        {/* Time & venue */}
+        <div className="mt-3 grid grid-cols-2 gap-3">
+          <div className="rounded-2xl border border-white/10 bg-white/5 p-3">
+            <div className="text-xs text-white/50 uppercase tracking-wide mb-1">Session Time</div>
+            <div className="text-sm text-white/90">{task.duration} minutes</div>
+          </div>
+          <div className="rounded-2xl border border-white/10 bg-white/5 p-3">
+            <div className="text-xs text-white/50 uppercase tracking-wide mb-1">Mode</div>
+            <div className="text-sm text-white/90">{task.mode}</div>
+          </div>
+        </div>
+
+        {task.mode === "Meet" && task.venue && (
+          <div className="mt-3 rounded-2xl border border-amber-400/20 bg-amber-400/5 p-3">
+            <div className="text-xs text-amber-300/70 uppercase tracking-wide mb-1">Venue</div>
+            <div className="text-sm text-amber-200">📍 {task.venue}</div>
+          </div>
+        )}
+
+        <div className="mt-3 flex flex-wrap gap-2 text-xs text-white/60">
+          <span className="px-2 py-1 rounded-full border border-white/10 bg-white/5">
+            Skill: {task.skillRequired}
+          </span>
+          <span className="px-2 py-1 rounded-full border border-white/10 bg-white/5">
+            Deadline: {task.deadlineDays} days
+          </span>
+          <span className="px-2 py-1 rounded-full border border-white/10 bg-white/5">
+            {formatRemaining(task.expireAt)}
+          </span>
+        </div>
+
+        {/* Actions */}
+        <div className="mt-6 flex justify-end gap-2">
+          <button
+            onClick={onClose}
+            disabled={busy}
+            className="px-4 py-2 rounded-xl border border-white/15 bg-white/5 hover:bg-white/10 text-sm disabled:opacity-60"
+          >
+            Cancel
+          </button>
+          <button
+            onClick={onConfirm}
+            disabled={busy}
+            className="px-4 py-2 rounded-xl bg-white text-slate-900 font-medium text-sm hover:bg-white/90 disabled:opacity-60"
+          >
+            {busy ? "Confirming..." : "Confirm"}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ── Success toast ──────────────────────────────────────────────────────── */
+function SuccessToast({ message, onClose }) {
+  if (!message) return null;
+  return (
+    <div className="fixed top-6 left-1/2 -translate-x-1/2 z-100 px-6 py-3 rounded-2xl border border-emerald-400/20 bg-emerald-400/10 text-emerald-100 text-sm shadow-2xl backdrop-blur flex items-center gap-3">
+      <span>✅ {message}</span>
+      <button onClick={onClose} className="text-emerald-300 hover:text-white text-xs ml-2">
+        ✕
+      </button>
+    </div>
+  );
+}
+
+>>>>>>> 48b3336cc9a453f89e85f53cd724c10f58b43e99
 export default function BrowseTasksPage() {
   const { user } = useAuth();
 
@@ -38,12 +164,18 @@ export default function BrowseTasksPage() {
   const [busyId, setBusyId] = useState("");
   const [, setNowTick] = useState(Date.now());
 
+<<<<<<< HEAD
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [selectedTask, setSelectedTask] = useState(null);
 
   const [popupOpen, setPopupOpen] = useState(false);
   const [popupTitle, setPopupTitle] = useState("");
   const [popupMessage, setPopupMessage] = useState("");
+=======
+  const [selectedTask, setSelectedTask] = useState(null);
+  const [successMsg, setSuccessMsg] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
+>>>>>>> 48b3336cc9a453f89e85f53cd724c10f58b43e99
 
   const loadTasks = async () => {
     try {
@@ -83,7 +215,12 @@ export default function BrowseTasksPage() {
 
   const askAccept = (task) => {
     setSelectedTask(task);
+<<<<<<< HEAD
     setConfirmOpen(true);
+=======
+    setSuccessMsg("");
+    setErrorMsg("");
+>>>>>>> 48b3336cc9a453f89e85f53cd724c10f58b43e99
   };
 
   const onAcceptConfirm = async () => {
@@ -92,6 +229,7 @@ export default function BrowseTasksPage() {
     try {
       setBusyId(selectedTask._id);
       await acceptTask(selectedTask._id);
+<<<<<<< HEAD
       setConfirmOpen(false);
       setSelectedTask(null);
       setPopupTitle("Task Accepted");
@@ -104,6 +242,14 @@ export default function BrowseTasksPage() {
       setPopupTitle("Unable to Accept Task");
       setPopupMessage(err?.response?.data?.message || "Task accept failed");
       setPopupOpen(true);
+=======
+      setSelectedTask(null);
+      setSuccessMsg("The task has been confirmed.");
+      loadTasks();
+    } catch (err) {
+      setSelectedTask(null);
+      setErrorMsg(err?.response?.data?.message || "Task accept failed.");
+>>>>>>> 48b3336cc9a453f89e85f53cd724c10f58b43e99
     } finally {
       setBusyId("");
     }
@@ -111,6 +257,7 @@ export default function BrowseTasksPage() {
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-10 text-white">
+<<<<<<< HEAD
       <WarningModal
         open={confirmOpen}
         title="Accept this task?"
@@ -142,6 +289,32 @@ export default function BrowseTasksPage() {
         onConfirm={() => setPopupOpen(false)}
         onClose={() => setPopupOpen(false)}
       />
+=======
+      {/* Task detail accept modal */}
+      {selectedTask && (
+        <TaskAcceptModal
+          task={selectedTask}
+          busy={!!busyId}
+          onConfirm={onAcceptConfirm}
+          onClose={() => {
+            if (!busyId) setSelectedTask(null);
+          }}
+        />
+      )}
+
+      {/* Success toast */}
+      <SuccessToast message={successMsg} onClose={() => setSuccessMsg("")} />
+
+      {/* Error toast */}
+      {errorMsg && (
+        <div className="fixed top-6 left-1/2 -translate-x-1/2 z-100 px-6 py-3 rounded-2xl border border-red-400/20 bg-red-400/10 text-red-100 text-sm shadow-2xl backdrop-blur flex items-center gap-3">
+          <span>⚠️ {errorMsg}</span>
+          <button onClick={() => setErrorMsg("")} className="text-red-300 hover:text-white text-xs ml-2">
+            ✕
+          </button>
+        </div>
+      )}
+>>>>>>> 48b3336cc9a453f89e85f53cd724c10f58b43e99
 
       <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
         <div>
@@ -273,6 +446,14 @@ export default function BrowseTasksPage() {
                         <span className="px-2 py-1 rounded-full border border-white/10 bg-white/5">
                           {formatRemaining(t.expireAt)}
                         </span>
+<<<<<<< HEAD
+=======
+                        {t.mode === "Meet" && t.venue && (
+                          <span className="px-2 py-1 rounded-full border border-amber-400/20 bg-amber-400/10 text-amber-200">
+                            📍 {t.venue}
+                          </span>
+                        )}
+>>>>>>> 48b3336cc9a453f89e85f53cd724c10f58b43e99
                       </div>
                     </div>
 

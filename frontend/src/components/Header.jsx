@@ -48,8 +48,19 @@ export default function Header() {
               <NavLink to="/tasks/accepted-by-me" className={navClass}>
                 Accepted By Me
               </NavLink>
+<<<<<<< HEAD
               <NavLink to="/leaderboard" className={navClass}>
                 Leaderboard
+=======
+              <NavLink to="/sessions" className={navClass}>
+                Sessions
+              </NavLink>
+              <NavLink to="/skills" className={navClass}>
+                Skills
+              </NavLink>
+              <NavLink to="/match" className={navClass}>
+                Matches
+>>>>>>> 48b3336cc9a453f89e85f53cd724c10f58b43e99
               </NavLink>
             </>
           )}
@@ -71,12 +82,20 @@ export default function Header() {
             </div>
           ) : (
             <div className="flex items-center gap-2 ml-3">
+<<<<<<< HEAD
               <Link to="/profile" className="hidden md:flex items-center gap-2 px-3 py-2 rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 transition cursor-pointer">
+=======
+              <div className="hidden md:flex items-center gap-2 px-3 py-2 rounded-xl border border-white/10 bg-white/5">
+>>>>>>> 48b3336cc9a453f89e85f53cd724c10f58b43e99
                 <span className="text-white/85 text-sm">{user?.fullName}</span>
                 <span className="text-xs px-2 py-0.5 rounded-full bg-white/10 border border-white/10 text-white/70">
                   Campus Member
                 </span>
+<<<<<<< HEAD
               </Link>
+=======
+              </div>
+>>>>>>> 48b3336cc9a453f89e85f53cd724c10f58b43e99
               <button onClick={onLogout} className={`${ui.btn} ${ui.btnSoft}`}>
                 Logout
               </button>

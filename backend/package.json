@@ -12,15 +12,31 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+<<<<<<< HEAD
     "bcryptjs": "^3.0.3",
+=======
+<<<<<<< HEAD
+    "bcryptjs": "^3.0.3",
+=======
+>>>>>>> 08e70d92df1c961d98bae932ea2bc8d40ab4ab89
+>>>>>>> 48b3336cc9a453f89e85f53cd724c10f58b43e99
     "body-parser": "^2.2.2",
     "cors": "^2.8.6",
     "dotenv": "^17.2.4",
     "express": "^5.2.1",
+<<<<<<< HEAD
     "express-validator": "^7.3.1",
     "jsonwebtoken": "^9.0.3",
     "mongoose": "^9.2.0",
     "multer": "^2.1.1"
+=======
+<<<<<<< HEAD
+    "express-validator": "^7.3.1",
+    "jsonwebtoken": "^9.0.3",
+=======
+>>>>>>> 08e70d92df1c961d98bae932ea2bc8d40ab4ab89
+    "mongoose": "^9.2.0"
+>>>>>>> 48b3336cc9a453f89e85f53cd724c10f58b43e99
   },
   "devDependencies": {
     "nodemon": "^3.1.11"
