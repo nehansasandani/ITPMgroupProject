@@ -237,18 +237,31 @@ export default function AcceptedByMePage() {
                       <span className="px-2 py-1 rounded-full border border-white/10 bg-white/5">
                         {formatRemaining(t.expireAt)}
                       </span>
+                      {t.mode === "Meet" && t.venue && (
+                        <span className="px-2 py-1 rounded-full border border-amber-400/20 bg-amber-400/10 text-amber-200">
+                          📍 {t.venue}
+                        </span>
+                      )}
                     </div>
                   </div>
 
-                  <div className="shrink-0">
+                  <div className="shrink-0 flex flex-col gap-2">
                     {t.status === "MATCHED" ? (
-                      <button
-                        onClick={() => askComplete(t._id)}
-                        disabled={busyId === t._id}
-                        className="px-4 py-2 rounded-xl border border-cyan-400/20 bg-cyan-400/10 text-cyan-100 hover:bg-cyan-400/15 text-sm disabled:opacity-60"
-                      >
-                        {busyId === t._id ? "Completing..." : "Mark Complete"}
-                      </button>
+                      <>
+                        <Link
+                          to={`/session/${t._id}`}
+                          className="px-4 py-2 rounded-xl border border-violet-400/20 bg-violet-400/10 text-violet-100 hover:bg-violet-400/15 text-sm text-center"
+                        >
+                          View Session
+                        </Link>
+                        <button
+                          onClick={() => askComplete(t._id)}
+                          disabled={busyId === t._id}
+                          className="px-4 py-2 rounded-xl border border-cyan-400/20 bg-cyan-400/10 text-cyan-100 hover:bg-cyan-400/15 text-sm disabled:opacity-60"
+                        >
+                          {busyId === t._id ? "Completing..." : "Mark Complete"}
+                        </button>
+                      </>
                     ) : (
                       <button className="px-4 py-2 rounded-xl border border-white/15 bg-white/5 text-sm text-white/70">
                         {t.status}

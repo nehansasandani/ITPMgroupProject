@@ -122,6 +122,13 @@ export async function register(req, res) {
         email: user.email,
         studentId: user.studentId,
         role: user.role,
+        bio: user.bio,
+        githubUrl: user.githubUrl,
+        linkedinUrl: user.linkedinUrl,
+        profilePic: user.profilePic,
+        skills: user.skills,
+        reputation: user.reputation,
+        completedTasksCount: user.completedTasksCount,
       },
       token,
     });
@@ -158,8 +165,62 @@ export async function login(req, res) {
         email: user.email,
         studentId: user.studentId,
         role: user.role,
+        bio: user.bio,
+        githubUrl: user.githubUrl,
+        linkedinUrl: user.linkedinUrl,
+        profilePic: user.profilePic,
+        skills: user.skills,
+        reputation: user.reputation,
+        completedTasksCount: user.completedTasksCount,
       },
       token,
+    });
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
+  }
+}
+
+export async function updateProfile(req, res) {
+  try {
+    const { bio, githubUrl, linkedinUrl, profilePic } = req.body;
+
+    const updateData = { 
+      bio: bio?.slice(0, 200) || "", 
+      githubUrl: githubUrl || "", 
+      linkedinUrl: linkedinUrl || "" 
+    };
+
+    if (profilePic !== undefined) {
+      updateData.profilePic = profilePic;
+    }
+
+    const user = await User.findByIdAndUpdate(
+      req.user.id,
+      updateData,
+      { new: true, runValidators: true }
+    );
+
+    if (!user) return res.status(404).json({ message: "User not found." });
+
+    const token = signToken(user);
+
+    return res.status(200).json({
+      message: "Profile updated successfully",
+      user: {
+        id: user._id,
+        fullName: user.fullName,
+        email: user.email,
+        studentId: user.studentId,
+        role: user.role,
+        bio: user.bio,
+        githubUrl: user.githubUrl,
+        linkedinUrl: user.linkedinUrl,
+        profilePic: user.profilePic,
+        skills: user.skills,
+        reputation: user.reputation,
+        completedTasksCount: user.completedTasksCount,
+      },
+      token
     });
   } catch (err) {
     return res.status(500).json({ message: err.message });
