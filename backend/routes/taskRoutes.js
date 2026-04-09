@@ -4,6 +4,8 @@ import User from "../models/User.js";
 import { validateTaskScope } from "../utils/taskScopeValidator.js";
 import { requireAuth } from "../middleware/auth.js";
 import { expireOverdueTasks } from "../utils/taskExpiry.js";
+// ADD this import at the top of taskRoutes.js
+import Session from "../models/Session.js";
 
 const router = express.Router();
 
@@ -187,29 +189,37 @@ router.get("/:id", requireAuth, async (req, res) => {
   }
 });
 
-// ACCEPT task
+// AFTER (fixed) ✅
 router.patch("/:id/accept", requireAuth, async (req, res) => {
   try {
     await expireOverdueTasks();
 
     const task = await Task.findById(req.params.id);
 
-    if (!task) {
-      return res.status(404).json({ message: "Task not found" });
-    }
-
-    if (task.status !== "OPEN") {
+    if (!task) return res.status(404).json({ message: "Task not found" });
+    if (task.status !== "OPEN")
       return res.status(400).json({ message: "Only OPEN tasks can be accepted" });
-    }
-
-    if (String(task.createdBy) === String(req.user.id)) {
+    if (String(task.createdBy) === String(req.user.id))
       return res.status(400).json({ message: "You cannot accept your own task" });
-    }
+
+    // Check if a session already exists (avoid duplicates)
+    const existingSession = await Session.findOne({ task: task._id });
 
     task.status = "MATCHED";
     task.acceptedBy = req.user.id;
-
     await task.save();
+
+    // ✅ Create session if one doesn't already exist
+    if (!existingSession) {
+      await Session.create({
+        task: task._id,
+        poster: task.createdBy,
+        helper: req.user.id,
+        mode: task.mode || "Online",
+        venue: task.venue || "",
+        status: "ACTIVE",
+      });
+    }
 
     const populatedTask = await Task.findById(task._id)
       .populate("createdBy", "fullName studentId")
@@ -373,6 +383,27 @@ router.delete("/:id", requireAuth, async (req, res) => {
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
+});
+
+// Temporary repair route — DELETE after running once
+router.post("/repair-sessions", requireAuth, async (req, res) => {
+  const matchedTasks = await Task.find({ status: "MATCHED", acceptedBy: { $exists: true } });
+  let created = 0;
+  for (const task of matchedTasks) {
+    const exists = await Session.findOne({ task: task._id });
+    if (!exists) {
+      await Session.create({
+        task: task._id,
+        poster: task.createdBy,
+        helper: task.acceptedBy,
+        mode: task.mode || "Online",
+        venue: task.venue || "",
+        status: "ACTIVE",
+      });
+      created++;
+    }
+  }
+  res.json({ message: `Repaired ${created} sessions` });
 });
 
 export default router;

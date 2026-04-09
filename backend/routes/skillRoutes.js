@@ -1,9 +1,8 @@
 import express from "express";
 import { getMySkills, addSkill, removeSkill, getQuizForSkill, submitQuiz } from "../controllers/skillController.js";
+import { requireAuth } from "../middleware/auth.js";
 
 const router = express.Router();
-
-import { requireAuth } from "../middleware/auth.js";
 
 router.use(requireAuth);
 
