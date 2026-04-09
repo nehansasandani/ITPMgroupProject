@@ -1,0 +1,37 @@
+﻿[dotenv@17.2.4] injecting env (4) from .env -- tip: ΓÜÖ∩╕Å  suppress all logs with { quiet: true }
+--- Gemini Connection Test ---
+API Key Found: YES (AIzaSy...)
+Connecting to model 'gemini-pro'...
+node : --- TEST FAILED 
+Γ¥î ---
+At line:1 char:1
++ node test-gemini.js > 
+test-output.txt 2>&1
++ ~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~
+    + CategoryInfo        
+      : NotSpecified: (-  
+  -- TEST FAILED Γ¥î --   
+ -:String) [], RemoteE    
+xception
+    + FullyQualifiedError 
+   Id : NativeCommandErr  
+  or
+ 
+Status: 404
+Message: 
+[GoogleGenerativeAI 
+Error]: Error fetching 
+from https://generativelan
+guage.googleapis.com/v1bet
+a/models/gemini-pro:genera
+teContent: [404 Not 
+Found] models/gemini-pro 
+is not found for API 
+version v1beta, or is not 
+supported for 
+generateContent. Call 
+ListModels to see the 
+list of available models 
+and their supported 
+methods.

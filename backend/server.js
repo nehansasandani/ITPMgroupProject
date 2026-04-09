@@ -36,6 +36,7 @@ app.use("/api/tasks", taskRoutes);
 app.use("/api/users", userRoutes);
 
 // ── Your routes ──
+app.use("/api/ratings", ratingRoutes);
 app.use("/api/skills", skillRoutes);
 app.use("/api/ratings", ratingRoutes);
 app.use("/api/reputation", reputationRoutes);
