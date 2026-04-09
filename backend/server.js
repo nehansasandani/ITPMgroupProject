@@ -15,6 +15,7 @@ import userRoutes from "./routes/userRoutes.js";
 
 // Your routes
 import skillRoutes from "./routes/skillRoutes.js";
+import ratingRoutes from "./routes/ratingRoutes.js";
 import reputationRoutes from "./routes/reputationRoutes.js";
 
 // Teammate's utils
@@ -40,6 +41,7 @@ app.use("/api/users", userRoutes);
 app.use("/api/reputation", reputationRoutes);
 
 // ── Your routes ──
+app.use("/api/ratings", ratingRoutes);
 app.use("/api/skills", skillRoutes);
 
 const PORT = process.env.PORT || 5000;
