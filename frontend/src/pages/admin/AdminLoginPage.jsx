@@ -4,17 +4,19 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAuth } from "../../context/AuthContext";
+import axiosInstance from "../../api/axiosInstance";
 
+// emailOrStudentId matches what userController.login expects
 const schema = z.object({
-  email: z.string().trim().email("Enter a valid email address"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
+  emailOrStudentId: z.string().trim().min(1, "Email or Student ID is required"),
+  password: z.string().min(1, "Password is required"),
 });
 
 export default function AdminLoginPage() {
   const navigate = useNavigate();
   const { login } = useAuth();
-  const [errorStatus, setErrorStatus] = useState("");
-  const [showSuccess, setShowSuccess] = useState(false);
+  const [errorStatus, setErrorStatus]   = useState("");
+  const [showSuccess, setShowSuccess]   = useState(false);
 
   const {
     register,
@@ -23,39 +25,29 @@ export default function AdminLoginPage() {
   } = useForm({
     resolver: zodResolver(schema),
     mode: "onChange",
-    defaultValues: {
-      email: "",
-      password: "",
-    },
+    defaultValues: { emailOrStudentId: "", password: "" },
   });
 
   const onSubmit = async (data) => {
     setErrorStatus("");
+    try {
+      const res = await axiosInstance.post("/users/login", data);
 
-    // Simulate network delay
-    await new Promise((resolve) => setTimeout(resolve, 800));
+      // Block non-admin accounts from accessing admin panel
+      if (res.data.user?.role !== "ADMIN") {
+        setErrorStatus("Access denied. Admin accounts only.");
+        return;
+      }
 
-    // Mock validation
-    if (data.email === "admin@unipulse.com" && data.password === "123456") {
       setShowSuccess(true);
-
-      // Simulate auth state payload
-      const mockPayload = {
-        token: "mock-admin-token-xyz",
-        user: {
-          id: "admin-001",
-          email: "admin@unipulse.com",
-          name: "System Admin",
-          role: "ADMIN",
-        },
-      };
-
       setTimeout(() => {
-        login(mockPayload);
+        login(res.data); // passes { token, user } to AuthContext
         navigate("/admin");
       }, 1000);
-    } else {
-      setErrorStatus("Incorrect credentials. Please try again.");
+
+    } catch (err) {
+      const msg = err.response?.data?.message || "Incorrect credentials. Please try again.";
+      setErrorStatus(msg);
     }
   };
 
@@ -82,17 +74,22 @@ export default function AdminLoginPage() {
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              Email Address
+              Email or Student ID
             </label>
             <input
               type="text"
-              {...register("email")}
-              className={`w-full px-3 py-2 border rounded-md shadow-sm outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-gray-900 ${errors.email ? "border-red-500 ring-1 ring-red-500" : "border-gray-300"
-                }`}
-              placeholder="admin@unipulse.com"
+              {...register("emailOrStudentId")}
+              className={`w-full px-3 py-2 border rounded-md shadow-sm outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-gray-900 ${
+                errors.emailOrStudentId
+                  ? "border-red-500 ring-1 ring-red-500"
+                  : "border-gray-300"
+              }`}
+              placeholder="admin@eduspark.com"
             />
-            {errors.email && (
-              <p className="mt-1 text-sm text-red-600">{errors.email.message}</p>
+            {errors.emailOrStudentId && (
+              <p className="mt-1 text-sm text-red-600">
+                {errors.emailOrStudentId.message}
+              </p>
             )}
           </div>
 
@@ -103,8 +100,11 @@ export default function AdminLoginPage() {
             <input
               type="password"
               {...register("password")}
-              className={`w-full px-3 py-2 border rounded-md shadow-sm outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-gray-900 ${errors.password ? "border-red-500 ring-1 ring-red-500" : "border-gray-300"
-                }`}
+              className={`w-full px-3 py-2 border rounded-md shadow-sm outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-gray-900 ${
+                errors.password
+                  ? "border-red-500 ring-1 ring-red-500"
+                  : "border-gray-300"
+              }`}
               placeholder="••••••••"
             />
             {errors.password && (
@@ -123,7 +123,7 @@ export default function AdminLoginPage() {
 
         <div className="mt-6 border-t border-gray-200 pt-4 text-center">
           <p className="text-xs text-gray-500">
-            Secure admin portal for UniPulse Micro-Commitment Exchange Platform.
+            Secure admin portal for EduSpark Micro-Commitment Exchange Platform.
             Unauthorized access is strictly prohibited.
           </p>
         </div>

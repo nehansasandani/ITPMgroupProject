@@ -8,6 +8,8 @@ import cors from "cors";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 
+import adminRoutes from "./routes/adminRoutes.js";
+
 // Teammate's routes
 import matchRoutes from "./routes/matchRoutes.js";
 import taskRoutes from "./routes/taskRoutes.js";
@@ -36,7 +38,7 @@ app.get("/", (req, res) => res.send("API running ✅"));
 app.use("/api/match", matchRoutes);
 app.use("/api/tasks", taskRoutes);
 app.use("/api/users", userRoutes);
-
+app.use("/api/admin", adminRoutes);
 // ── Reputation routes ──
 app.use("/api/reputation", reputationRoutes);
 
