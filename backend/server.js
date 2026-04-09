@@ -15,6 +15,7 @@ import userRoutes from "./routes/userRoutes.js";
 
 // Your routes
 import skillRoutes from "./routes/skillRoutes.js";
+import ratingRoutes from "./routes/ratingRoutes.js";
 import reputationRoutes from "./routes/reputationRoutes.js";
 
 // Teammate's utils
