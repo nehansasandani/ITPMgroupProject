@@ -18,12 +18,17 @@ export const removeSkill = async (skillId) => {
   return res.data;
 };
 
+// Skill quiz (assessment)
 export const getSkillQuiz = async (skillName) => {
-  const res = await axiosInstance.get(`/skills/quiz/${skillName}`);
+  const res = await axiosInstance.get(`/skills/quiz/${encodeURIComponent(skillName)}`);
   return res.data;
 };
 
 export const submitSkillQuiz = async (skillName, answers, skillId) => {
-  const res = await axiosInstance.post(`/skills/quiz/submit`, { skillName, answers, skillId });
+  const res = await axiosInstance.post(`/skills/quiz/submit`, {
+    skillName,
+    answers,
+    skillId,
+  });
   return res.data;
 };

@@ -51,6 +51,15 @@ export default function Header() {
               <NavLink to="/leaderboard" className={navClass}>
                 Leaderboard
               </NavLink>
+              <NavLink to="/sessions" className={navClass}>
+                Sessions
+              </NavLink>
+              <NavLink to="/skills" className={navClass}>
+                Skills
+              </NavLink>
+              <NavLink to="/match" className={navClass}>
+                Matches
+              </NavLink>
             </>
           )}
 

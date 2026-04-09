@@ -27,6 +27,10 @@ const schema = z.object({
   mode: z.enum(["Online", "Chat", "Meet"]),
   deadlineDays: z.number().refine((v) => DEADLINES.includes(v), "Invalid deadline"),
   attachmentUrl: z.string().optional(),
+  venue: z.string().max(100, "Max 100 characters").optional(),
+}).refine((d) => d.mode !== "Meet" || (d.venue && d.venue.trim().length >= 3), {
+  message: "Venue is required for in-person meetings (min 3 characters)",
+  path: ["venue"],
 });
 
 function getScopeWarnings({ title, description, expectedOutcome }) {
@@ -86,6 +90,7 @@ export default function EditTaskPage() {
       mode: "Online",
       deadlineDays: 2,
       attachmentUrl: "",
+      venue: "",
     },
   });
 
@@ -106,6 +111,7 @@ export default function EditTaskPage() {
           mode: task.mode || "Online",
           deadlineDays: task.deadlineDays || 2,
           attachmentUrl: task.attachmentUrl || "",
+          venue: task.venue || "",
         });
       } catch (err) {
         setServerError(err?.response?.data?.message || "Failed to load task");
@@ -322,6 +328,21 @@ export default function EditTaskPage() {
                 className="mt-1 w-full rounded-xl bg-slate-950/40 border border-white/10 px-3 py-2.5 outline-none focus:border-white/30 focus:ring-2 focus:ring-white/10"
               />
             </Field>
+
+            {values.mode === "Meet" && (
+              <Field
+                label="Meeting Venue"
+                hint="Specify the exact campus location (e.g. Library Room 3B, CS Lab 2)."
+                error={errors.venue?.message}
+              >
+                <input
+                  {...register("venue")}
+                  className="mt-1 w-full rounded-xl bg-slate-950/40 border border-amber-400/20 px-3 py-2.5 outline-none focus:border-amber-400/40 focus:ring-2 focus:ring-amber-400/10"
+                  placeholder="e.g. Library Study Room 3B"
+                  maxLength={100}
+                />
+              </Field>
+            )}
 
             <button
               disabled={isSubmitting}
