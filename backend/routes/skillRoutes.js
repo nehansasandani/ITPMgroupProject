@@ -8,7 +8,7 @@ router.use(requireAuth);
 
 router.get("/", getMySkills);
 router.post("/", addSkill);
-router.get("/quiz/:skillName", getQuizForSkill);
+router.get("/quiz/:skillId", getQuizForSkill);
 router.post("/quiz/submit", submitQuiz);
 router.delete("/:id", removeSkill);
 

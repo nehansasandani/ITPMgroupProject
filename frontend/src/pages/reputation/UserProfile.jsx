@@ -86,8 +86,9 @@ export default function UserProfile() {
   const [isSavingName, setIsSavingName] = useState(false);
   const [formErrors, setFormErrors] = useState({});
 
-  // Dynamic Skill Add Logic
+  // Premium Skill Selection Flow
   const [isAddingSkill, setIsAddingSkill] = useState(false);
+  const [selectionStep, setSelectionStep] = useState(0); // 0: Category, 1: SubCategory, 2: Skill, 3: Expertise
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedSubCategory, setSelectedSubCategory] = useState("");
   const [selectedSkill, setSelectedSkill] = useState("");
@@ -200,7 +201,7 @@ export default function UserProfile() {
   };
 
   const handleAddSkill = async (e) => {
-    e.preventDefault();
+    if (e) e.preventDefault();
     if (!selectedCategory || !selectedSubCategory || !selectedSkill) return;
 
     try {
@@ -212,10 +213,23 @@ export default function UserProfile() {
       });
       setSkills(data.skills);
       setIsAddingSkill(false);
+      setSelectionStep(0);
       setSelectedCategory("");
       setSelectedLevel("Beginner");
     } catch (err) {
       alert("Error adding skill: " + (err.response?.data?.message || err.message));
+    }
+  };
+
+  const toggleAddSkill = () => {
+    if (isAddingSkill) {
+      setIsAddingSkill(false);
+      setSelectionStep(0);
+      setSelectedCategory("");
+      setSelectedSubCategory("");
+      setSelectedSkill("");
+    } else {
+      setIsAddingSkill(true);
     }
   };
 
@@ -445,51 +459,162 @@ export default function UserProfile() {
                 <p className="text-sm text-slate-400">Map your technical proficiencies and verify them to build trust.</p>
               </div>
               <button 
-                onClick={() => setIsAddingSkill(!isAddingSkill)}
+                onClick={toggleAddSkill}
                 className="flex items-center gap-2 px-6 py-3 bg-indigo-500 text-white hover:bg-indigo-600 rounded-xl transition shadow-lg shadow-indigo-500/20 font-medium text-sm"
               >
-                <FiPlus className="text-lg" /> Add New Skill
+                {isAddingSkill ? <FiX size={18} /> : <FiPlus className="text-lg" />} 
+                {isAddingSkill ? "Cancel" : "Add New Skill"}
               </button>
             </div>
 
-            {/* Add Skill Form */}
+            {/* Multi-Step Premium Skill Selector */}
             {isAddingSkill && (
-              <form onSubmit={handleAddSkill} className="mb-8 p-6 bg-slate-800/40 border border-indigo-500/30 rounded-2xl shadow-inner">
-                <h3 className="text-white font-bold mb-4">Add Dynamic Skill</h3>
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-5">
-                  <div className="flex flex-col gap-1.5">
-                    <label className="text-xs font-semibold text-indigo-300 uppercase tracking-widest">Category</label>
-                    <select value={selectedCategory} onChange={e => setSelectedCategory(e.target.value)} className="bg-slate-900 border border-slate-700 px-3 py-2.5 rounded-lg text-white outline-none focus:border-indigo-500 shadow-sm">
-                      <option value="">Select Category</option>
-                      {Object.keys(SKILL_CATEGORIES).map(cat => <option key={cat} value={cat}>{cat}</option>)}
-                    </select>
+              <div className="mb-10 p-0.5 bg-slate-800/10 border border-slate-800/50 rounded-3xl overflow-hidden animate-in zoom-in-95 duration-500 shadow-2xl">
+                <div className="bg-slate-900 rounded-[1.4rem] p-6 md:p-8 border border-white/5">
+                  
+                  {/* Step Indicators / Breadcrumbs */}
+                  <div className="flex items-center gap-2 mb-8 overflow-x-auto pb-2 scrollbar-hide">
+                    {[
+                      { label: "Category", value: selectedCategory },
+                      { label: "Subcategory", value: selectedSubCategory },
+                      { label: "Skill", value: selectedSkill },
+                      { label: "Expertise", value: selectedLevel }
+                    ].map((step, idx) => (
+                      <div key={idx} className="flex items-center shrink-0">
+                        <button 
+                          onClick={() => idx < selectionStep && setSelectionStep(idx)}
+                          disabled={idx >= selectionStep}
+                          className={`flex items-center gap-2 px-3 py-1.5 rounded-full transition-all ${
+                            selectionStep === idx 
+                              ? "bg-indigo-500 text-white shadow-lg shadow-indigo-500/20" 
+                              : idx < selectionStep ? "text-indigo-400 hover:bg-indigo-500/10 cursor-pointer" : "text-slate-600 cursor-default"
+                          }`}
+                        >
+                          <span className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold border ${selectionStep === idx ? "border-white/40" : "border-current"}`}>
+                            {idx + 1}
+                          </span>
+                          <span className="text-xs font-bold uppercase tracking-wider">
+                            {idx < selectionStep ? step.value : step.label}
+                          </span>
+                        </button>
+                        {idx < 3 && <div className={`w-8 h-px mx-1 ${idx < selectionStep ? "bg-indigo-500/50" : "bg-slate-800"}`}></div>}
+                      </div>
+                    ))}
                   </div>
-                  <div className="flex flex-col gap-1.5">
-                    <label className="text-xs font-semibold text-indigo-300 uppercase tracking-widest">Subcategory</label>
-                    <select value={selectedSubCategory} onChange={e => setSelectedSubCategory(e.target.value)} disabled={!selectedCategory} className="bg-slate-900 border border-slate-700 px-3 py-2.5 rounded-lg text-white outline-none focus:border-indigo-500 disabled:opacity-50 shadow-sm">
-                      <option value="">Select Subcategory</option>
-                      {subCategories.map(sub => <option key={sub} value={sub}>{sub}</option>)}
-                    </select>
-                  </div>
-                  <div className="flex flex-col gap-1.5">
-                    <label className="text-xs font-semibold text-indigo-300 uppercase tracking-widest">Skill</label>
-                    <select value={selectedSkill} onChange={e => setSelectedSkill(e.target.value)} disabled={!selectedSubCategory} className="bg-slate-900 border border-slate-700 px-3 py-2.5 rounded-lg text-white outline-none focus:border-indigo-500 disabled:opacity-50 shadow-sm">
-                      <option value="">Select Skill</option>
-                      {skillOptions.map(opt => <option key={opt} value={opt}>{opt}</option>)}
-                    </select>
-                  </div>
-                  <div className="flex flex-col gap-1.5">
-                    <label className="text-xs font-semibold text-indigo-300 uppercase tracking-widest">Expertise</label>
-                    <select value={selectedLevel} onChange={e => setSelectedLevel(e.target.value)} className="bg-slate-900 border border-slate-700 px-3 py-2.5 rounded-lg text-white outline-none focus:border-indigo-500 shadow-sm">
-                      <option value="Beginner">Beginner</option><option value="Intermediate">Intermediate</option><option value="Expert">Expert</option>
-                    </select>
-                  </div>
+
+                  {/* STEP 0: Category Selection */}
+                  {selectionStep === 0 && (
+                    <div className="animate-in fade-in slide-in-from-bottom-2 duration-300">
+                      <h3 className="text-lg font-bold text-white mb-6">Select a Field</h3>
+                      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        {Object.keys(SKILL_CATEGORIES).map(cat => (
+                          <button
+                            key={cat}
+                            onClick={() => { setSelectedCategory(cat); setSelectionStep(1); }}
+                            className="group p-4 bg-slate-800/20 border border-slate-800 hover:border-indigo-500/30 hover:bg-indigo-500/5 rounded-xl transition-all text-center flex flex-col items-center gap-3"
+                          >
+                            <div className="w-10 h-10 rounded-lg bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-500 group-hover:text-indigo-400 transition-colors">
+                              <FiActivity size={20} />
+                            </div>
+                            <span className="text-xs font-bold text-slate-400 group-hover:text-white">{cat}</span>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* STEP 1: Subcategory Selection */}
+                  {selectionStep === 1 && (
+                    <div className="animate-in fade-in slide-in-from-right-4 duration-300">
+                      <h3 className="text-lg font-bold text-white mb-6 flex items-center gap-2">
+                        <button onClick={() => setSelectionStep(0)} className="p-2 hover:bg-slate-800 rounded-lg transition text-slate-500 hover:text-white"><FiEdit3 size={16} /></button>
+                        Select Specialty
+                      </h3>
+                      <div className="flex flex-wrap gap-3">
+                        {subCategories.map(sub => (
+                          <button
+                            key={sub}
+                            onClick={() => { setSelectedSubCategory(sub); setSelectionStep(2); }}
+                            className="px-5 py-3 bg-slate-800/20 border border-slate-800 hover:border-indigo-500/30 hover:bg-indigo-500/5 rounded-xl text-slate-400 hover:text-white font-bold transition-all text-xs"
+                          >
+                            {sub}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* STEP 2: Skill Selection */}
+                  {selectionStep === 2 && (
+                    <div className="animate-in fade-in slide-in-from-right-4 duration-300">
+                      <h3 className="text-lg font-bold text-white mb-6">Which technology?</h3>
+                      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+                        {skillOptions.map(opt => (
+                          <button
+                            key={opt}
+                            onClick={() => { setSelectedSkill(opt); setSelectionStep(3); }}
+                            className="p-3 bg-slate-800/20 border border-slate-800 hover:border-indigo-500/30 hover:bg-indigo-500/5 rounded-xl text-slate-400 hover:text-white font-bold transition-all text-xs flex items-center justify-center gap-2"
+                          >
+                            {opt}
+                          </button>
+                        ))}
+                        {/* Fallback for "Other" if needed */}
+                        <div className="col-span-full mt-4 p-4 border border-dashed border-slate-800 rounded-xl text-center text-xs text-slate-500">
+                          Looking for something else? We'll be adding more skills soon.
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* STEP 3: Expertise Picker */}
+                  {selectionStep === 3 && (
+                    <div className="animate-in fade-in zoom-in-95 duration-300">
+                      <h3 className="text-lg font-bold text-white mb-6 text-center">Self-Assessment: <span className="text-indigo-400">{selectedSkill}</span></h3>
+                      <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+                        {[
+                          { id: "Beginner", icon: <FiUnlock />, desc: "Focusing on fundamentals and learning the basics." },
+                          { id: "Intermediate", icon: <FiShield />, desc: "Comfortable with daily tasks and problem solving." },
+                          { id: "Expert", icon: <FiAward />, desc: "Deep architectural knowledge and mentoring skills." }
+                        ].map((lvl) => (
+                          <button
+                            key={lvl.id}
+                            onClick={() => setSelectedLevel(lvl.id)}
+                            className={`p-5 rounded-2xl border transition-all flex flex-col items-center text-center gap-3 ${
+                              selectedLevel === lvl.id 
+                                ? "bg-indigo-500/5 border-indigo-500/50 shadow-sm" 
+                                : "bg-slate-800/20 border-slate-800 hover:border-slate-700"
+                            }`}
+                          >
+                            <div className={`w-12 h-12 rounded-full flex items-center justify-center text-xl ${selectedLevel === lvl.id ? "bg-indigo-500 text-white" : "bg-slate-900 text-slate-500"}`}>
+                              {lvl.icon}
+                            </div>
+                            <div>
+                              <div className={`font-bold text-sm uppercase tracking-widest mb-1 ${selectedLevel === lvl.id ? "text-indigo-400" : "text-slate-300"}`}>{lvl.id}</div>
+                              <p className="text-[10px] text-slate-500 leading-relaxed leading-tight">{lvl.desc}</p>
+                            </div>
+                          </button>
+                        ))}
+                      </div>
+
+                      <div className="mt-10 flex justify-center gap-4">
+                        <button 
+                          onClick={() => setSelectionStep(2)} 
+                          className="px-8 py-3 rounded-xl border border-white/10 text-slate-400 hover:text-white transition font-medium"
+                        >
+                          Back
+                        </button>
+                        <button 
+                          onClick={handleAddSkill} 
+                          className="px-10 py-3 rounded-xl bg-indigo-500 hover:bg-indigo-600 text-white font-bold transition shadow-xl shadow-indigo-500/20"
+                        >
+                          Finalize Portfolio Addition
+                        </button>
+                      </div>
+                    </div>
+                  )}
+
                 </div>
-                <div className="flex justify-end gap-3">
-                  <button type="button" onClick={() => setIsAddingSkill(false)} className="px-5 py-2.5 text-sm font-medium text-slate-400 hover:text-white transition">Cancel</button>
-                  <button type="submit" disabled={!selectedSkill} className="px-5 py-2.5 text-sm font-bold bg-white text-slate-900 hover:bg-slate-200 rounded-lg transition disabled:opacity-50 shadow-md">Confirm Addition</button>
-                </div>
-              </form>
+              </div>
             )}
 
             {/* Render Skill Cards */}

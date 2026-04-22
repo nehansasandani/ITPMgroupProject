@@ -20,6 +20,7 @@ import SkillsPage from "./pages/profile/SkillsPage";
 import MatchPage from "./pages/MatchPage";
 import LeaderboardPage from "./pages/reputation/LeaderboardPage";
 import UserProfile from "./pages/reputation/UserProfile";
+import RatingForm from "./pages/reputation/RatingForm";
 
 import AdminLoginPage from "./pages/admin/AdminLoginPage";
 import AdminDashboardPage from "./pages/admin/DashboardPage";
@@ -57,12 +58,14 @@ export default function AppRoutes() {
 
         {/* Reputation */}
         <Route path="/leaderboard" element={<LeaderboardPage />} />
+        <Route path="/rating/:userId" element={<RatingForm />} />
+        <Route path="/rate" element={<RatingForm />} />
 
         {/* Admin */}
         <Route path="/admin/login" element={<AdminLoginPage />} />
-  <Route path="/admin" element={<AdminDashboardPage />} />
-  <Route path="/admin/users" element={<AdminUsersPage />} />
-  <Route path="/admin/disputes" element={<AdminDisputesPage />} />
+        <Route path="/admin" element={<AdminDashboardPage />} />
+        <Route path="/admin/users" element={<AdminUsersPage />} />
+        <Route path="/admin/disputes" element={<AdminDisputesPage />} />
 
         {/* Fallback */}
         <Route path="*" element={<HomePage />} />
@@ -70,3 +73,4 @@ export default function AppRoutes() {
     </Routes>
   );
 }
+

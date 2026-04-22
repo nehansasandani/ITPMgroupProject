@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axiosInstance from "../../api/axiosInstance";
 import { useAuth } from "../../context/AuthContext";
 
@@ -60,8 +60,9 @@ const StarRating = ({ value, onChange }) => {
 export default function RatingForm() {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const { userId: routeUserId } = useParams();
   const MOCK_SESSION_ID = "64f832b1f1234567890abcde";
-  const MOCK_RATED_USER_ID = user?.id; // Rate currently logged-in user to see real-time updates on profile
+  const ratedUserId = routeUserId || user?.id;
 
   // Skill selection state
   const [selectedCategory, setSelectedCategory] = useState("");
@@ -110,7 +111,7 @@ export default function RatingForm() {
     try {
       await axiosInstance.post("/ratings", {
         sessionId: MOCK_SESSION_ID,
-        ratedUserId: MOCK_RATED_USER_ID,
+        ratedUserId,
         skillCategory: selectedCategory,
         skillSubCategory: selectedSubCategory,
         skillName: selectedSkill,
@@ -135,8 +136,8 @@ export default function RatingForm() {
           <p style={styles.successSub}>
             Your feedback has been recorded and their reputation score has been updated.
           </p>
-          <button style={styles.resetBtn} onClick={() => navigate(-1)}>
-            Go Back
+          <button style={styles.resetBtn} onClick={() => navigate("/profile") }>
+            View Profile
           </button>
         </div>
       </div>
