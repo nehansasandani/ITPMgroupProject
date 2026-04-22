@@ -3,6 +3,9 @@ import { skillData, skillLevels } from "../../utils/skillData";
 import { addSkill, getMySkills, removeSkill } from "../../api/skillApi";
 import { ui } from "../../styles/ui";
 
+const skillsBackground =
+  "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1800&q=80";
+
 const LEVEL_COLORS = {
   Beginner: "border-emerald-400/30 bg-emerald-400/10 text-emerald-300",
   Intermediate: "border-sky-400/30 bg-sky-400/10 text-sky-300",
@@ -131,8 +134,19 @@ export default function SkillsPage() {
     "mt-1 w-full rounded-xl bg-slate-950/40 border border-white/10 px-3 py-2.5 outline-none focus:border-white/30 focus:ring-2 focus:ring-white/10 disabled:opacity-40 disabled:cursor-not-allowed";
 
   return (
-    <div className={`${ui.page} py-8`}>
-      <div className={ui.container}>
+    <div className={`${ui.page} relative overflow-hidden py-8`}>
+      <div className="pointer-events-none absolute inset-0">
+        <div className="absolute inset-0 bg-slate-950/75" />
+        <img
+          src={skillsBackground}
+          alt=""
+          aria-hidden="true"
+          className="absolute inset-0 h-full w-full object-cover object-center scale-110 opacity-15 blur-sm mix-blend-screen md:opacity-18 lg:opacity-22"
+        />
+        <div className="absolute inset-0 bg-gradient-to-br from-slate-950/40 via-slate-950/55 to-slate-950/80" />
+      </div>
+
+      <div className={`${ui.container} relative z-10`}>
         {/* Header */}
         <div className="mb-6">
           <h1 className="text-2xl md:text-3xl font-semibold">My Skills</h1>

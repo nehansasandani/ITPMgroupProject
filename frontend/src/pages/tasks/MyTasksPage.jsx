@@ -377,6 +377,16 @@ export default function MyTasksPage() {
                         Skill: {t.skillRequired}
                       </span>
                       <span className="px-2 py-1 rounded-full border border-white/10 bg-white/5">
+                        Task ID: {t._id}
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => navigator.clipboard?.writeText(t._id)}
+                        className="px-2 py-1 rounded-full border border-cyan-400/20 bg-cyan-400/10 text-cyan-100 hover:bg-cyan-400/15"
+                      >
+                        Copy ID
+                      </button>
+                      <span className="px-2 py-1 rounded-full border border-white/10 bg-white/5">
                         Mode: {t.mode}
                       </span>
                       <span className="px-2 py-1 rounded-full border border-white/10 bg-white/5">
