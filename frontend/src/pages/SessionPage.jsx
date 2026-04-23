@@ -5,7 +5,6 @@ import { getMessages, sendMessage } from "../api/messageApi";
 import { completeTask } from "../api/taskApi";
 import { useAuth } from "../context/AuthContext";
 import WarningModal from "../components/WarningModal";
-import SessionRatingModal from "../components/SessionRatingModal";
 import { ui } from "../styles/ui";
 
 // ── Elapsed clock component ───────────────────────────────────────────────────
@@ -102,9 +101,10 @@ function PersonCard({ label, user, accent }) {
         <div className="text-xs text-white/45">{user.studentId}</div>
         {user.reputation !== undefined && (
           <div className="text-xs text-amber-400 mt-0.5">
-            {"★".repeat(Math.floor(user.reputation))}
-            <span className="text-white/30">{"★".repeat(5 - Math.floor(user.reputation))}</span>
+               {"★".repeat(Math.max(0, Math.floor(user.reputation || 0)))}
+<span className="text-white/30">{"★".repeat(Math.max(0, 5 - Math.floor(user.reputation || 0)))}</span>
             <span className="text-white/50 ml-1">{Number(user.reputation).toFixed(1)}</span>
+        
             {user.completedTasksCount > 0 && (
               <span className="text-white/40 ml-2">{user.completedTasksCount} tasks done</span>
             )}
@@ -120,26 +120,21 @@ function ChatBox({ sessionId, sessionStatus, currentUserId }) {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const [sending, setSending] = useState(false);
-  const [chatError, setChatError] = useState("");
   const bottomRef = useRef(null);
 
   const poll = useCallback(async () => {
     try {
       const data = await getMessages(sessionId);
       setMessages(data.messages || []);
-      setChatError("");
-    } catch (err) {
-      setChatError(err?.response?.data?.message || "Failed to load chat messages.");
-    }
+    } catch {}
   }, [sessionId]);
 
   useEffect(() => {
-    if (!sessionId) return;
     poll();
     if (sessionStatus !== "ACTIVE") return;
     const id = setInterval(poll, 3000);
     return () => clearInterval(id);
-  }, [sessionId, sessionStatus]);
+  }, [poll, sessionStatus]);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -150,13 +145,11 @@ function ChatBox({ sessionId, sessionStatus, currentUserId }) {
     const text = input.trim();
     setInput("");
     setSending(true);
-    setChatError("");
     try {
       await sendMessage(sessionId, text);
       await poll();
-    } catch (err) {
+    } catch {
       setInput(text); // restore on failure
-      setChatError(err?.response?.data?.message || "Failed to send message.");
     } finally {
       setSending(false);
     }
@@ -187,11 +180,6 @@ function ChatBox({ sessionId, sessionStatus, currentUserId }) {
 
       {/* Messages */}
       <div className="flex-1 overflow-y-auto p-4 space-y-3 min-h-0">
-        {chatError && (
-          <div className="rounded-xl border border-rose-400/30 bg-rose-400/10 px-3 py-2 text-xs text-rose-200">
-            {chatError}
-          </div>
-        )}
         {messages.length === 0 && (
           <div className="text-center text-white/35 text-sm py-10">
             No messages yet. Start the conversation!
@@ -266,8 +254,6 @@ export default function SessionPage() {
 
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [completing, setCompleting] = useState(false);
-  const [showRatingModal, setShowRatingModal] = useState(false);
-  const [ratingPending, setRatingPending] = useState(false);
 
   const load = useCallback(async () => {
     try {
@@ -289,27 +275,12 @@ export default function SessionPage() {
   const handleComplete = async () => {
     setCompleting(true);
     try {
-      // Show rating modal first
-      setShowRatingModal(true);
-      setRatingPending(true);
-      setConfirmOpen(false);
-    } catch (err) {
-      setConfirmOpen(false);
-      setError(err?.response?.data?.message || "Failed to prepare rating.");
-      setCompleting(false);
-    }
-  };
-
-  const handleRatingComplete = async () => {
-    try {
-      // After rating is submitted, complete the task
       await completeTask(taskId);
       await load(); // refresh to show COMPLETED status
-      setRatingPending(false);
-      setError(""); // clear any previous errors
+      setConfirmOpen(false);
     } catch (err) {
+      setConfirmOpen(false);
       setError(err?.response?.data?.message || "Failed to complete task.");
-      setRatingPending(false);
     } finally {
       setCompleting(false);
     }
@@ -357,23 +328,13 @@ export default function SessionPage() {
       <WarningModal
         open={confirmOpen}
         title="Mark session as completed?"
-        message={`This will close the session and mark "${task?.title}" as COMPLETED.\n\nYou'll be able to rate the collaborator next.`}
+        message={`This will close the session and mark "${task?.title}" as COMPLETED.\n\nThe helper will receive a reputation boost.`}
         confirmText="Complete Session"
         cancelText="Not yet"
         confirmVariant="primary"
         loading={completing}
         onConfirm={handleComplete}
-        onClose={() => { if (!completing && !ratingPending) setConfirmOpen(false); }}
-      />
-
-      <SessionRatingModal
-        isOpen={showRatingModal}
-        onClose={() => setShowRatingModal(false)}
-        ratedUserId={session?.helper?._id}
-        ratedUserName={session?.helper?.fullName || "Helper"}
-        sessionId={session?._id}
-        taskTitle={task?.title}
-        onRatingComplete={handleRatingComplete}
+        onClose={() => { if (!completing) setConfirmOpen(false); }}
       />
 
       <div className={`${ui.container} space-y-6`}>
