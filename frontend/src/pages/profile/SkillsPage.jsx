@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { skillData, skillLevels } from "../../utils/skillData";
 import { addSkill, getMySkills, removeSkill } from "../../api/skillApi";
 import { ui } from "../../styles/ui";
+import { FiBook } from "react-icons/fi";
 
 const LEVEL_COLORS = {
   Beginner: "border-emerald-400/30 bg-emerald-400/10 text-emerald-300",
@@ -131,7 +132,44 @@ export default function SkillsPage() {
     "mt-1 w-full rounded-xl bg-slate-950/40 border border-white/10 px-3 py-2.5 outline-none focus:border-white/30 focus:ring-2 focus:ring-white/10 disabled:opacity-40 disabled:cursor-not-allowed";
 
   return (
-    <div className={`${ui.page} py-8`}>
+    <>
+      {/* ── Hero Section with Background Image ──────────────────────────── */}
+      <div 
+        className="relative w-screen -ml-[calc((100vw-100%)/2)] mb-0 overflow-hidden"
+        style={{
+          backgroundImage: "url('/skills-hero.jpg')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundAttachment: "fixed",
+        }}
+      >
+        {/* Blur + Dark Overlay */}
+        <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" />
+        
+        {/* Hero Content */}
+        <div className="relative z-10 max-w-5xl mx-auto px-4 py-20 md:py-32 text-center">
+          {/* Glow Effect */}
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[400px] bg-indigo-500/30 blur-[150px] rounded-full pointer-events-none -z-10" />
+          
+          <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full border border-indigo-400/40 bg-indigo-500/15 backdrop-blur-sm text-indigo-300 text-sm font-bold mb-6 shadow-lg shadow-indigo-500/20">
+            <FiBook className="text-indigo-400 text-lg" />
+            BUILD YOUR EXPERTISE
+          </div>
+          
+          <h2 className="text-5xl md:text-6xl font-black tracking-tight leading-tight mb-6">
+            <span className="bg-gradient-to-r from-white via-indigo-100 to-blue-200 bg-clip-text text-transparent">
+              Skills & Proficiency
+            </span>
+          </h2>
+          
+          <p className="text-lg md:text-xl text-white/80 max-w-2xl mx-auto leading-relaxed font-light mb-8">
+            Showcase your technical expertise and get matched with tasks that align with your skills.
+          </p>
+        </div>
+      </div>
+
+      {/* ── Main Skills Content (Original Section - Keep as is) ──────────────── */}
+      <div className={`${ui.page} py-8`}>
       <div className={ui.container}>
         {/* Header */}
         <div className="mb-6">
@@ -379,5 +417,6 @@ export default function SkillsPage() {
         </div>
       </div>
     </div>
+    </>
   );
 }
