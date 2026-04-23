@@ -5,6 +5,7 @@ import { getMessages, sendMessage } from "../api/messageApi";
 import { completeTask } from "../api/taskApi";
 import { useAuth } from "../context/AuthContext";
 import WarningModal from "../components/WarningModal";
+import SessionRatingModal from "../components/SessionRatingModal";
 import { ui } from "../styles/ui";
 
 // ── Elapsed clock component ───────────────────────────────────────────────────
@@ -133,11 +134,12 @@ function ChatBox({ sessionId, sessionStatus, currentUserId }) {
   }, [sessionId]);
 
   useEffect(() => {
+    if (!sessionId) return;
     poll();
     if (sessionStatus !== "ACTIVE") return;
     const id = setInterval(poll, 3000);
     return () => clearInterval(id);
-  }, [poll, sessionStatus]);
+  }, [sessionId, sessionStatus]);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -264,6 +266,8 @@ export default function SessionPage() {
 
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [completing, setCompleting] = useState(false);
+  const [showRatingModal, setShowRatingModal] = useState(false);
+  const [ratingPending, setRatingPending] = useState(false);
 
   const load = useCallback(async () => {
     try {
@@ -285,12 +289,27 @@ export default function SessionPage() {
   const handleComplete = async () => {
     setCompleting(true);
     try {
-      await completeTask(taskId);
-      await load(); // refresh to show COMPLETED status
+      // Show rating modal first
+      setShowRatingModal(true);
+      setRatingPending(true);
       setConfirmOpen(false);
     } catch (err) {
       setConfirmOpen(false);
+      setError(err?.response?.data?.message || "Failed to prepare rating.");
+      setCompleting(false);
+    }
+  };
+
+  const handleRatingComplete = async () => {
+    try {
+      // After rating is submitted, complete the task
+      await completeTask(taskId);
+      await load(); // refresh to show COMPLETED status
+      setRatingPending(false);
+      setError(""); // clear any previous errors
+    } catch (err) {
       setError(err?.response?.data?.message || "Failed to complete task.");
+      setRatingPending(false);
     } finally {
       setCompleting(false);
     }
@@ -338,13 +357,23 @@ export default function SessionPage() {
       <WarningModal
         open={confirmOpen}
         title="Mark session as completed?"
-        message={`This will close the session and mark "${task?.title}" as COMPLETED.\n\nThe helper will receive a reputation boost.`}
+        message={`This will close the session and mark "${task?.title}" as COMPLETED.\n\nYou'll be able to rate the collaborator next.`}
         confirmText="Complete Session"
         cancelText="Not yet"
         confirmVariant="primary"
         loading={completing}
         onConfirm={handleComplete}
-        onClose={() => { if (!completing) setConfirmOpen(false); }}
+        onClose={() => { if (!completing && !ratingPending) setConfirmOpen(false); }}
+      />
+
+      <SessionRatingModal
+        isOpen={showRatingModal}
+        onClose={() => setShowRatingModal(false)}
+        ratedUserId={session?.helper?._id}
+        ratedUserName={session?.helper?.fullName || "Helper"}
+        sessionId={session?._id}
+        taskTitle={task?.title}
+        onRatingComplete={handleRatingComplete}
       />
 
       <div className={`${ui.container} space-y-6`}>
