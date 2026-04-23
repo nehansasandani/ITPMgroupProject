@@ -3,11 +3,12 @@ import { getReputation, getUserRatings } from "../../api/Reputation.js";
 import { getMySkills, addSkill, removeSkill } from "../../api/skillApi.js";
 import axiosInstance from "../../api/axiosInstance.js";
 import { useAuth } from "../../context/AuthContext";
-import { FiCheckCircle, FiPlus, FiTrash2, FiAward, FiMessageSquare, FiClock, FiActivity, FiStar, FiEdit3, FiX, FiLock, FiUnlock, FiShield, FiGithub, FiLinkedin, FiBarChart2, FiTrendingUp, FiBook, FiMenu } from "react-icons/fi";
+import { FiCheckCircle, FiPlus, FiTrash2, FiAward, FiMessageSquare, FiClock, FiActivity, FiStar, FiEdit3, FiX, FiLock, FiUnlock, FiShield, FiGithub, FiLinkedin, FiBarChart2, FiTrendingUp, FiBook, FiMenu, FiCpu } from "react-icons/fi";
 import SkillQuizModal from "../../components/SkillQuizModal";
 import ReputationTimeline from "../../components/reputation/ReputationTimeline";
 import ScoreVisibilitySettings from "../../components/reputation/ScoreVisibilitySettings";
 import ReputationInsights from "../../components/reputation/ReputationInsights";
+import ReputationDashboard from "../../components/reputation/ReputationDashboard";
 
 const ALL_SYSTEM_BADGES = [
   { id: "Reliable", icon: <FiCheckCircle />, desc: "High consistency in attending tasks.", requirement: "Complete 10+ tasks with zero no-shows.", color: "text-emerald-500", glow: "shadow-emerald-500/50" },
@@ -414,7 +415,8 @@ export default function UserProfile() {
                 { id: "Dashboard", label: "Dashboard", icon: <FiActivity size={18} /> },
                 { id: "Skills Portfolio", label: "Skills Portfolio", icon: <FiBook size={18} /> },
                 { id: "Trophy Room", label: "Trophy Room", icon: <FiAward size={18} /> },
-                { id: "Performance History", label: "Performance History", icon: <FiBarChart2 size={18} /> }
+                { id: "Performance History", label: "Performance History", icon: <FiBarChart2 size={18} /> },
+                { id: "AI Insights", label: "AI Reputation Guide", icon: <FiCpu size={18} /> }
               ].map((item) => (
                 <button
                   key={item.id}
@@ -477,6 +479,15 @@ export default function UserProfile() {
               </div>
             </div>
 
+            {/* Analytics Dashboard with Charts */}
+            <div>
+              <ReputationDashboard 
+                reputation={reputation} 
+                ratings={ratings} 
+                skills={skills} 
+              />
+            </div>
+
             {/* Health Status Card */}
             <div className={`border rounded-3xl p-6 relative overflow-hidden ${isCooledDown ? 'border-red-500/30 bg-red-500/5' : 'border-emerald-500/20 bg-emerald-500/5'}`}>
               <div className="flex items-center gap-3 mb-4">
@@ -498,11 +509,6 @@ export default function UserProfile() {
                   <p className="text-xs text-slate-400">Your account is active and ready for collaborations.</p>
                 </>
               )}
-            </div>
-
-            {/* Score Visibility Settings */}
-            <div className="bg-slate-900 border border-slate-800 rounded-3xl p-8 shadow-sm">
-              <ScoreVisibilitySettings userId={user?.id} />
             </div>
 
             {/* AI Reputation Insights */}
@@ -883,12 +889,19 @@ export default function UserProfile() {
                   ))
                 )}
               </div>
-            </div>
+            </div> 
 
             {/* Reputation Timeline - Full Width */}
             <div>
               <ReputationTimeline userId={user?.id} />
             </div>
+          </div>
+        )}
+
+        {/* ================= AI INSIGHTS TAB ================= */}
+        {activeTab === "AI Insights" && (
+          <div className="space-y-6">
+            <ReputationInsights userId={user?.id} />
           </div>
         )}
         </div>
@@ -960,6 +973,14 @@ export default function UserProfile() {
                 />
                 {formErrors.linkedinUrl && <span className="text-xs text-red-500 mt-1 flex items-center gap-1 font-medium bg-red-500/10 p-2 rounded-lg border border-red-500/20">{formErrors.linkedinUrl}</span>}
               </div>
+            </div>
+
+            {/* Score Visibility Settings */}
+            <div className="mt-8 pt-8 border-t border-slate-700">
+              <h3 className="text-sm font-bold text-indigo-300 uppercase tracking-widest mb-4 flex items-center gap-2">
+                <FiShield size={16} /> Privacy & Visibility Settings
+              </h3>
+              <ScoreVisibilitySettings userId={user?.id} />
             </div>
 
             <button 
