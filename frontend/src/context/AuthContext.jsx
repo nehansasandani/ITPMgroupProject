@@ -11,7 +11,6 @@ export function AuthProvider({ children }) {
   });
   const [loading, setLoading] = useState(true);
 
-  // Keep localStorage synced
   useEffect(() => {
     if (token) localStorage.setItem("token", token);
     else localStorage.removeItem("token");
@@ -22,24 +21,27 @@ export function AuthProvider({ children }) {
     else localStorage.removeItem("user");
   }, [user]);
 
-  // On first load, verify token (optional but modern)
+  // On first load verify token is still valid
   useEffect(() => {
     const boot = async () => {
       try {
         if (!token) return;
-        const res = await axiosInstance.get("/users/me");
-        // res returns { message, user } in backend (your /me route)
-        // We'll just keep existing stored user; or update if you later return full user data.
+        await axiosInstance.get("/users/me");
+        // token is valid — keep existing user from localStorage
       } catch {
+        // token expired or invalid — clear everything
         setToken("");
         setUser(null);
       } finally {
         setLoading(false);
       }
     };
-    boot();
-    if (!token) setLoading(false);
-  }, []);
+    if (token) {
+      boot();
+    } else {
+      setLoading(false);
+    }
+  }, []); // runs once on mount only
 
   const login = (payload) => {
     setToken(payload.token);
