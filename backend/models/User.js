@@ -113,6 +113,16 @@ const userSchema = new mongoose.Schema(
       type: Date,
       default: Date.now,
     },
+
+    // Score Visibility Settings
+    scoreVisibility: {
+      type: String,
+      enum: ['public', 'tier_only', 'private'],
+      default: 'public',
+      // public: show score and tier
+      // tier_only: show only tier, hide score
+      // private: hide both score and tier
+    },
   },
   { timestamps: true }
 );
