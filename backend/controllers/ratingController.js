@@ -1,6 +1,8 @@
 import Rating from "../models/Rating.js";
 import Reputation from "../models/Reputation.js";
 import Skill from "../models/Skill.js"; // her model
+import User from "../models/User.js";
+import { notifyRatingReceived } from "../utils/notificationHelper.js";
 
 // ─── Helper: recalculate full reputation after new rating ─────────────────────
 const updateReputationScore = async (userId) => {
@@ -113,6 +115,15 @@ export const submitRating = async (req, res) => {
       clarity, effort, timeCommitment, communication,
       comment: comment || "",
     });
+
+    // Get rater name for notification
+    const rater = await User.findById(raterId);
+    const avgRating = (clarity + effort + timeCommitment + communication) / 4;
+
+    // Send notification to rated user
+    if (rater) {
+      await notifyRatingReceived(ratedUserId, rater.fullName, avgRating.toFixed(1), comment || "");
+    }
 
     // Auto update reputation immediately
     await updateReputationScore(ratedUserId);

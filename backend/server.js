@@ -17,6 +17,8 @@ import userRoutes from "./routes/userRoutes.js";
 import skillRoutes from "./routes/skillRoutes.js";
 import ratingRoutes from "./routes/ratingRoutes.js";
 import reputationRoutes from "./routes/reputationRoutes.js";
+import endorsementRoutes from "./routes/endorsementRoutes.js";
+import notificationRoutes from "./routes/notificationRoutes.js";
 
 // Teammate's utils
 import { connectDB } from "./config/db.js";
@@ -39,10 +41,12 @@ app.use("/api/users", userRoutes);
 
 // ── Reputation routes ──
 app.use("/api/reputation", reputationRoutes);
+app.use("/api/endorsements", endorsementRoutes);
 
 // ── Your routes ──
 app.use("/api/ratings", ratingRoutes);
 app.use("/api/skills", skillRoutes);
+app.use("/api/notifications", notificationRoutes);
 
 const PORT = process.env.PORT || 5000;
 
