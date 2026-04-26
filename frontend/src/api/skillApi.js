@@ -19,16 +19,26 @@ export const removeSkill = async (skillId) => {
 };
 
 // Skill quiz (assessment)
-export const getSkillQuiz = async (skillName) => {
-  const res = await axiosInstance.get(`/skills/quiz/${encodeURIComponent(skillName)}`);
-  return res.data;
+export const getSkillQuiz = async (skillId) => {
+  try {
+    const res = await axiosInstance.get(`/skills/quiz/${skillId}`);
+    return res.data;
+  } catch (error) {
+    console.error("Failed to get skill quiz:", error);
+    throw error;
+  }
 };
 
-export const submitSkillQuiz = async (skillName, answers, skillId) => {
-  const res = await axiosInstance.post(`/skills/quiz/submit`, {
-    skillName,
-    answers,
-    skillId,
-  });
-  return res.data;
+export const submitSkillQuiz = async ({ skillId, answers, skillName }) => {
+  try {
+    const res = await axiosInstance.post(`/skills/quiz/submit`, {
+      skillId,
+      answers,
+      skillName,
+    });
+    return res.data;
+  } catch (error) {
+    console.error("Failed to submit skill quiz:", error);
+    throw error;
+  }
 };

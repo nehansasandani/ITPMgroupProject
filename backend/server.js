@@ -14,11 +14,14 @@ import adminRoutes from "./routes/adminRoutes.js";
 import matchRoutes from "./routes/matchRoutes.js";
 import taskRoutes from "./routes/taskRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
+import messageRoutes from "./routes/messageRoutes.js";
 
 // Your routes
 import skillRoutes from "./routes/skillRoutes.js";
 import ratingRoutes from "./routes/ratingRoutes.js";
 import reputationRoutes from "./routes/reputationRoutes.js";
+import endorsementRoutes from "./routes/endorsementRoutes.js";
+import notificationRoutes from "./routes/notificationRoutes.js";
 
 // Teammate's utils
 import { connectDB } from "./config/db.js";
@@ -38,13 +41,16 @@ app.get("/", (req, res) => res.send("API running ✅"));
 app.use("/api/match", matchRoutes);
 app.use("/api/tasks", taskRoutes);
 app.use("/api/users", userRoutes);
+app.use("/api/messages", messageRoutes);
 app.use("/api/admin", adminRoutes);
 // ── Reputation routes ──
 app.use("/api/reputation", reputationRoutes);
+app.use("/api/endorsements", endorsementRoutes);
 
 // ── Your routes ──
 app.use("/api/ratings", ratingRoutes);
 app.use("/api/skills", skillRoutes);
+app.use("/api/notifications", notificationRoutes);
 
 const PORT = process.env.PORT || 5000;
 

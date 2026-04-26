@@ -3,10 +3,15 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
-
 export const generateQuiz = async (skill, level) => {
   try {
+    if (!process.env.GROQ_API_KEY) {
+      throw new Error("GROQ_API_KEY not configured. Please add GROQ_API_KEY to .env file.");
+    }
+
+    // Create fresh Groq instance with current API key (this ensures .env changes are picked up)
+    const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
+
     const completion = await groq.chat.completions.create({
       model: "llama-3.3-70b-versatile",
       messages: [
@@ -27,6 +32,10 @@ export const generateQuiz = async (skill, level) => {
 
     const text = completion.choices[0]?.message?.content?.trim();
     
+    if (!text) {
+      throw new Error("Empty response from Groq API");
+    }
+
     // Clean markdown if present
     const cleaned = text.replace(/```json|```/g, "").trim();
     const quiz = JSON.parse(cleaned);
@@ -37,7 +46,22 @@ export const generateQuiz = async (skill, level) => {
 
     return quiz;
   } catch (error) {
-    console.error("=== QUIZ ERROR ===", error.message);
-    throw new Error("Failed to generate quiz: " + error.message);
+    console.error("=== QUIZ ERROR ===");
+    console.error("Error Message:", error.message);
+    console.error("Error Status:", error.status);
+    console.error("Full Error:", error);
+    
+    // Provide more specific error messages
+    if (error.status === 401 || error.message.includes("401") || error.message.includes("Unauthorized") || error.message.includes("authentication")) {
+      throw new Error("Groq API key is invalid or expired. Please check your credentials.");
+    } else if (error.status === 429 || error.message.includes("429") || error.message.includes("Too many requests")) {
+      throw new Error("Too many requests. Please try again in a moment.");
+    } else if (error.message.includes("GROQ_API_KEY")) {
+      throw error;
+    } else if (error.message.includes("Failed to generate exactly 5 questions")) {
+      throw new Error("Quiz format invalid. Try again.");
+    } else {
+      throw new Error("Failed to generate quiz: " + error.message);
+    }
   }
 };

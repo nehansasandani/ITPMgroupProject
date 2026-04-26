@@ -1,10 +1,14 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import { getReputation, getUserRatings } from "../../api/Reputation.js";
 import { getMySkills, addSkill, removeSkill } from "../../api/skillApi.js";
 import axiosInstance from "../../api/axiosInstance.js";
 import { useAuth } from "../../context/AuthContext";
-import { FiCheckCircle, FiPlus, FiTrash2, FiAward, FiMessageSquare, FiClock, FiActivity, FiStar, FiEdit3, FiX, FiLock, FiUnlock, FiShield, FiGithub, FiLinkedin } from "react-icons/fi";
+import { FiCheckCircle, FiPlus, FiTrash2, FiAward, FiMessageSquare, FiClock, FiActivity, FiStar, FiEdit3, FiX, FiLock, FiUnlock, FiShield, FiGithub, FiLinkedin, FiBarChart2, FiTrendingUp, FiBook, FiMenu, FiCpu } from "react-icons/fi";
 import SkillQuizModal from "../../components/SkillQuizModal";
+import ReputationTimeline from "../../components/reputation/ReputationTimeline";
+import ScoreVisibilitySettings from "../../components/reputation/ScoreVisibilitySettings";
+import ReputationInsights from "../../components/reputation/ReputationInsights";
+import ReputationDashboard from "../../components/reputation/ReputationDashboard";
 
 const ALL_SYSTEM_BADGES = [
   { id: "Reliable", icon: <FiCheckCircle />, desc: "High consistency in attending tasks.", requirement: "Complete 10+ tasks with zero no-shows.", color: "text-emerald-500", glow: "shadow-emerald-500/50" },
@@ -75,6 +79,8 @@ export default function UserProfile() {
   const [skills, setSkills] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("Dashboard");
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const sidebarRef = useRef(null);
 
   // Edit Profile States
   const [isEditingProfile, setIsEditingProfile] = useState(false);
@@ -134,6 +140,19 @@ export default function UserProfile() {
   useEffect(() => {
     setSelectedSkill("");
   }, [selectedSubCategory]);
+
+  // Close sidebar when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (sidebarRef.current && !sidebarRef.current.contains(e.target)) {
+        setSidebarOpen(false);
+      }
+    };
+    if (sidebarOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [sidebarOpen]);
 
   const subCategories = selectedCategory ? Object.keys(SKILL_CATEGORIES[selectedCategory]) : [];
   const skillOptions = selectedCategory && selectedSubCategory ? SKILL_CATEGORIES[selectedCategory][selectedSubCategory] : [];
@@ -271,7 +290,31 @@ export default function UserProfile() {
   const tierInfo = getScoreTierInfo(reputation.score);
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-8 pb-20 fade-up">
+    <div className="max-w-6xl mx-auto px-4 py-8 pb-20 fade-up relative">
+      
+      {/* Hamburger Menu Button - Fixed Top Left (Mobile) */}
+      <div className="lg:hidden fixed top-20 left-4 z-40">
+        <button
+          onClick={() => setSidebarOpen(!sidebarOpen)}
+          className={`flex items-center justify-center w-12 h-12 rounded-xl transition ${
+            sidebarOpen 
+              ? "bg-indigo-500 text-white" 
+              : "bg-indigo-500/20 text-indigo-400 border border-indigo-500/30 hover:bg-indigo-500/30"
+          }`}
+          title="Toggle sidebar menu"
+        >
+          <FiMenu size={24} />
+        </button>
+      </div>
+
+      {/* Mobile Backdrop */}
+      {sidebarOpen && (
+        <div 
+          className="fixed inset-0 bg-black/50 z-30 lg:hidden"
+          onClick={() => setSidebarOpen(false)}
+        ></div>
+      )}
+      
       
       {/* 1. Header Banner */}
       <div className="bg-slate-900 border border-slate-800 rounded-t-3xl overflow-hidden shadow-2xl relative">
@@ -330,8 +373,8 @@ export default function UserProfile() {
                 <div className="w-px h-4 bg-slate-700 mx-2 hidden sm:block"></div>
 
                 {skills.filter(s => s.isVerified).map(s => (
-                  <span key={s._id} className="px-2.5 py-1 text-[10px] font-bold text-emerald-400 bg-emerald-400/10 border border-emerald-500/20 rounded-full flex items-center gap-1.5 uppercase tracking-wider">
-                    <FiCheckCircle size={12} /> {s.skill}
+                  <span key={s._id} className="group px-3 py-1.5 text-[10px] font-bold text-emerald-400 bg-emerald-400/10 border border-emerald-500/20 rounded-full flex items-center gap-1.5 uppercase tracking-wider shadow-[0_0_15px_rgba(16,185,129,0.1)] hover:border-emerald-500/40 transition-all duration-300">
+                    <FiCheckCircle size={12} className="animate-pulse" /> {s.skill}
                   </span>
                 ))}
               </div>
@@ -340,31 +383,70 @@ export default function UserProfile() {
         </div>
 
         {/* Tab Navigation */}
-        <div className="flex overflow-x-auto border-t border-slate-800 bg-slate-900/80 backdrop-blur scrollbar-hide">
-          {["Dashboard", "Skills Portfolio", "Trophy Room", "Performance History"].map(tab => (
-            <button
-              key={tab}
-              onClick={() => setActiveTab(tab)}
-              className={`px-8 py-5 font-medium text-sm transition whitespace-nowrap border-b-2 flex-grow text-center ${
-                activeTab === tab 
-                  ? "border-indigo-500 text-indigo-400 bg-indigo-500/5" 
-                  : "border-transparent text-slate-400 hover:text-white hover:bg-white/5"
-              }`}
-            >
-              {tab}
-            </button>
-          ))}
-        </div>
+        <div className="hidden"></div>
       </div>
 
-      {/* 2. Content Sections - Floating layout */}
-      <div className="mt-6 animate-in slide-in-from-bottom-4 duration-300">
+      {/* 2. Content Sections with Sidebar Layout */}
+      <div className="mt-6 relative">
         
-        {/* ================= DASHBOARD TAB ================= */}
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+        
+        {/* SIDEBAR - Navigation */}
+        <div 
+          ref={sidebarRef}
+          className={`lg:col-span-1 fixed lg:relative left-0 top-0 h-full lg:h-auto w-64 lg:w-auto z-40 transition-all duration-300 ${
+            sidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
+          }`}
+        >
+          <div className="bg-slate-900 border border-slate-800 rounded-3xl p-4 sticky top-20 shadow-lg lg:shadow-none lg:border-l-0 lg:rounded-none">
+            {/* Close button on mobile */}
+            <div className="lg:hidden flex justify-between items-center mb-4 pb-4 border-b border-slate-800">
+              <h3 className="font-bold text-white">Navigation</h3>
+              <button
+                onClick={() => setSidebarOpen(false)}
+                className="text-slate-400 hover:text-white transition p-1"
+              >
+                <FiX size={20} />
+              </button>
+            </div>
+            
+            <div className="space-y-2">
+              {[
+                { id: "Dashboard", label: "Dashboard", icon: <FiActivity size={18} /> },
+                { id: "Skills Portfolio", label: "Skills Portfolio", icon: <FiBook size={18} /> },
+                { id: "Trophy Room", label: "Trophy Room", icon: <FiAward size={18} /> },
+                { id: "Performance History", label: "Performance History", icon: <FiBarChart2 size={18} /> },
+                { id: "AI Insights", label: "AI Reputation Guide", icon: <FiCpu size={18} /> }
+              ].map((item) => (
+                <button
+                  key={item.id}
+                  onClick={() => {
+                    setActiveTab(item.id);
+                    setSidebarOpen(false);
+                  }}
+                  className={`w-full flex items-center gap-3 px-5 py-4 rounded-2xl transition font-medium text-sm ${
+                    activeTab === item.id
+                      ? "bg-indigo-500/20 text-indigo-400 border border-indigo-500/30 shadow-lg shadow-indigo-500/10"
+                      : "text-slate-400 hover:text-white hover:bg-slate-800/60 border border-transparent"
+                  }`}
+                >
+                  {item.icon}
+                  <span>{item.label}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* MAIN CONTENT - Dynamic based on activeTab */}
+        <div className="lg:col-span-3 animate-in slide-in-from-bottom-4 duration-300">
+        
+        {/* ================= DASHBOARD TAB (DEFAULT) ================= */}
         {activeTab === "Dashboard" && (
-          <div className="grid lg:grid-cols-3 gap-6">
-            {/* Left Column */}
-            <div className="lg:col-span-1 space-y-6">
+          <div className="space-y-6">
+            
+            {/* Top Row: Score Card & Quick Metrics */}
+            <div className="grid md:grid-cols-2 gap-6">
               
               {/* Score Card */}
               <div className="bg-slate-900 border border-slate-800 rounded-3xl p-8 flex flex-col items-center text-center shadow-lg relative overflow-hidden">
@@ -375,47 +457,19 @@ export default function UserProfile() {
                 <div className="z-10 mb-4">
                   <CircularScoreGauge score={reputation.score} />
                 </div>
-                <p className="text-slate-300 text-sm mt-4 z-10 leading-relaxed max-w-[200px]">
-                  Based on peer feedback, reliability, and platform contribution.
+                <p className="text-slate-300 text-sm mt-4 z-10 leading-relaxed">
+                  Based on peer feedback, reliability, and contribution.
                 </p>
               </div>
 
-              {/* Health Status Card */}
-              <div className={`border rounded-3xl p-6 relative overflow-hidden ${isCooledDown ? 'border-red-500/30 bg-red-500/5' : 'border-emerald-500/20 bg-emerald-500/5'}`}>
-                <div className="flex items-center gap-3 mb-4">
-                  <FiShield className={`text-2xl ${isCooledDown ? 'text-red-500' : 'text-emerald-500'}`} />
-                  <h3 className={`font-bold ${isCooledDown ? 'text-red-500' : 'text-emerald-500'}`}>Account Health</h3>
-                </div>
-                {isCooledDown ? (
-                  <>
-                    <p className="text-sm text-red-400 font-medium mb-2">Restricted Action Required</p>
-                    <p className="text-xs text-red-500/80 mb-4">You are currently suspended due to accumulating No-Shows. You cannot apply for tasks.</p>
-                    <div className="bg-red-500/20 border border-red-500/30 rounded-lg p-3 text-center">
-                      <span className="text-xs font-bold text-red-400 uppercase tracking-widest">Lifts On</span>
-                      <div className="font-mono font-bold text-white mt-1">{new Date(reputation.cooldownUntil).toLocaleString()}</div>
-                    </div>
-                  </>
-                ) : (
-                  <>
-                    <p className="text-sm text-emerald-400 font-medium mb-1">Status: Excellent Standing</p>
-                    <p className="text-xs text-slate-400">Account is active and ready for collaborations. Keep up the great work.</p>
-                  </>
-                )}
-              </div>
-
-            </div>
-
-            {/* Right Column */}
-            <div className="lg:col-span-2 space-y-6">
-              
-              {/* Quick Metrics */}
-              <div className="grid sm:grid-cols-3 gap-4">
+              {/* Quick Metrics - Vertical Stack */}
+              <div className="space-y-4">
                 <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6">
                   <div className="text-3xl font-bold font-mono text-white mb-2">{ratings.length}</div>
                   <div className="text-xs text-slate-400 font-semibold uppercase tracking-widest">Total Ratings</div>
                 </div>
                 <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6">
-                  <div className="text-3xl font-bold font-mono text-indigo-400 mb-2">{skills.filter(s=>s.isVerified).length}</div>
+                  <div className="text-3xl font-bold font-mono text-emerald-400 mb-2">{skills.filter(s=>s.isVerified).length}</div>
                   <div className="text-xs text-slate-400 font-semibold uppercase tracking-widest">Verified Skills</div>
                 </div>
                 <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6">
@@ -423,30 +477,67 @@ export default function UserProfile() {
                   <div className="text-xs text-slate-400 font-semibold uppercase tracking-widest">Penalty Strikes</div>
                 </div>
               </div>
-
-              {/* Endorsements Preview */}
-              <div className="bg-slate-900 border border-slate-800 rounded-3xl p-8 shadow-sm">
-                <h2 className="text-xl font-bold text-white mb-6">Recent Endorsements</h2>
-                <div className="space-y-4">
-                  {ratings.filter(r => r.comment).length === 0 ? (
-                    <div className="text-slate-500 text-center py-6 border border-dashed border-slate-700 rounded-xl">No written reviews received yet.</div>
-                  ) : (
-                    ratings.filter(r => r.comment).slice(0, 3).map((r, i) => (
-                      <div key={i} className="p-5 bg-slate-800/40 border-l-4 border-l-indigo-500 rounded-r-xl rounded-l-md text-slate-300">
-                        <p className="italic text-sm">"{r.comment}"</p>
-                        <div className="flex items-center gap-4 mt-3">
-                          <p className="text-[11px] text-slate-500 font-medium uppercase tracking-wider">
-                            {new Date(r.createdAt).toLocaleDateString()}
-                          </p>
-                          <span className="text-[11px] font-bold text-amber-500">{((r.clarity+r.effort+r.timeCommitment+r.communication)/4).toFixed(1)} ★</span>
-                        </div>
-                      </div>
-                    ))
-                  )}
-                </div>
-              </div>
-
             </div>
+
+            {/* Analytics Dashboard with Charts */}
+            <div>
+              <ReputationDashboard 
+                reputation={reputation} 
+                ratings={ratings} 
+                skills={skills} 
+              />
+            </div>
+
+            {/* Health Status Card */}
+            <div className={`border rounded-3xl p-6 relative overflow-hidden ${isCooledDown ? 'border-red-500/30 bg-red-500/5' : 'border-emerald-500/20 bg-emerald-500/5'}`}>
+              <div className="flex items-center gap-3 mb-4">
+                <FiShield className={`text-2xl ${isCooledDown ? 'text-red-500' : 'text-emerald-500'}`} />
+                <h3 className={`font-bold ${isCooledDown ? 'text-red-500' : 'text-emerald-500'}`}>Account Health</h3>
+              </div>
+              {isCooledDown ? (
+                <>
+                  <p className="text-sm text-red-400 font-medium mb-2">Restricted Action Required</p>
+                  <p className="text-xs text-red-500/80 mb-4">You are currently suspended due to accumulating No-Shows. You cannot apply for tasks.</p>
+                  <div className="bg-red-500/20 border border-red-500/30 rounded-lg p-3 text-center">
+                    <span className="text-xs font-bold text-red-400 uppercase tracking-widest">Lifts On</span>
+                    <div className="font-mono font-bold text-white mt-1">{new Date(reputation.cooldownUntil).toLocaleString()}</div>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <p className="text-sm text-emerald-400 font-medium mb-1">Status: Excellent Standing</p>
+                  <p className="text-xs text-slate-400">Your account is active and ready for collaborations.</p>
+                </>
+              )}
+            </div>
+
+            {/* AI Reputation Insights */}
+            <div>
+              <ReputationInsights userId={user?.id} />
+            </div>
+
+            {/* Recent Endorsements */}
+            <div className="bg-slate-900 border border-slate-800 rounded-3xl p-8 shadow-sm">
+              <h2 className="text-xl font-bold text-white mb-6">Recent Endorsements</h2>
+              <div className="space-y-4">
+                {ratings.filter(r => r.comment).length === 0 ? (
+                  <div className="text-slate-500 text-center py-6 border border-dashed border-slate-700 rounded-xl">No written reviews received yet.</div>
+                ) : (
+                  ratings.filter(r => r.comment).slice(0, 3).map((r, i) => (
+                    <div key={i} className="p-5 bg-slate-800/40 border-l-4 border-l-indigo-500 rounded-r-xl rounded-l-md text-slate-300">
+                      <p className="italic text-sm">"{r.comment}"</p>
+                      <div className="flex items-center gap-4 mt-3">
+                        <p className="text-[11px] text-slate-500 font-medium uppercase tracking-wider">
+                          {new Date(r.createdAt).toLocaleDateString()}
+                        </p>
+                        <span className="text-[11px] font-bold text-amber-500">{((r.clarity+r.effort+r.timeCommitment+r.communication)/4).toFixed(1)} ★</span>
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
+            </div>
+
           </div>
         )}
 
@@ -658,7 +749,9 @@ export default function UserProfile() {
                           {!s.isVerified ? (
                             <button onClick={() => { setActiveSkillForQuiz({ name: s.skill, id: s._id }); setQuizModalOpen(true); }} className="px-4 py-2 text-xs font-bold bg-indigo-500/15 text-indigo-400 hover:bg-indigo-500 hover:text-white border border-indigo-500/30 rounded-lg transition text-center shadow-sm w-full">Verify Now</button>
                           ) : (
-                            <span className="px-4 py-2 text-xs font-bold text-emerald-400 bg-emerald-400/10 border border-emerald-500/20 rounded-lg text-center w-full uppercase tracking-wider flex items-center justify-center gap-1.5"><FiCheckCircle /> Verified</span>
+                            <span className="px-4 py-2 text-xs font-bold text-emerald-400 bg-emerald-400/5 border border-emerald-500/20 rounded-lg text-center w-full uppercase tracking-wider flex items-center justify-center gap-1.5 shadow-[inset_0_0_10px_rgba(16,185,129,0.05)]">
+                              <FiCheckCircle className="animate-in zoom-in duration-500" /> Verified
+                            </span>
                           )}
                         </div>
                       </div>
@@ -677,6 +770,18 @@ export default function UserProfile() {
             <p className="text-sm text-slate-400 mb-10 relative z-10">Unlock prestige badges by maintaining excellent collaborative ratings.</p>
 
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 relative z-10">
+              {/* Verified Expertise Summary Card */}
+              <div className={`relative flex flex-col items-center p-8 rounded-3xl border transition-all duration-500 bg-emerald-500/5 border-emerald-500/20 shadow-[0_0_20px_rgba(16,185,129,0.05)]`}>
+                <div className="text-6xl mb-6 flex items-center justify-center text-emerald-400 drop-shadow-lg">
+                  <FiAward />
+                </div>
+                <h3 className="text-lg font-bold text-center mb-2 text-white">Expertise</h3>
+                <p className="text-xs text-center text-slate-400 mb-4">{skills.filter(s => s.isVerified).length} Verified Skills</p>
+                <div className="mt-auto w-full pt-4 border-t border-emerald-500/10">
+                  <p className="text-[10px] text-center font-semibold uppercase tracking-wider text-emerald-400">Certifications Earned</p>
+                </div>
+              </div>
+
               {ALL_SYSTEM_BADGES.map(badgeDef => {
                 const earned = reputation.badges.includes(badgeDef.id);
                 return (
@@ -784,10 +889,23 @@ export default function UserProfile() {
                   ))
                 )}
               </div>
-            </div>
+            </div> 
 
+            {/* Reputation Timeline - Full Width */}
+            <div>
+              <ReputationTimeline userId={user?.id} />
+            </div>
           </div>
         )}
+
+        {/* ================= AI INSIGHTS TAB ================= */}
+        {activeTab === "AI Insights" && (
+          <div className="space-y-6">
+            <ReputationInsights userId={user?.id} />
+          </div>
+        )}
+        </div>
+        </div>
       </div>
 
       {/* ================= EDIT PROFILE MODAL ================= */}
@@ -855,6 +973,14 @@ export default function UserProfile() {
                 />
                 {formErrors.linkedinUrl && <span className="text-xs text-red-500 mt-1 flex items-center gap-1 font-medium bg-red-500/10 p-2 rounded-lg border border-red-500/20">{formErrors.linkedinUrl}</span>}
               </div>
+            </div>
+
+            {/* Score Visibility Settings */}
+            <div className="mt-8 pt-8 border-t border-slate-700">
+              <h3 className="text-sm font-bold text-indigo-300 uppercase tracking-widest mb-4 flex items-center gap-2">
+                <FiShield size={16} /> Privacy & Visibility Settings
+              </h3>
+              <ScoreVisibilitySettings userId={user?.id} />
             </div>
 
             <button 

@@ -3,8 +3,8 @@ export const skillData = [
     category: "Coding",
     subCategories: [
       { name: "Python", skills: ["Debugging", "OOP", "Flask", "Django", "Data Structures"] },
-      { name: "Java", skills: ["OOP", "Spring Boot", "Collections", "Debugging"] },
-      { name: "Web Development", skills: ["React", "Node.js", "Express", "MongoDB", "REST APIs"] },
+      { name: "Java", skills: ["OOP", "Spring Boot", "Springboot", "Collections", "Debugging"] },
+      { name: "Web Development", skills: ["React", "Node.js", "Express", "MongoDB", "MERN", "REST APIs"] },
     ],
   },
   {
