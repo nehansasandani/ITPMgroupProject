@@ -102,4 +102,9 @@ const TaskSchema = new mongoose.Schema(
 
 const Task = mongoose.model("Task", TaskSchema);
 
+export const TaskConfig = {
+  ALLOWED_DURATIONS: [15, 30, 45, 60],
+  ALLOWED_MODES: ["Chat", "Meet", "Online"],
+};
+
 export default Task;

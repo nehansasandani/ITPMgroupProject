@@ -91,6 +91,8 @@ function PersonCard({ label, user, accent }) {
   if (!user) return null;
   const ringColor = accent === "poster" ? "border-sky-400/30" : "border-violet-400/30";
   const labelColor = accent === "poster" ? "text-sky-300" : "text-violet-300";
+  const repFloor = user.reputation !== undefined ? Math.max(0, Math.min(5, Math.floor(user.reputation))) : 0;
+  
   return (
     <div className={`rounded-2xl border ${ringColor} bg-white dark:bg-white/5 shadow-sm dark:shadow-none p-4 flex items-center gap-4`}>
       <div className={`h-12 w-12 rounded-2xl flex items-center justify-center text-lg font-semibold border ${ringColor} bg-white dark:bg-white/5 shadow-sm dark:shadow-none shrink-0`}>
@@ -102,8 +104,8 @@ function PersonCard({ label, user, accent }) {
         <div className="text-xs text-slate-400 dark:text-white/45">{user.studentId}</div>
         {user.reputation !== undefined && (
           <div className="text-xs text-amber-400 mt-0.5">
-            {"★".repeat(Math.floor(user.reputation))}
-            <span className="text-white/30">{"★".repeat(5 - Math.floor(user.reputation))}</span>
+            {"★".repeat(repFloor)}
+            <span className="text-white/30">{"★".repeat(5 - repFloor)}</span>
             <span className="text-slate-500 dark:text-white/50 ml-1">{Number(user.reputation).toFixed(1)}</span>
             {user.completedTasksCount > 0 && (
               <span className="text-white/40 ml-2">{user.completedTasksCount} tasks done</span>
