@@ -112,6 +112,15 @@ test("shows session details and sends chat messages", async ({ page }) => {
       });
     }
 
+    if (path === "/api/notifications/unread/count" && method === "GET") {
+      return route.fulfill({
+        status: 200,
+        headers: corsHeaders,
+        contentType: "application/json",
+        body: JSON.stringify({ count: 0 }),
+      });
+    }
+
     if (path === `/api/messages/${sessionId}` && method === "POST") {
       let payload = {};
       try {
@@ -157,7 +166,12 @@ test("shows session details and sends chat messages", async ({ page }) => {
 
   const chatInput = page.getByPlaceholder("Type a message… (Enter to send)");
   await chatInput.fill("I can start now.");
-  await page.getByRole("button", { name: "Send" }).click();
+
+  // use Enter to send (more reliable than click) and wait for POST to finish
+  await Promise.all([
+    page.waitForResponse((r) => r.url().includes(`/api/messages/${sessionId}`) && r.request().method() === "POST"),
+    chatInput.press("Enter"),
+  ]);
 
   await expect(page.getByText("I can start now.")).toBeVisible();
 });

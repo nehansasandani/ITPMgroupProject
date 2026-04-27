@@ -119,6 +119,15 @@ test("loads matches and sends a request", async ({ page }) => {
       });
     }
 
+    if (path === "/api/notifications/unread/count" && method === "GET") {
+      return route.fulfill({
+        status: 200,
+        headers: corsHeaders,
+        contentType: "application/json",
+        body: JSON.stringify({ count: 0 }),
+      });
+    }
+
     return route.fulfill({
       status: 404,
       headers: corsHeaders,

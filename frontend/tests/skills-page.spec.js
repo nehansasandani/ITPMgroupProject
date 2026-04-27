@@ -53,6 +53,15 @@ async function mockSkillsApi(page, initialSkills) {
       });
     }
 
+    if (path === "/api/notifications/unread/count" && method === "GET") {
+      return route.fulfill({
+        status: 200,
+        headers: corsHeaders,
+        contentType: "application/json",
+        body: JSON.stringify({ count: 0 }),
+      });
+    }
+
     if (path === "/api/skills" && method === "POST") {
       let payload = {};
       try {
@@ -93,38 +102,34 @@ async function mockSkillsApi(page, initialSkills) {
   });
 }
 
-function selectByLabel(page, label, value) {
-  return page
-    .locator(`label:has-text("${label}")`)
-    .locator("..")
-    .locator("select")
-    .first()
-    .selectOption(value);
+async function selectByLabel(page, label, value) {
+  const sel = page.locator(`label:has-text("${label}")`).locator("..").locator("select").first();
+  // wait for the select to be present and enabled (some selects enable progressively)
+  await expect(sel).toBeVisible({ timeout: 10000 });
+  await expect(sel).toBeEnabled({ timeout: 10000 });
+  return sel.selectOption(value);
 }
 
 test("adds a new skill", async ({ page }) => {
   await seedAuth(page);
   await mockSkillsApi(page, []);
 
-  await page.goto("/skills");
+  await page.goto("/skills", { waitUntil: "domcontentloaded" });
 
-  // safer button selection
-  const submitButton = page.locator("button").first();
+  // target the form submit button explicitly
+  const submitButton = page.getByRole("button", { name: "Inject to Portfolio" });
   await expect(submitButton).toBeVisible();
 
-  const skillSelect = page
-    .locator('label:has-text("Skill")')
-    .locator("..")
-    .locator("select")
-    .first();
-  await skillSelect.selectOption("Node.js");
+  // select category -> subcategory -> skill (form enables selects progressively)
+  await selectByLabel(page, "Primary Domain", "Coding");
+  await selectByLabel(page, "Specialization", "Web Development");
+  await selectByLabel(page, "Target Skillset", "Node.js");
 
-  await page.getByRole("button", { name: "Add Skill" }).click();
-
+  // submit the form
   await submitButton.click();
 
-  // ✅ check UI update (skill appears)
-  await expect(page.locator("text=Node")).toBeVisible();
+  // ✅ check UI update (skill appears as a card heading)
+  await expect(page.locator('h4:has-text("Node.js")')).toBeVisible({ timeout: 5000 });
 });
 
 //
@@ -142,20 +147,21 @@ test("removes an existing skill", async ({ page }) => {
     },
   ]);
 
-  await page.goto("/skills");
+  await page.goto("/skills", { waitUntil: "domcontentloaded" });
 
-  const savedSkills = page
-    .getByRole("heading", { name: "Saved Skills" })
-    .locator("..")
-    .locator("..");
-  await expect(savedSkills.getByText("React")).toBeVisible();
+  const reactHeading = page.getByRole("heading", { name: "React" });
+  await expect(reactHeading).toBeVisible({ timeout: 5000 });
 
-  // click delete button (last button is safest in your UI)
-  await page.locator("button").last().click();
+  // locate the card container for this skill and click its erase button
+  const reactCard = reactHeading.locator("..").locator("..");
+  const eraseBtn = reactCard.locator('button[title="Erase Module"]');
+  // ensure hover reveals the control then click (force to bypass transitions)
+  await reactCard.hover();
+  await eraseBtn.click({ force: true, timeout: 5000 });
 
   // small wait for UI update
-  await page.waitForTimeout(1000);
+  await page.waitForTimeout(500);
 
-  // ✅ check success message instead of DOM removal
-  await expect(page.locator("text=removed")).toBeVisible();
+  // ✅ assert the React heading is no longer present
+  await expect(page.getByRole('heading', { name: 'React' })).toHaveCount(0, { timeout: 5000 });
 });
