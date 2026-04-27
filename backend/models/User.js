@@ -90,7 +90,7 @@ const userSchema = new mongoose.Schema(
       type: Number,
       default: 0,
       min: 0,
-      max: 5,
+      // max removed — reputation is now tracked 0-100 via the separate Reputation model
     },
 
     completedTasksCount: {

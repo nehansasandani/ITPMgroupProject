@@ -22,6 +22,7 @@ import ratingRoutes from "./routes/ratingRoutes.js";
 import reputationRoutes from "./routes/reputationRoutes.js";
 import endorsementRoutes from "./routes/endorsementRoutes.js";
 import notificationRoutes from "./routes/notificationRoutes.js";
+import uploadRoutes from "./routes/uploadRoutes.js";
 
 // Teammate's utils
 import { connectDB } from "./config/db.js";
@@ -46,6 +47,7 @@ app.use("/api/admin", adminRoutes);
 // ── Reputation routes ──
 app.use("/api/reputation", reputationRoutes);
 app.use("/api/endorsements", endorsementRoutes);
+app.use("/api/upload", uploadRoutes);
 
 // ── Your routes ──
 app.use("/api/ratings", ratingRoutes);

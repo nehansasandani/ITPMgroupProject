@@ -85,6 +85,7 @@ export default function UserProfile() {
 
   // Edit Profile States
   const [isEditingProfile, setIsEditingProfile] = useState(false);
+  const [editFullName, setEditFullName] = useState("");
   const [editBio, setEditBio] = useState("");
   const [editGithub, setEditGithub] = useState("");
   const [editLinkedin, setEditLinkedin] = useState("");
@@ -92,6 +93,7 @@ export default function UserProfile() {
   const [previewPic, setPreviewPic] = useState("");
   const [isSavingName, setIsSavingName] = useState(false);
   const [formErrors, setFormErrors] = useState({});
+  const [showSuccessHint, setShowSuccessHint] = useState(false);
 
   // Premium Skill Selection Flow
   const [isAddingSkill, setIsAddingSkill] = useState(false);
@@ -109,6 +111,7 @@ export default function UserProfile() {
     const fetchData = async () => {
       try {
         if (!user?.id) return;
+        setEditFullName(user.fullName || "");
         setEditBio(user.bio || "");
         setEditGithub(user.githubUrl || "");
         setEditLinkedin(user.linkedinUrl || "");
@@ -171,6 +174,12 @@ export default function UserProfile() {
     setFormErrors({});
     const errors = {};
 
+    if (!editFullName || editFullName.trim().length < 3) {
+      errors.fullName = "Full name must be at least 3 characters.";
+    } else if (editFullName.length > 60) {
+      errors.fullName = "Full name must be 60 characters or less.";
+    }
+
     if (editBio && editBio.length > 200) {
       errors.bio = "Bio must be 200 characters or less.";
     }
@@ -204,6 +213,7 @@ export default function UserProfile() {
       }
 
       const res = await axiosInstance.put("/users/me", { 
+        fullName: editFullName,
         bio: editBio, 
         githubUrl: editGithub, 
         linkedinUrl: editLinkedin,
@@ -213,6 +223,10 @@ export default function UserProfile() {
       setIsEditingProfile(false);
       setProfilePicFile(null);
       setFormErrors({});
+      
+      // Success Feedback
+      setShowSuccessHint(true);
+      setTimeout(() => setShowSuccessHint(false), 4000);
     } catch (err) {
       alert("Failed to update profile: " + (err.response?.data?.message || err.message));
     } finally {
@@ -307,6 +321,21 @@ export default function UserProfile() {
           <FiMenu size={24} />
         </button>
       </div>
+
+      {/* Success Notification Hint */}
+      {showSuccessHint && (
+        <div className="fixed top-24 right-6 z-50 animate-in slide-in-from-right-8 duration-500">
+          <div className="bg-emerald-500 text-white px-6 py-4 rounded-2xl shadow-2xl shadow-emerald-500/20 flex items-center gap-3 border border-white/20">
+            <div className="bg-white/20 p-2 rounded-full">
+              <FiCheckCircle size={20} />
+            </div>
+            <div>
+              <p className="font-bold text-sm">Profile Synchronized</p>
+              <p className="text-[10px] opacity-90 font-medium">Your changes are now live across the platform.</p>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Mobile Backdrop */}
       {sidebarOpen && (
@@ -957,6 +986,18 @@ export default function UserProfile() {
             </div>
             
             <div className="flex flex-col gap-4 mb-8">
+              <div className="flex flex-col gap-1.5">
+                <label className="text-[10px] font-bold text-indigo-300 uppercase tracking-widest flex items-center gap-1">Full Name</label>
+                <input 
+                  type="text" 
+                  value={editFullName} 
+                  onChange={e => setEditFullName(e.target.value)} 
+                  className={`bg-slate-950 border px-4 py-2.5 rounded-xl text-white outline-none focus:ring-1 transition text-sm ${formErrors.fullName ? 'border-red-500 focus:ring-red-500' : 'border-slate-700 focus:border-indigo-500'}`}
+                  placeholder="Your display name"
+                />
+                {formErrors.fullName && <span className="text-xs text-red-500 mt-1 flex items-center gap-1 font-medium bg-red-500/10 p-2 rounded-lg border border-red-500/20">{formErrors.fullName}</span>}
+              </div>
+
               <div className="flex flex-col gap-1.5">
                 <div className="flex justify-between items-center">
                   <label className="text-[10px] font-bold text-indigo-300 uppercase tracking-widest">About Me (Bio)</label>
