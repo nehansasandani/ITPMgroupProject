@@ -53,7 +53,7 @@ export default function ScoreVisibilitySettings({ userId, onUpdate = null }) {
 
   if (loading) {
     return (
-      <div className="p-6 bg-slate-900/40 border border-white/5 rounded-2xl">
+      <div className="p-6 bg-white dark:bg-slate-900 shadow-sm dark:shadow-none/40 border border-white/5 rounded-2xl">
         <div className="flex items-center justify-center py-8">
           <FiLoader className="text-indigo-400 animate-spin text-xl" />
         </div>
@@ -96,10 +96,10 @@ export default function ScoreVisibilitySettings({ userId, onUpdate = null }) {
       {/* Header */}
       <div className="flex items-center gap-2">
         <FiEye className="text-indigo-400 text-lg" />
-        <h3 className="text-lg font-bold text-white">Score Visibility</h3>
+        <h3 className="text-lg font-bold text-slate-900 dark:text-white">Score Visibility</h3>
       </div>
 
-      <p className="text-white/60 text-sm">
+      <p className="text-slate-500 dark:text-white/60 text-sm">
         Control how your reputation score is displayed to other users in the community.
       </p>
 
@@ -128,7 +128,7 @@ export default function ScoreVisibilitySettings({ userId, onUpdate = null }) {
             className={`relative p-4 rounded-xl border transition-all cursor-pointer group disabled:opacity-50 disabled:cursor-not-allowed ${
               visibility === option.id
                 ? `${option.bgColor} ${option.borderColor} border-2`
-                : 'bg-slate-900/40 border-white/10 hover:border-white/20'
+                : 'bg-white dark:bg-slate-900 shadow-sm dark:shadow-none/40 border-slate-200 dark:border-white/10 hover:border-slate-300 dark:hover:border-white/20'
             }`}
           >
             {/* Selected indicator */}
@@ -142,7 +142,7 @@ export default function ScoreVisibilitySettings({ userId, onUpdate = null }) {
                 {option.icon}
                 {option.label}
               </div>
-              <p className="text-xs text-white/60">{option.description}</p>
+              <p className="text-xs text-slate-500 dark:text-white/60">{option.description}</p>
             </div>
 
             {/* Hover effect */}
@@ -154,16 +154,16 @@ export default function ScoreVisibilitySettings({ userId, onUpdate = null }) {
       </div>
 
       {/* Current setting info */}
-      <div className="p-4 bg-white/5 border border-white/10 rounded-xl">
+      <div className="p-4 bg-white dark:bg-white/5 shadow-sm dark:shadow-none border border-slate-200 dark:border-white/10 rounded-xl">
         <div className="flex items-start gap-3">
           <div className="text-indigo-400 mt-1">
             {options.find(o => o.id === visibility)?.icon}
           </div>
           <div>
-            <p className="text-sm font-semibold text-white">
+            <p className="text-sm font-semibold text-slate-900 dark:text-white">
               Current: {options.find(o => o.id === visibility)?.label}
             </p>
-            <p className="text-xs text-white/50 mt-1">
+            <p className="text-xs text-slate-500 dark:text-white/50 mt-1">
               {visibility === 'public' &&
                 'Your reputation score and tier are visible to all users. This builds trust and credibility in the community.'}
               {visibility === 'tier_only' &&

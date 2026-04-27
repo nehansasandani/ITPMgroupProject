@@ -127,14 +127,14 @@ export default function LeaderboardPage() {
   const rest     = displayed.slice(3);
 
   if (loading) return (
-    <div className="max-w-5xl mx-auto px-4 py-12 text-white flex flex-col items-center justify-center min-h-[60vh]">
+    <div className="max-w-5xl mx-auto px-4 py-12 text-slate-900 dark:text-white flex flex-col items-center justify-center min-h-[60vh]">
       <div className="h-10 w-10 border-4 border-indigo-500/30 border-t-indigo-500 rounded-full animate-spin" />
-      <p className="mt-4 text-white/50 text-sm animate-pulse">Loading top contributors…</p>
+      <p className="mt-4 text-slate-500 dark:text-white/50 text-sm animate-pulse">Loading top contributors…</p>
     </div>
   );
 
   if (error) return (
-    <div className="max-w-5xl mx-auto px-4 py-12 text-white">
+    <div className="max-w-5xl mx-auto px-4 py-12 text-slate-900 dark:text-white">
       <div className="p-6 rounded-2xl border border-red-500/20 bg-red-500/10 text-center">
         <p className="text-red-200">{error}</p>
       </div>
@@ -172,29 +172,29 @@ export default function LeaderboardPage() {
             </span>
           </h2>
           
-          <p className="text-lg md:text-xl text-white/80 max-w-2xl mx-auto leading-relaxed font-light mb-8">
+          <p className="text-lg md:text-xl text-slate-700 dark:text-white/80 max-w-2xl mx-auto leading-relaxed font-light mb-8">
             Celebrating our community's brightest talents. Discover exceptional members ranked by clarity, effort, communication, and real-world impact across campus.
           </p>
           
           <div className="flex flex-wrap gap-4 justify-center">
             <div className="px-6 py-3 bg-indigo-500/20 border border-indigo-400/40 rounded-xl backdrop-blur-sm">
               <div className="text-indigo-300 text-xs font-bold uppercase tracking-widest mb-1">Active Members</div>
-              <div className="text-3xl font-bold text-white">{displayed.length}</div>
+              <div className="text-3xl font-bold text-slate-900 dark:text-white">{displayed.length}</div>
             </div>
             <div className="px-6 py-3 bg-purple-500/20 border border-purple-400/40 rounded-xl backdrop-blur-sm">
               <div className="text-purple-300 text-xs font-bold uppercase tracking-widest mb-1">Top Performer</div>
-              <div className="text-3xl font-bold text-white">{topThree[0]?.userId?.fullName?.split(" ")[0] || "—"}</div>
+              <div className="text-3xl font-bold text-slate-900 dark:text-white">{topThree[0]?.userId?.fullName?.split(" ")[0] || "—"}</div>
             </div>
             <div className="px-6 py-3 bg-cyan-500/20 border border-cyan-400/40 rounded-xl backdrop-blur-sm">
               <div className="text-cyan-300 text-xs font-bold uppercase tracking-widest mb-1">Highest Score</div>
-              <div className="text-3xl font-bold text-white">{topThree[0]?.score || 0}</div>
+              <div className="text-3xl font-bold text-slate-900 dark:text-white">{topThree[0]?.score || 0}</div>
             </div>
           </div>
         </div>
       </div>
 
       {/* ── Main Content ──────────────────────────────────────────────────── */}
-      <div className="max-w-5xl mx-auto px-4 py-10 text-white fade-up">
+      <div className="max-w-5xl mx-auto px-4 py-10 text-slate-900 dark:text-white fade-up">
 
       {/* ── Filter Bar ────────────────────────────────────────────────────── */}
       <div className="mb-8 space-y-3">
@@ -203,15 +203,15 @@ export default function LeaderboardPage() {
         <div className="flex flex-wrap items-center gap-3">
 
           {/* Period Tabs */}
-          <div className="flex items-center gap-1 p-1 bg-slate-900 border border-white/10 rounded-xl">
+          <div className="flex items-center gap-1 p-1 bg-white dark:bg-slate-900 shadow-sm dark:shadow-none border border-slate-200 dark:border-white/10 rounded-xl">
             {PERIODS.map(p => (
               <button
                 key={p.id}
                 onClick={() => setPeriod(p.id)}
                 className={`flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition-all duration-200 ${
                   period === p.id
-                    ? "bg-indigo-500 text-white shadow-lg shadow-indigo-500/20"
-                    : "text-white/40 hover:text-white/70"
+                    ? "bg-indigo-500 text-slate-900 dark:text-white shadow-lg shadow-indigo-500/20"
+                    : "text-white/40 hover:text-slate-600 dark:hover:text-white/70"
                 }`}
               >
                 {p.icon} {p.label}
@@ -227,10 +227,10 @@ export default function LeaderboardPage() {
               value={search}
               onChange={e => setSearch(e.target.value)}
               placeholder="Search by name or ID…"
-              className="w-full pl-9 pr-4 py-2.5 bg-slate-900 border border-white/10 rounded-xl text-sm text-white placeholder-white/30 outline-none focus:border-indigo-500/50 transition"
+              className="w-full pl-9 pr-4 py-2.5 bg-white dark:bg-slate-900 shadow-sm dark:shadow-none border border-slate-200 dark:border-white/10 rounded-xl text-sm text-slate-900 dark:text-white placeholder-white/30 outline-none focus:border-indigo-500/50 transition"
             />
             {search && (
-              <button onClick={() => setSearch("")} className="absolute right-3 top-1/2 -translate-y-1/2 text-white/30 hover:text-white transition">
+              <button onClick={() => setSearch("")} className="absolute right-3 top-1/2 -translate-y-1/2 text-white/30 hover:text-slate-900 dark:hover:text-white transition">
                 <FiX size={14} />
               </button>
             )}
@@ -245,13 +245,13 @@ export default function LeaderboardPage() {
             className={`flex items-center gap-2 px-4 py-2.5 rounded-xl border text-xs font-bold uppercase tracking-wider transition-all ${
               filtersOpen || activeFilterCount > 0
                 ? "bg-indigo-500/15 border-indigo-500/40 text-indigo-300"
-                : "bg-slate-900 border-white/10 text-white/50 hover:text-white"
+                : "bg-white dark:bg-slate-900 shadow-sm dark:shadow-none border-slate-200 dark:border-white/10 text-slate-500 dark:text-white/50 hover:text-slate-900 dark:hover:text-white"
             }`}
           >
             <FiSliders size={13} />
             Filters
             {activeFilterCount > 0 && (
-              <span className="ml-0.5 w-4 h-4 flex items-center justify-center bg-indigo-500 text-white rounded-full text-[9px] font-black">
+              <span className="ml-0.5 w-4 h-4 flex items-center justify-center bg-indigo-500 text-slate-900 dark:text-white rounded-full text-[9px] font-black">
                 {activeFilterCount}
               </span>
             )}
@@ -323,8 +323,8 @@ export default function LeaderboardPage() {
 
       {/* ── Table ─────────────────────────────────────────────────────────── */}
       {rest.length > 0 && (
-        <div className="bg-slate-950/40 border border-white/5 rounded-3xl overflow-hidden backdrop-blur-xl">
-          <div className="px-6 py-4 border-b border-white/5 bg-white/5 flex items-center text-xs font-semibold uppercase tracking-wider text-white/40">
+        <div className="bg-white dark:bg-slate-950/40 shadow-sm dark:shadow-none border border-white/5 rounded-3xl overflow-hidden backdrop-blur-xl">
+          <div className="px-6 py-4 border-b border-white/5 bg-white dark:bg-white/5 shadow-sm dark:shadow-none flex items-center text-xs font-semibold uppercase tracking-wider text-white/40">
             <div className="flex-[0.5]">Rank</div>
             <div className="flex-[3]">Member</div>
             <div className="flex-[1.5] hidden md:block">Department</div>
@@ -347,9 +347,9 @@ export default function LeaderboardPage() {
       )}
 
       {displayed.length === 0 && !loading && (
-        <div className="text-center py-20 bg-white/5 border border-white/10 rounded-3xl">
+        <div className="text-center py-20 bg-white dark:bg-white/5 shadow-sm dark:shadow-none border border-slate-200 dark:border-white/10 rounded-3xl">
           <FiStar className="text-4xl text-white/20 mx-auto mb-4" />
-          <p className="text-white/50">No results match your filters.</p>
+          <p className="text-slate-500 dark:text-white/50">No results match your filters.</p>
           <button
             onClick={() => { setPeriod("all"); setSkill("All Skills"); setDepartment("All Departments"); setSearch(""); }}
             className="mt-4 text-indigo-400 text-sm underline underline-offset-2"
@@ -378,7 +378,7 @@ function FilterSelect({ label, value, options, onChange }) {
         <select
           value={value}
           onChange={e => onChange(e.target.value)}
-          className="appearance-none bg-slate-900 border border-white/10 text-white text-sm rounded-xl px-4 py-2.5 pr-9 outline-none focus:border-indigo-500/50 transition cursor-pointer min-w-[160px]"
+          className="appearance-none bg-white dark:bg-slate-900 shadow-sm dark:shadow-none border border-slate-200 dark:border-white/10 text-slate-900 dark:text-white text-sm rounded-xl px-4 py-2.5 pr-9 outline-none focus:border-indigo-500/50 transition cursor-pointer min-w-[160px]"
         >
           {options.map(o => <option key={o} value={o}>{o}</option>)}
         </select>
@@ -397,7 +397,7 @@ function SortDropdown({ value, onChange }) {
         <select
           value={value}
           onChange={e => onChange(e.target.value)}
-          className="appearance-none bg-slate-900 border border-white/10 text-white/60 text-xs rounded-xl pl-8 pr-8 py-2.5 outline-none focus:border-indigo-500/50 transition cursor-pointer font-semibold uppercase tracking-wider"
+          className="appearance-none bg-white dark:bg-slate-900 shadow-sm dark:shadow-none border border-slate-200 dark:border-white/10 text-slate-500 dark:text-white/60 text-xs rounded-xl pl-8 pr-8 py-2.5 outline-none focus:border-indigo-500/50 transition cursor-pointer font-semibold uppercase tracking-wider"
         >
           {SORT_OPTIONS.map(o => <option key={o.id} value={o.id}>{o.label}</option>)}
         </select>
@@ -411,7 +411,7 @@ function FilterPill({ label, onRemove }) {
   return (
     <span className="inline-flex items-center gap-1.5 px-3 py-1 text-[10px] font-bold uppercase tracking-wider rounded-full bg-indigo-500/10 border border-indigo-500/30 text-indigo-300">
       {label}
-      <button onClick={onRemove} className="hover:text-white transition">
+      <button onClick={onRemove} className="hover:text-slate-900 dark:hover:text-white transition">
         <FiX size={10} />
       </button>
     </span>
@@ -442,11 +442,11 @@ function PodiumCard({ user, rank, className = "", onViewStats }) {
   const name = userId?.fullName || "Unknown Member";
 
   return (
-    <div className={`relative flex flex-col items-center p-6 rounded-3xl border border-white/10 bg-gradient-to-b from-white/10 to-white/5 backdrop-blur-md transition-all duration-300 hover:-translate-y-2 hover:bg-white/10 ${className}`}>
+    <div className={`relative flex flex-col items-center p-6 rounded-3xl border border-slate-200 dark:border-white/10 bg-gradient-to-b from-white/10 to-white/5 backdrop-blur-md transition-all duration-300 hover:-translate-y-2 hover:bg-slate-50 dark:hover:bg-white/10 hover:shadow-sm dark:hover:shadow-none ${className}`}>
       <div className={`absolute -top-6 w-12 h-12 flex items-center justify-center rounded-full bg-gradient-to-br ${rankColors[rank]} border shadow-xl font-bold text-lg`}>
         {isFirst ? <FiAward className="text-2xl" /> : `#${rank}`}
       </div>
-      <div className="w-20 h-20 mt-4 rounded-full bg-slate-800 border-2 border-white/10 flex items-center justify-center overflow-hidden mb-4 shadow-xl">
+      <div className="w-20 h-20 mt-4 rounded-full bg-slate-100 dark:bg-slate-800 border-2 border-slate-200 dark:border-white/10 flex items-center justify-center overflow-hidden mb-4 shadow-xl">
         {userId?.profilePic
           ? <img src={`/src/pages/images/${userId.profilePic}`} alt="Avatar" className="w-full h-full object-cover" />
           : <FiUser className="text-3xl text-white/20" />}
@@ -457,10 +457,10 @@ function PodiumCard({ user, rank, className = "", onViewStats }) {
         <p className="text-white/30 text-[10px] mt-0.5 uppercase tracking-widest">{userId.department}</p>
       )}
       <div className="mt-5 w-full bg-slate-950/50 rounded-2xl p-3 text-center border border-white/5 mb-3">
-        <div className="text-xs text-white/50 uppercase tracking-widest mb-1">Score</div>
+        <div className="text-xs text-slate-500 dark:text-white/50 uppercase tracking-widest mb-1">Score</div>
         <div className="text-2xl font-bold bg-gradient-to-r from-indigo-300 to-cyan-300 bg-clip-text text-transparent">{score}</div>
       </div>
-      <button onClick={onViewStats} className="w-full py-2 bg-white/5 hover:bg-white/10 rounded-xl text-xs font-bold text-white transition border border-white/10">
+      <button onClick={onViewStats} className="w-full py-2 bg-white dark:bg-white/5 shadow-sm dark:shadow-none hover:bg-slate-50 dark:hover:bg-white/10 hover:shadow-sm dark:hover:shadow-none rounded-xl text-xs font-bold text-slate-900 dark:text-white transition border border-slate-200 dark:border-white/10">
         View Stats
       </button>
       {badges?.length > 0 && (
@@ -469,7 +469,7 @@ function PodiumCard({ user, rank, className = "", onViewStats }) {
             <span key={b} className="text-[10px] px-2 py-0.5 rounded-full bg-indigo-500/20 border border-indigo-500/30 text-indigo-300 whitespace-nowrap">{b}</span>
           ))}
           {badges.length > 2 && (
-            <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-white/10 text-white/50">+{badges.length - 2}</span>
+            <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-slate-50 dark:bg-white/10 shadow-sm dark:shadow-none text-slate-500 dark:text-white/50">+{badges.length - 2}</span>
           )}
         </div>
       )}
@@ -482,12 +482,12 @@ function ListRow({ entry, rank, onViewStats, searchQuery }) {
   const name = userId?.fullName || "Unknown";
 
   return (
-    <div className="flex items-center px-6 py-4 hover:bg-white/5 transition-colors group">
-      <div className="flex-[0.5] font-mono text-white/40 group-hover:text-white/80 transition-colors">
+    <div className="flex items-center px-6 py-4 hover:bg-white dark:hover:bg-white/5 hover:shadow-sm dark:hover:shadow-none transition-colors group">
+      <div className="flex-[0.5] font-mono text-white/40 group-hover:text-slate-700 dark:group-hover:text-white/80 transition-colors">
         {String(rank).padStart(2, "0")}
       </div>
       <div className="flex-[3] flex items-center gap-4">
-        <div className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center overflow-hidden shadow-md shrink-0">
+        <div className="w-10 h-10 rounded-full bg-white dark:bg-white/5 shadow-sm dark:shadow-none border border-slate-200 dark:border-white/10 flex items-center justify-center overflow-hidden shadow-md shrink-0">
           {userId?.profilePic
             ? <img src={`/src/pages/images/${userId.profilePic}`} alt="Avatar" className="w-full h-full object-cover" />
             : <FiUser className="text-white/40 text-lg" />}
@@ -499,14 +499,14 @@ function ListRow({ entry, rank, onViewStats, searchQuery }) {
       </div>
       <div className="flex-[1.5] hidden md:block">
         {userId?.department && (
-          <span className="text-[10px] px-2 py-1 rounded-md bg-white/5 border border-white/5 text-white/50 uppercase tracking-wider">
+          <span className="text-[10px] px-2 py-1 rounded-md bg-white dark:bg-white/5 shadow-sm dark:shadow-none border border-white/5 text-slate-500 dark:text-white/50 uppercase tracking-wider">
             {highlightMatch(userId.department, searchQuery)}
           </span>
         )}
       </div>
       <div className="flex-[2] hidden md:flex items-center gap-2">
         {badges?.map(b => (
-          <span key={b} className="inline-flex items-center gap-1 text-[10px] px-2 py-1 rounded-md bg-white/5 border border-white/5 text-white/60">
+          <span key={b} className="inline-flex items-center gap-1 text-[10px] px-2 py-1 rounded-md bg-white dark:bg-white/5 shadow-sm dark:shadow-none border border-white/5 text-slate-500 dark:text-white/60">
             <FiZap className="text-amber-400/70" /> {b}
           </span>
         ))}
@@ -548,8 +548,8 @@ function PublicProfileModal({ userObj, onClose }) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200">
-      <div className="bg-slate-900 border border-slate-700 w-full max-w-2xl rounded-3xl overflow-hidden shadow-2xl relative">
-        <button onClick={onClose} className="absolute top-6 right-6 text-slate-400 hover:text-white z-10 bg-slate-800 p-2 rounded-full">
+      <div className="bg-white dark:bg-slate-900 shadow-sm dark:shadow-none border border-slate-700 w-full max-w-2xl rounded-3xl overflow-hidden shadow-2xl relative">
+        <button onClick={onClose} className="absolute top-6 right-6 text-slate-400 hover:text-slate-900 dark:hover:text-white z-10 bg-slate-100 dark:bg-slate-800 p-2 rounded-full">
           <FiX size={20} />
         </button>
         {loading ? (
@@ -560,13 +560,13 @@ function PublicProfileModal({ userObj, onClose }) {
         ) : (
           <div className="p-8">
             <div className="flex items-center gap-4 mb-8 pb-6 border-b border-slate-800">
-              <div className="w-16 h-16 bg-slate-800 border-2 border-slate-700 text-indigo-300 rounded-full flex items-center justify-center text-2xl font-bold overflow-hidden shadow-xl shrink-0">
+              <div className="w-16 h-16 bg-slate-100 dark:bg-slate-800 border-2 border-slate-700 text-indigo-300 rounded-full flex items-center justify-center text-2xl font-bold overflow-hidden shadow-xl shrink-0">
                 {userObj.profilePic
                   ? <img src={`/src/pages/images/${userObj.profilePic}`} alt="Avatar" className="w-full h-full object-cover" />
                   : userObj.fullName?.charAt(0)}
               </div>
               <div>
-                <h2 className="text-2xl font-bold text-white">{userObj.fullName}</h2>
+                <h2 className="text-2xl font-bold text-slate-900 dark:text-white">{userObj.fullName}</h2>
                 <p className="text-slate-400 text-sm flex items-center gap-2">
                   <span>{userObj.role}</span> &bull; <span>{userObj.studentId}</span>
                   {userObj.department && <><span>&bull;</span><span>{userObj.department}</span></>}
@@ -579,7 +579,7 @@ function PublicProfileModal({ userObj, onClose }) {
                   </div>
                 )}
               </div>
-              <div className="ml-auto text-center bg-slate-950 p-3 rounded-2xl border border-slate-800 hidden sm:block">
+              <div className="ml-auto text-center bg-slate-50 dark:bg-slate-950 p-3 rounded-2xl border border-slate-800 hidden sm:block">
                 <div className="text-[10px] text-slate-500 uppercase tracking-widest font-bold mb-1">Score</div>
                 <div className="text-3xl font-mono font-bold text-emerald-400">{rep?.score ?? "--"}</div>
               </div>
@@ -592,9 +592,9 @@ function PublicProfileModal({ userObj, onClose }) {
                 rep.categoryScores.map(cs => {
                   const isVerified = skills.find(s => s.skill === cs.skillName)?.isVerified;
                   return (
-                    <div key={cs.skillName} className="flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-slate-800/40 rounded-xl border border-slate-700 hover:bg-slate-800/80 transition">
+                    <div key={cs.skillName} className="flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-slate-100 dark:bg-slate-800/40 rounded-xl border border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800/80 transition">
                       <div className="flex items-center gap-2 mb-2 sm:mb-0">
-                        <div className="font-semibold text-white">{cs.skillName}</div>
+                        <div className="font-semibold text-slate-900 dark:text-white">{cs.skillName}</div>
                         {isVerified && <FiCheckCircle className="text-emerald-400" size={14} />}
                       </div>
                       <div className="flex items-center gap-6">
@@ -606,7 +606,7 @@ function PublicProfileModal({ userObj, onClose }) {
                           <span className="text-[9px] text-slate-500 uppercase">Comm.</span>
                           <span className="text-xs font-mono font-bold text-violet-300">{cs.avgCommunication.toFixed(1)}</span>
                         </div>
-                        <div className="flex flex-col items-center bg-slate-900 border border-slate-700 px-3 py-1 rounded-lg">
+                        <div className="flex flex-col items-center bg-white dark:bg-slate-900 shadow-sm dark:shadow-none border border-slate-700 px-3 py-1 rounded-lg">
                           <span className="text-[9px] text-slate-500 uppercase tracking-widest">Avg</span>
                           <span className="text-sm font-mono font-bold text-amber-400">{cs.overallAvg.toFixed(1)} ⭐</span>
                         </div>

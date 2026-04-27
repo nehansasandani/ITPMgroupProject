@@ -52,11 +52,11 @@ function Field({ label, hint, error, children, right }) {
   return (
     <div>
       <div className="flex items-end justify-between gap-3">
-        <label className="text-sm text-white/80">{label}</label>
+        <label className="text-sm text-slate-700 dark:text-white/80">{label}</label>
         {right}
       </div>
       {children}
-      {hint && <p className="text-xs text-white/50 mt-1">{hint}</p>}
+      {hint && <p className="text-xs text-slate-500 dark:text-white/50 mt-1">{hint}</p>}
       {error && <p className="text-xs text-red-200 mt-1">{error}</p>}
     </div>
   );
@@ -143,32 +143,32 @@ export default function EditTaskPage() {
 
   if (loadingPage) {
     return (
-      <div className="max-w-6xl mx-auto px-4 py-10 text-white">
-        <div className="rounded-3xl border border-white/10 bg-white/5 p-6">Loading task...</div>
+      <div className="max-w-6xl mx-auto px-4 py-10 text-slate-900 dark:text-white">
+        <div className="rounded-3xl border border-slate-200 dark:border-white/10 bg-white dark:bg-white/5 shadow-sm dark:shadow-none p-6">Loading task...</div>
       </div>
     );
   }
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-10 text-white">
+    <div className="max-w-6xl mx-auto px-4 py-10 text-slate-900 dark:text-white">
       <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
         <div>
           <h1 className="text-2xl md:text-3xl font-semibold">Edit Task</h1>
-          <p className="text-white/70 text-sm mt-1">
+          <p className="text-slate-600 dark:text-white/70 text-sm mt-1">
             Update your task details before it gets accepted.
           </p>
         </div>
 
         <Link
           to="/tasks/mine"
-          className="px-4 py-2 rounded-xl border border-white/15 bg-white/5 hover:bg-white/10 text-sm"
+          className="px-4 py-2 rounded-xl border border-slate-200 dark:border-white/15 bg-white dark:bg-white/5 shadow-sm dark:shadow-none hover:bg-slate-50 dark:hover:bg-white/10 hover:shadow-sm dark:hover:shadow-none text-sm"
         >
           Back to My Tasks
         </Link>
       </div>
 
       <div className="grid lg:grid-cols-3 gap-5 mt-6 items-start">
-        <div className="lg:col-span-2 rounded-3xl border border-white/10 bg-white/5 backdrop-blur p-6 md:p-8">
+        <div className="lg:col-span-2 rounded-3xl border border-slate-200 dark:border-white/10 bg-white dark:bg-white/5 shadow-sm dark:shadow-none backdrop-blur p-6 md:p-8">
           {serverError && (
             <div className="mb-4 p-4 rounded-2xl bg-red-500/10 border border-red-500/20 text-red-200 text-sm">
               <div className="font-semibold">Cannot update task</div>
@@ -189,7 +189,7 @@ export default function EditTaskPage() {
             <Field label="Task Title" error={errors.title?.message}>
               <input
                 {...register("title")}
-                className="mt-1 w-full rounded-xl bg-slate-950/40 border border-white/10 px-3 py-2.5 outline-none focus:border-white/30 focus:ring-2 focus:ring-white/10"
+                className="mt-1 w-full rounded-xl bg-white dark:bg-slate-950/40 shadow-sm dark:shadow-none border border-slate-200 dark:border-white/10 px-3 py-2.5 outline-none focus:border-white/30 focus:ring-2 focus:ring-white/10"
               />
             </Field>
 
@@ -197,14 +197,14 @@ export default function EditTaskPage() {
               <textarea
                 {...register("description")}
                 rows={5}
-                className="mt-1 w-full rounded-xl bg-slate-950/40 border border-white/10 px-3 py-2.5 outline-none focus:border-white/30 focus:ring-2 focus:ring-white/10"
+                className="mt-1 w-full rounded-xl bg-white dark:bg-slate-950/40 shadow-sm dark:shadow-none border border-slate-200 dark:border-white/10 px-3 py-2.5 outline-none focus:border-white/30 focus:ring-2 focus:ring-white/10"
               />
             </Field>
 
             <Field label="Expected Outcome" error={errors.expectedOutcome?.message}>
               <input
                 {...register("expectedOutcome")}
-                className="mt-1 w-full rounded-xl bg-slate-950/40 border border-white/10 px-3 py-2.5 outline-none focus:border-white/30 focus:ring-2 focus:ring-white/10"
+                className="mt-1 w-full rounded-xl bg-white dark:bg-slate-950/40 shadow-sm dark:shadow-none border border-slate-200 dark:border-white/10 px-3 py-2.5 outline-none focus:border-white/30 focus:ring-2 focus:ring-white/10"
               />
             </Field>
 
@@ -221,7 +221,7 @@ export default function EditTaskPage() {
                         className={`rounded-xl px-3 py-3 text-sm border transition ${
                           active
                             ? "bg-white text-slate-900 border-white"
-                            : "border-white/15 bg-white/5 hover:bg-white/10 text-white/85"
+                            : "border-slate-200 dark:border-white/15 bg-white dark:bg-white/5 shadow-sm dark:shadow-none hover:bg-slate-50 dark:hover:bg-white/10 hover:shadow-sm dark:hover:shadow-none text-slate-800 dark:text-white/85"
                         }`}
                       >
                         {cat.label}
@@ -245,7 +245,7 @@ export default function EditTaskPage() {
                             ? u === "URGENT"
                               ? "bg-amber-200 text-slate-900 border-amber-200"
                               : "bg-white text-slate-900 border-white"
-                            : "border-white/15 bg-white/5 hover:bg-white/10 text-white/85"
+                            : "border-slate-200 dark:border-white/15 bg-white dark:bg-white/5 shadow-sm dark:shadow-none hover:bg-slate-50 dark:hover:bg-white/10 hover:shadow-sm dark:hover:shadow-none text-slate-800 dark:text-white/85"
                         }`}
                       >
                         {u}
@@ -260,14 +260,14 @@ export default function EditTaskPage() {
               <Field label="Skill Required" error={errors.skillRequired?.message}>
                 <input
                   {...register("skillRequired")}
-                  className="mt-1 w-full rounded-xl bg-slate-950/40 border border-white/10 px-3 py-2.5 outline-none focus:border-white/30 focus:ring-2 focus:ring-white/10"
+                  className="mt-1 w-full rounded-xl bg-white dark:bg-slate-950/40 shadow-sm dark:shadow-none border border-slate-200 dark:border-white/10 px-3 py-2.5 outline-none focus:border-white/30 focus:ring-2 focus:ring-white/10"
                 />
               </Field>
 
               <Field label="Preferred Mode" error={errors.mode?.message}>
                 <select
                   {...register("mode")}
-                  className="mt-1 w-full rounded-xl bg-slate-950/40 border border-white/10 px-3 py-2.5 outline-none focus:border-white/30 focus:ring-2 focus:ring-white/10"
+                  className="mt-1 w-full rounded-xl bg-white dark:bg-slate-950/40 shadow-sm dark:shadow-none border border-slate-200 dark:border-white/10 px-3 py-2.5 outline-none focus:border-white/30 focus:ring-2 focus:ring-white/10"
                 >
                   {MODES.map((m) => (
                     <option key={m} value={m}>
@@ -290,7 +290,7 @@ export default function EditTaskPage() {
                       className={`px-3 py-2 rounded-xl text-sm border transition ${
                         active
                           ? "bg-white text-slate-900 border-white"
-                          : "border-white/15 bg-white/5 hover:bg-white/10 text-white/85"
+                          : "border-slate-200 dark:border-white/15 bg-white dark:bg-white/5 shadow-sm dark:shadow-none hover:bg-slate-50 dark:hover:bg-white/10 hover:shadow-sm dark:hover:shadow-none text-slate-800 dark:text-white/85"
                       }`}
                     >
                       {d} min
@@ -312,7 +312,7 @@ export default function EditTaskPage() {
                       className={`px-3 py-2 rounded-xl text-sm border transition ${
                         active
                           ? "bg-white text-slate-900 border-white"
-                          : "border-white/15 bg-white/5 hover:bg-white/10 text-white/85"
+                          : "border-slate-200 dark:border-white/15 bg-white dark:bg-white/5 shadow-sm dark:shadow-none hover:bg-slate-50 dark:hover:bg-white/10 hover:shadow-sm dark:hover:shadow-none text-slate-800 dark:text-white/85"
                       }`}
                     >
                       {d} days
@@ -325,7 +325,7 @@ export default function EditTaskPage() {
             <Field label="Attachment URL (optional)" error={errors.attachmentUrl?.message}>
               <input
                 {...register("attachmentUrl")}
-                className="mt-1 w-full rounded-xl bg-slate-950/40 border border-white/10 px-3 py-2.5 outline-none focus:border-white/30 focus:ring-2 focus:ring-white/10"
+                className="mt-1 w-full rounded-xl bg-white dark:bg-slate-950/40 shadow-sm dark:shadow-none border border-slate-200 dark:border-white/10 px-3 py-2.5 outline-none focus:border-white/30 focus:ring-2 focus:ring-white/10"
               />
             </Field>
 
@@ -337,7 +337,7 @@ export default function EditTaskPage() {
               >
                 <input
                   {...register("venue")}
-                  className="mt-1 w-full rounded-xl bg-slate-950/40 border border-amber-400/20 px-3 py-2.5 outline-none focus:border-amber-400/40 focus:ring-2 focus:ring-amber-400/10"
+                  className="mt-1 w-full rounded-xl bg-white dark:bg-slate-950/40 shadow-sm dark:shadow-none border border-amber-400/20 px-3 py-2.5 outline-none focus:border-amber-400/40 focus:ring-2 focus:ring-amber-400/10"
                   placeholder="e.g. Library Study Room 3B"
                   maxLength={100}
                 />
@@ -354,47 +354,47 @@ export default function EditTaskPage() {
         </div>
 
         <div className="space-y-4">
-          <div className="rounded-3xl border border-white/10 bg-white/5 p-5">
+          <div className="rounded-3xl border border-slate-200 dark:border-white/10 bg-white dark:bg-white/5 shadow-sm dark:shadow-none p-5">
             <div className="text-sm font-semibold">Live Preview</div>
-            <div className="mt-3 rounded-2xl border border-white/10 bg-slate-950/30 p-4">
+            <div className="mt-3 rounded-2xl border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-slate-950/30 p-4">
               <div className="flex items-center justify-between gap-3">
-                <div className="font-semibold text-white">
+                <div className="font-semibold text-slate-900 dark:text-white">
                   {values.title?.trim() || "Task title preview"}
                 </div>
-                <span className="text-xs px-2 py-1 rounded-full border border-white/10 bg-white/5 text-white/70">
+                <span className="text-xs px-2 py-1 rounded-full border border-slate-200 dark:border-white/10 bg-white dark:bg-white/5 shadow-sm dark:shadow-none text-slate-600 dark:text-white/70">
                   {values.category}
                 </span>
               </div>
 
-              <p className="mt-3 text-sm text-white/70 whitespace-pre-wrap">
+              <p className="mt-3 text-sm text-slate-600 dark:text-white/70 whitespace-pre-wrap">
                 {values.description?.trim() || "Task description preview..."}
               </p>
 
-              <div className="mt-3 text-xs text-white/65">
+              <div className="mt-3 text-xs text-slate-600 dark:text-white/65">
                 <div>
-                  <span className="text-white/75">Expected outcome:</span>{" "}
+                  <span className="text-slate-600 dark:text-white/75">Expected outcome:</span>{" "}
                   {values.expectedOutcome?.trim() || "—"}
                 </div>
               </div>
 
               <div className="mt-4 flex flex-wrap gap-2 text-xs">
-                <span className="px-2 py-1 rounded-full border border-white/10 bg-white/5 text-white/70">
+                <span className="px-2 py-1 rounded-full border border-slate-200 dark:border-white/10 bg-white dark:bg-white/5 shadow-sm dark:shadow-none text-slate-600 dark:text-white/70">
                   Skill: {values.skillRequired || "—"}
                 </span>
-                <span className="px-2 py-1 rounded-full border border-white/10 bg-white/5 text-white/70">
+                <span className="px-2 py-1 rounded-full border border-slate-200 dark:border-white/10 bg-white dark:bg-white/5 shadow-sm dark:shadow-none text-slate-600 dark:text-white/70">
                   Mode: {values.mode}
                 </span>
-                <span className="px-2 py-1 rounded-full border border-white/10 bg-white/5 text-white/70">
+                <span className="px-2 py-1 rounded-full border border-slate-200 dark:border-white/10 bg-white dark:bg-white/5 shadow-sm dark:shadow-none text-slate-600 dark:text-white/70">
                   Session: {values.duration}m
                 </span>
-                <span className="px-2 py-1 rounded-full border border-white/10 bg-white/5 text-white/70">
+                <span className="px-2 py-1 rounded-full border border-slate-200 dark:border-white/10 bg-white dark:bg-white/5 shadow-sm dark:shadow-none text-slate-600 dark:text-white/70">
                   Deadline: {values.deadlineDays} days
                 </span>
               </div>
             </div>
           </div>
 
-          <div className="rounded-3xl border border-white/10 bg-white/5 p-5">
+          <div className="rounded-3xl border border-slate-200 dark:border-white/10 bg-white dark:bg-white/5 shadow-sm dark:shadow-none p-5">
             <div className="text-sm font-semibold">Scope Control Checks</div>
             <div className="mt-4 space-y-2">
               {scopeWarnings.length > 0 ? (

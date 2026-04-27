@@ -5,23 +5,23 @@ import { getTopHelper } from "../../api/matchApi";
 import WarningModal from "../../components/WarningModal";
 
 const STATUS_COLORS = {
-  OPEN: "border-emerald-400/20 bg-emerald-400/10 text-emerald-100",
-  MATCHED: "border-cyan-400/20 bg-cyan-400/10 text-cyan-100",
-  COMPLETED: "border-white/15 bg-white/5 text-white/80",
-  CANCELLED: "border-red-400/20 bg-red-400/10 text-red-100",
-  EXPIRED: "border-amber-400/20 bg-amber-400/10 text-amber-100",
+  OPEN: "border-emerald-400/20 bg-emerald-400/10 text-emerald-700 dark:text-emerald-100",
+  MATCHED: "border-cyan-400/20 bg-cyan-400/10 text-cyan-700 dark:text-cyan-100",
+  COMPLETED: "border-slate-200 dark:border-white/15 bg-white dark:bg-white/5 shadow-sm dark:shadow-none text-slate-700 dark:text-white/80",
+  CANCELLED: "border-red-400/20 bg-red-400/10 text-red-700 dark:text-red-100",
+  EXPIRED: "border-amber-400/20 bg-amber-400/10 text-amber-700 dark:text-amber-100",
 };
 
 function StatusChip({ status }) {
-  const cls = STATUS_COLORS[status] || "border-white/10 bg-white/5 text-white/70";
+  const cls = STATUS_COLORS[status] || "border-slate-200 dark:border-white/10 bg-white dark:bg-white/5 shadow-sm dark:shadow-none text-slate-600 dark:text-white/70";
   return <span className={`text-xs px-2 py-1 rounded-full border ${cls}`}>{status}</span>;
 }
 
 function StatCard({ label, value }) {
   return (
-    <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
+    <div className="rounded-2xl border border-slate-200 dark:border-white/10 bg-white dark:bg-white/5 shadow-sm dark:shadow-none p-4">
       <div className="text-2xl font-semibold">{value}</div>
-      <div className="text-white/60 text-sm mt-1">{label}</div>
+      <div className="text-slate-500 dark:text-white/60 text-sm mt-1">{label}</div>
     </div>
   );
 }
@@ -67,14 +67,14 @@ function TopHelperBadge({ taskId }) {
   }
 
   const levelColor = {
-    Expert: "text-violet-300 border-violet-400/30 bg-violet-400/10",
-    Intermediate: "text-sky-300 border-sky-400/30 bg-sky-400/10",
-    Beginner: "text-emerald-300 border-emerald-400/30 bg-emerald-400/10",
-  }[helper.level] || "text-white/70 border-white/15 bg-white/5";
+    Expert: "text-violet-700 dark:text-violet-300 border-violet-400/30 bg-violet-400/10",
+    Intermediate: "text-sky-700 dark:text-sky-300 border-sky-400/30 bg-sky-400/10",
+    Beginner: "text-emerald-700 dark:text-emerald-300 border-emerald-400/30 bg-emerald-400/10",
+  }[helper.level] || "text-slate-600 dark:text-white/70 border-slate-200 dark:border-white/15 bg-white dark:bg-white/5 shadow-sm dark:shadow-none";
 
   return (
     <div className="flex items-center gap-2 flex-wrap">
-      <span className="text-xs text-white/45">Top Match:</span>
+      <span className="text-xs text-slate-400 dark:text-white/45">Top Match:</span>
       <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border text-xs ${levelColor}`}>
         <span className="font-medium">{helper.fullName}</span>
         <span className="opacity-50">·</span>
@@ -186,7 +186,7 @@ export default function MyTasksPage() {
   };
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-10 text-white">
+    <div className="max-w-6xl mx-auto px-4 py-10 text-slate-900 dark:text-white">
       <WarningModal
         open={confirmCancelOpen}
         title="Cancel this task?"
@@ -241,7 +241,7 @@ export default function MyTasksPage() {
       <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
         <div>
           <h1 className="text-2xl md:text-3xl font-semibold">My Tasks</h1>
-          <p className="text-white/70 text-sm mt-1">
+          <p className="text-slate-600 dark:text-white/70 text-sm mt-1">
             Manage your posted tasks, monitor countdown, edit open tasks, cancel them, complete matched ones, and delete cancelled ones.
           </p>
         </div>
@@ -249,7 +249,7 @@ export default function MyTasksPage() {
         <div className="flex flex-wrap gap-2">
           <Link
             to="/tasks/accepted-by-me"
-            className="px-4 py-2 rounded-xl border border-white/15 bg-white/5 hover:bg-white/10 text-sm"
+            className="px-4 py-2 rounded-xl border border-slate-200 dark:border-white/15 bg-white dark:bg-white/5 shadow-sm dark:shadow-none hover:bg-slate-50 dark:hover:bg-white/10 hover:shadow-sm dark:hover:shadow-none text-sm"
           >
             Accepted By Me
           </Link>
@@ -282,7 +282,7 @@ export default function MyTasksPage() {
               className={`px-3 py-2 rounded-xl text-sm border transition ${
                 activeBtn
                   ? "bg-white text-slate-900 border-white"
-                  : "border-white/15 bg-white/5 hover:bg-white/10 text-white/85"
+                  : "border-slate-200 dark:border-white/15 bg-white dark:bg-white/5 shadow-sm dark:shadow-none hover:bg-slate-50 dark:hover:bg-white/10 hover:shadow-sm dark:hover:shadow-none text-slate-800 dark:text-white/85"
               }`}
             >
               {s}
@@ -291,13 +291,13 @@ export default function MyTasksPage() {
         })}
       </div>
 
-      <div className="mt-6 rounded-3xl border border-white/10 bg-white/5 overflow-hidden">
+      <div className="mt-6 rounded-3xl border border-slate-200 dark:border-white/10 bg-white dark:bg-white/5 shadow-sm dark:shadow-none overflow-hidden">
         {loading ? (
-          <div className="p-6 text-white/70">Loading...</div>
+          <div className="p-6 text-slate-600 dark:text-white/70">Loading...</div>
         ) : filtered.length === 0 ? (
           <div className="p-8">
-            <div className="text-white/85 font-semibold">No tasks found</div>
-            <p className="text-white/60 text-sm mt-1">
+            <div className="text-slate-800 dark:text-white/85 font-semibold">No tasks found</div>
+            <p className="text-slate-500 dark:text-white/60 text-sm mt-1">
               Create a clear task with a specific expected outcome.
             </p>
             <Link
@@ -310,36 +310,36 @@ export default function MyTasksPage() {
         ) : (
           <div className="divide-y divide-white/10">
             {filtered.map((t) => (
-              <div key={t._id} className="p-5 hover:bg-white/5 transition">
+              <div key={t._id} className="p-5 hover:bg-white dark:hover:bg-white/5 hover:shadow-sm dark:hover:shadow-none transition">
                 <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4">
                   <div className="min-w-0">
                     <div className="flex flex-wrap items-center gap-2">
                       <div className="font-semibold">{t.title}</div>
                       <StatusChip status={t.status} />
-                      <span className="text-xs px-2 py-1 rounded-full border border-white/10 bg-white/5 text-white/65">
+                      <span className="text-xs px-2 py-1 rounded-full border border-slate-200 dark:border-white/10 bg-white dark:bg-white/5 shadow-sm dark:shadow-none text-slate-600 dark:text-white/65">
                         {t.category}
                       </span>
                       <span
                         className={`text-xs px-2 py-1 rounded-full border ${
                           t.urgency === "URGENT"
-                            ? "border-amber-300/20 bg-amber-300/10 text-amber-100"
-                            : "border-white/10 bg-white/5 text-white/65"
+                            ? "border-amber-300/20 bg-amber-300/10 text-amber-700 dark:text-amber-100"
+                            : "border-slate-200 dark:border-white/10 bg-white dark:bg-white/5 shadow-sm dark:shadow-none text-slate-600 dark:text-white/65"
                         }`}
                       >
                         {t.urgency}
                       </span>
                     </div>
 
-                    <div className="text-white/70 text-sm mt-2 line-clamp-3">
+                    <div className="text-slate-600 dark:text-white/70 text-sm mt-2 line-clamp-3">
                       {t.description}
                     </div>
 
-                    <div className="text-white/60 text-xs mt-2">
-                      Outcome: <span className="text-white/75">{t.expectedOutcome}</span>
+                    <div className="text-slate-500 dark:text-white/60 text-xs mt-2">
+                      Outcome: <span className="text-slate-600 dark:text-white/75">{t.expectedOutcome}</span>
                     </div>
 
                     {t.attachmentUrl && (
-                      <div className="text-white/60 text-xs mt-2">
+                      <div className="text-slate-500 dark:text-white/60 text-xs mt-2">
                         Attachment:{" "}
                         <a
                           href={t.attachmentUrl}
@@ -353,53 +353,53 @@ export default function MyTasksPage() {
                     )}
 
                     {t.status === "MATCHED" && t.acceptedBy && (
-                      <div className="text-white/60 text-xs mt-2">
+                      <div className="text-slate-500 dark:text-white/60 text-xs mt-2">
                         Accepted by:{" "}
-                        <span className="text-white/75">{t.acceptedBy.fullName}</span>
+                        <span className="text-slate-600 dark:text-white/75">{t.acceptedBy.fullName}</span>
                         {t.acceptedBy.studentId && (
-                          <span className="text-white/55"> ({t.acceptedBy.studentId})</span>
+                          <span className="text-slate-500 dark:text-white/55"> ({t.acceptedBy.studentId})</span>
                         )}
                       </div>
                     )}
 
                     {t.status === "COMPLETED" && t.acceptedBy && (
-                      <div className="text-white/60 text-xs mt-2">
+                      <div className="text-slate-500 dark:text-white/60 text-xs mt-2">
                         Completed with help from:{" "}
-                        <span className="text-white/75">{t.acceptedBy.fullName}</span>
+                        <span className="text-slate-600 dark:text-white/75">{t.acceptedBy.fullName}</span>
                         {t.acceptedBy.studentId && (
-                          <span className="text-white/55"> ({t.acceptedBy.studentId})</span>
+                          <span className="text-slate-500 dark:text-white/55"> ({t.acceptedBy.studentId})</span>
                         )}
                       </div>
                     )}
 
-                    <div className="mt-3 flex flex-wrap gap-2 text-xs text-white/70">
-                      <span className="px-2 py-1 rounded-full border border-white/10 bg-white/5">
+                    <div className="mt-3 flex flex-wrap gap-2 text-xs text-slate-600 dark:text-white/70">
+                      <span className="px-2 py-1 rounded-full border border-slate-200 dark:border-white/10 bg-white dark:bg-white/5 shadow-sm dark:shadow-none">
                         Skill: {t.skillRequired}
                       </span>
-                      <span className="px-2 py-1 rounded-full border border-white/10 bg-white/5">
+                      <span className="px-2 py-1 rounded-full border border-slate-200 dark:border-white/10 bg-white dark:bg-white/5 shadow-sm dark:shadow-none">
                         Task ID: {t._id}
                       </span>
                       <button
                         type="button"
                         onClick={() => navigator.clipboard?.writeText(t._id)}
-                        className="px-2 py-1 rounded-full border border-cyan-400/20 bg-cyan-400/10 text-cyan-100 hover:bg-cyan-400/15"
+                        className="px-2 py-1 rounded-full border border-cyan-400/20 bg-cyan-400/10 text-cyan-700 dark:text-cyan-100 hover:bg-cyan-400/15"
                       >
                         Copy ID
                       </button>
-                      <span className="px-2 py-1 rounded-full border border-white/10 bg-white/5">
+                      <span className="px-2 py-1 rounded-full border border-slate-200 dark:border-white/10 bg-white dark:bg-white/5 shadow-sm dark:shadow-none">
                         Mode: {t.mode}
                       </span>
-                      <span className="px-2 py-1 rounded-full border border-white/10 bg-white/5">
+                      <span className="px-2 py-1 rounded-full border border-slate-200 dark:border-white/10 bg-white dark:bg-white/5 shadow-sm dark:shadow-none">
                         Session: {t.duration}m
                       </span>
-                      <span className="px-2 py-1 rounded-full border border-white/10 bg-white/5">
+                      <span className="px-2 py-1 rounded-full border border-slate-200 dark:border-white/10 bg-white dark:bg-white/5 shadow-sm dark:shadow-none">
                         Deadline: {t.deadlineDays} days
                       </span>
-                      <span className="px-2 py-1 rounded-full border border-white/10 bg-white/5">
+                      <span className="px-2 py-1 rounded-full border border-slate-200 dark:border-white/10 bg-white dark:bg-white/5 shadow-sm dark:shadow-none">
                         {formatRemaining(t.expireAt)}
                       </span>
                       {t.mode === "Meet" && t.venue && (
-                        <span className="px-2 py-1 rounded-full border border-amber-400/20 bg-amber-400/10 text-amber-200">
+                        <span className="px-2 py-1 rounded-full border border-amber-400/20 bg-amber-400/10 text-amber-700 dark:text-amber-200">
                           📍 {t.venue}
                         </span>
                       )}
@@ -417,13 +417,13 @@ export default function MyTasksPage() {
                       <>
                         <Link
                           to={`/match`}
-                          className="px-3 py-2 rounded-xl text-sm border border-violet-400/20 bg-violet-400/10 text-violet-200 hover:bg-violet-400/15"
+                          className="px-3 py-2 rounded-xl text-sm border border-violet-400/20 bg-violet-400/10 text-violet-700 dark:text-violet-200 hover:bg-violet-400/15"
                         >
                           Find Match
                         </Link>
                         <Link
                           to={`/tasks/edit/${t._id}`}
-                          className="px-3 py-2 rounded-xl text-sm border border-white/15 bg-white/5 hover:bg-white/10"
+                          className="px-3 py-2 rounded-xl text-sm border border-slate-200 dark:border-white/15 bg-white dark:bg-white/5 shadow-sm dark:shadow-none hover:bg-slate-50 dark:hover:bg-white/10 hover:shadow-sm dark:hover:shadow-none"
                         >
                           Edit
                         </Link>
@@ -431,7 +431,7 @@ export default function MyTasksPage() {
                         <button
                           onClick={() => askCancel(t._id)}
                           disabled={busyId === t._id}
-                          className="px-3 py-2 rounded-xl text-sm border border-red-400/20 bg-red-400/10 text-red-100 hover:bg-red-400/15 disabled:opacity-60"
+                          className="px-3 py-2 rounded-xl text-sm border border-red-400/20 bg-red-400/10 text-red-700 dark:text-red-100 hover:bg-red-400/15 disabled:opacity-60"
                         >
                           {busyId === t._id ? "Cancelling..." : "Cancel"}
                         </button>
@@ -442,14 +442,14 @@ export default function MyTasksPage() {
                       <>
                         <Link
                           to={`/session/${t._id}`}
-                          className="px-3 py-2 rounded-xl text-sm border border-violet-400/20 bg-violet-400/10 text-violet-200 hover:bg-violet-400/15"
+                          className="px-3 py-2 rounded-xl text-sm border border-violet-400/20 bg-violet-400/10 text-violet-700 dark:text-violet-200 hover:bg-violet-400/15"
                         >
                           View Session
                         </Link>
                         <button
                           onClick={() => askComplete(t._id)}
                           disabled={busyId === t._id}
-                          className="px-3 py-2 rounded-xl text-sm border border-cyan-400/20 bg-cyan-400/10 text-cyan-100 hover:bg-cyan-400/15 disabled:opacity-60"
+                          className="px-3 py-2 rounded-xl text-sm border border-cyan-400/20 bg-cyan-400/10 text-cyan-700 dark:text-cyan-100 hover:bg-cyan-400/15 disabled:opacity-60"
                         >
                           {busyId === t._id ? "Completing..." : "Complete"}
                         </button>
@@ -460,7 +460,7 @@ export default function MyTasksPage() {
                       <button
                         onClick={() => askDelete(t._id)}
                         disabled={busyId === t._id}
-                        className="px-3 py-2 rounded-xl text-sm border border-red-400/20 bg-red-400/10 text-red-100 hover:bg-red-400/15 disabled:opacity-60"
+                        className="px-3 py-2 rounded-xl text-sm border border-red-400/20 bg-red-400/10 text-red-700 dark:text-red-100 hover:bg-red-400/15 disabled:opacity-60"
                       >
                         {busyId === t._id ? "Deleting..." : "Delete"}
                       </button>

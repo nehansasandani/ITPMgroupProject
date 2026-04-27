@@ -119,7 +119,7 @@ export default function ReportIssueModal({ isOpen, onClose, onSubmit, session })
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="flex-1 px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 font-medium shadow-sm border border-transparent disabled:opacity-60 transition-colors"
+                  className="flex-1 px-4 py-2 bg-red-600 text-slate-900 dark:text-white rounded-md hover:bg-red-700 font-medium shadow-sm border border-transparent disabled:opacity-60 transition-colors"
                 >
                   {isSubmitting ? "Submitting..." : "Submit Report"}
                 </button>

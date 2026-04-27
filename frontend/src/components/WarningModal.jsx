@@ -20,15 +20,15 @@ export default function WarningModal({
     <div className="fixed inset-0 z-100 flex items-center justify-center px-4">
       <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose} />
 
-      <div className="relative w-full max-w-md rounded-3xl border border-white/10 bg-slate-950 p-6 text-white shadow-2xl">
+      <div className="relative w-full max-w-md rounded-3xl border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-slate-950 p-6 text-slate-900 dark:text-white shadow-2xl">
         <h3 className="text-lg font-semibold">{title}</h3>
-        <p className="mt-2 text-sm text-white/70 whitespace-pre-line">{message}</p>
+        <p className="mt-2 text-sm text-slate-600 dark:text-white/70 whitespace-pre-line">{message}</p>
 
         <div className="mt-6 flex justify-end gap-2">
           <button
             onClick={onClose}
             disabled={loading}
-            className="px-4 py-2 rounded-xl border border-white/15 bg-white/5 hover:bg-white/10 text-sm disabled:opacity-60"
+            className="px-4 py-2 rounded-xl border border-slate-200 dark:border-white/15 bg-white dark:bg-white/5 shadow-sm dark:shadow-none hover:bg-slate-50 dark:hover:bg-white/10 hover:shadow-sm dark:hover:shadow-none text-sm disabled:opacity-60"
           >
             {cancelText}
           </button>

@@ -73,7 +73,7 @@ export default function DisputesPage() {
             <p className="admin-chip bg-amber-400/15 text-amber-100 border border-amber-200/35 mb-3 w-fit">
               Integrity Resolution Desk
             </p>
-            <h2 className="admin-title text-3xl font-semibold text-white">Dispute Management</h2>
+            <h2 className="admin-title text-3xl font-semibold text-slate-900 dark:text-white">Dispute Management</h2>
             <p className="text-slate-300 text-sm mt-2 max-w-2xl">
               Triage and resolve reported session incidents while protecting trust quality across the EduSpark collaboration network.
             </p>
@@ -81,8 +81,8 @@ export default function DisputesPage() {
 
           <div className="admin-panel px-4 py-3 min-w-[250px]">
             <div className="text-xs uppercase tracking-[0.12em] text-slate-400">Penalty Conversion</div>
-            <div className="mt-1 admin-title text-3xl text-white">{penaltyRate}%</div>
-            <div className="h-2 mt-2 rounded-full bg-slate-800 overflow-hidden">
+            <div className="mt-1 admin-title text-3xl text-slate-900 dark:text-white">{penaltyRate}%</div>
+            <div className="h-2 mt-2 rounded-full bg-slate-100 dark:bg-slate-800 overflow-hidden">
               <div className="h-full bg-gradient-to-r from-rose-400 to-amber-300" style={{ width: `${penaltyRate}%` }} />
             </div>
           </div>
@@ -95,7 +95,7 @@ export default function DisputesPage() {
             <div className="flex justify-between items-start">
               <div>
                 <p className="text-xs uppercase tracking-[0.12em] text-slate-400">Pending Cases</p>
-                <p className="admin-title text-3xl text-white mt-2">{pendingCount}</p>
+                <p className="admin-title text-3xl text-slate-900 dark:text-white mt-2">{pendingCount}</p>
               </div>
               <FiClock className="text-amber-200" />
             </div>
@@ -105,7 +105,7 @@ export default function DisputesPage() {
             <div className="flex justify-between items-start">
               <div>
                 <p className="text-xs uppercase tracking-[0.12em] text-slate-400">Resolved Cases</p>
-                <p className="admin-title text-3xl text-white mt-2">{resolvedCount}</p>
+                <p className="admin-title text-3xl text-slate-900 dark:text-white mt-2">{resolvedCount}</p>
               </div>
               <FiShield className="text-emerald-200" />
             </div>
@@ -115,7 +115,7 @@ export default function DisputesPage() {
             <div className="flex justify-between items-start">
               <div>
                 <p className="text-xs uppercase tracking-[0.12em] text-slate-400">Penalties Applied</p>
-                <p className="admin-title text-3xl text-white mt-2">{penaltiesCount}</p>
+                <p className="admin-title text-3xl text-slate-900 dark:text-white mt-2">{penaltiesCount}</p>
               </div>
               <FiZap className="text-rose-200" />
             </div>
@@ -125,7 +125,7 @@ export default function DisputesPage() {
 
         <div className="relative z-10 grid grid-cols-1 xl:grid-cols-3 gap-4">
           <section className="admin-panel p-4 xl:col-span-2 space-y-3">
-            <h3 className="admin-title text-lg text-white mb-1">Case Queue</h3>
+            <h3 className="admin-title text-lg text-slate-900 dark:text-white mb-1">Case Queue</h3>
 
             {disputes.length === 0 ? (
               <p className="text-sm text-slate-400">No disputes found.</p>
@@ -142,12 +142,12 @@ export default function DisputesPage() {
                 const isPending = dispute.status === "Pending";
 
                 return (
-                  <article key={dispute._id} className="rounded-xl border border-slate-700/70 bg-slate-900/35 p-4">
+                  <article key={dispute._id} className="rounded-xl border border-slate-700/70 bg-white dark:bg-slate-900 shadow-sm dark:shadow-none/35 p-4">
                     <div className="flex flex-wrap items-start justify-between gap-3">
                       <div>
                         <div className="text-sm text-slate-200">
                           <span className="text-slate-400">Reported by </span>
-                          <span className="font-semibold text-white">{dispute.reportedBy?.fullName ?? "Unknown"}</span>
+                          <span className="font-semibold text-slate-900 dark:text-white">{dispute.reportedBy?.fullName ?? "Unknown"}</span>
                           <span className="text-slate-400"> against </span>
                           <span className="font-semibold text-rose-200">{dispute.against?.fullName ?? "Unknown"}</span>
                         </div>
@@ -186,7 +186,7 @@ export default function DisputesPage() {
                           <button
                             onClick={() => handleAction(dispute._id, "reject")}
                             disabled={busyId === dispute._id}
-                            className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 border border-slate-600 text-slate-200 hover:bg-slate-700 disabled:opacity-50"
+                            className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 dark:bg-slate-800 border border-slate-600 text-slate-200 hover:bg-slate-700 disabled:opacity-50"
                             title="Dismiss"
                           >
                             <span className="inline-flex items-center gap-1"><FiX size={13} /> Dismiss</span>
@@ -210,7 +210,7 @@ export default function DisputesPage() {
           </section>
 
           <section className="admin-panel p-4">
-            <h3 className="admin-title text-lg text-white mb-4">Reason Frequency</h3>
+            <h3 className="admin-title text-lg text-slate-900 dark:text-white mb-4">Reason Frequency</h3>
             {topReasons.length === 0 ? (
               <p className="text-sm text-slate-400">No reason patterns available.</p>
             ) : (
@@ -224,7 +224,7 @@ export default function DisputesPage() {
                         <span className="truncate pr-2">{reason}</span>
                         <span>{count}</span>
                       </div>
-                      <div className="h-2 rounded-full bg-slate-800 overflow-hidden">
+                      <div className="h-2 rounded-full bg-slate-100 dark:bg-slate-800 overflow-hidden">
                         <div
                           className="h-full rounded-full bg-gradient-to-r from-amber-300 to-rose-400"
                           style={{ width: `${width}%` }}

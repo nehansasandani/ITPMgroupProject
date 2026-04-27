@@ -27,7 +27,7 @@ export default function AdminLayout() {
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col md:flex-row font-sans text-gray-900 absolute inset-0 z-50">
       {/* Sidebar */}
-      <aside className="w-full md:w-64 bg-slate-900 text-white flex flex-col shadow-xl">
+      <aside className="w-full md:w-64 bg-white dark:bg-slate-900 shadow-sm dark:shadow-none text-slate-900 dark:text-white flex flex-col shadow-xl">
         <div className="p-6 border-b border-slate-800">
           <h2 className="text-xl font-bold tracking-wider text-blue-400">
             EDUSPARK ADMIN
@@ -44,8 +44,8 @@ export default function AdminLayout() {
               className={({ isActive }) =>
                 `flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
                   isActive
-                    ? "bg-blue-600 text-white shadow-md shadow-blue-500/20"
-                    : "text-slate-300 hover:bg-slate-800 hover:text-white"
+                    ? "bg-blue-600 text-slate-900 dark:text-white shadow-md shadow-blue-500/20"
+                    : "text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white"
                 }`
               }
             >
@@ -67,7 +67,7 @@ export default function AdminLayout() {
           </div>
           <button
             onClick={handleLogout}
-            className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-slate-800 text-slate-300 rounded-lg hover:bg-red-500 hover:text-white transition-colors"
+            className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-slate-100 dark:bg-slate-800 text-slate-300 rounded-lg hover:bg-red-500 hover:text-slate-900 dark:hover:text-white transition-colors"
           >
             <FiLogOut size={18} />
             <span className="font-medium text-sm">Logout</span>

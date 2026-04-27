@@ -70,7 +70,7 @@ export default function ReputationTimeline({ userId }) {
   const getDeltaColor = (delta) => {
     if (delta > 0) return 'text-green-400';
     if (delta < 0) return 'text-red-400';
-    return 'text-white/50';
+    return 'text-slate-500 dark:text-white/50';
   };
 
   const formatDate = (dateString) => {
@@ -90,10 +90,10 @@ export default function ReputationTimeline({ userId }) {
 
   if (loading && logs.length === 0) {
     return (
-      <div className="p-6 bg-slate-900/40 border border-white/5 rounded-2xl">
+      <div className="p-6 bg-white dark:bg-slate-900 shadow-sm dark:shadow-none/40 border border-white/5 rounded-2xl">
         <div className="flex items-center justify-center py-12">
           <FiLoader className="text-indigo-400 animate-spin text-2xl" />
-          <p className="ml-3 text-white/60 text-sm">Loading reputation history…</p>
+          <p className="ml-3 text-slate-500 dark:text-white/60 text-sm">Loading reputation history…</p>
         </div>
       </div>
     );
@@ -101,7 +101,7 @@ export default function ReputationTimeline({ userId }) {
 
   if (error && logs.length === 0) {
     return (
-      <div className="p-6 bg-slate-900/40 border border-red-500/20 rounded-2xl">
+      <div className="p-6 bg-white dark:bg-slate-900 shadow-sm dark:shadow-none/40 border border-red-500/20 rounded-2xl">
         <p className="text-red-300 text-sm">{error}</p>
       </div>
     );
@@ -109,9 +109,9 @@ export default function ReputationTimeline({ userId }) {
 
   if (logs.length === 0) {
     return (
-      <div className="p-6 bg-slate-900/40 border border-white/5 rounded-2xl text-center">
+      <div className="p-6 bg-white dark:bg-slate-900 shadow-sm dark:shadow-none/40 border border-white/5 rounded-2xl text-center">
         <FiTrendingUp className="text-white/20 text-3xl mx-auto mb-3" />
-        <p className="text-white/50 text-sm">No reputation changes yet. Keep engaging to build your reputation!</p>
+        <p className="text-slate-500 dark:text-white/50 text-sm">No reputation changes yet. Keep engaging to build your reputation!</p>
       </div>
     );
   }
@@ -121,14 +121,14 @@ export default function ReputationTimeline({ userId }) {
       {/* Header */}
       <div className="flex items-center gap-3 mb-6">
         <FiTrendingUp className="text-indigo-400 text-xl" />
-        <h3 className="text-lg font-bold text-white">Reputation History</h3>
-        <span className="ml-auto text-xs font-bold text-white/50 uppercase tracking-widest">
+        <h3 className="text-lg font-bold text-slate-900 dark:text-white">Reputation History</h3>
+        <span className="ml-auto text-xs font-bold text-slate-500 dark:text-white/50 uppercase tracking-widest">
           {logs.length} entries
         </span>
       </div>
 
       {/* Timeline */}
-      <div className="bg-slate-900/40 border border-white/5 rounded-2xl p-6 space-y-4">
+      <div className="bg-white dark:bg-slate-900 shadow-sm dark:shadow-none/40 border border-white/5 rounded-2xl p-6 space-y-4">
         {logs.map((log, idx) => (
           <div key={log._id} className="relative">
             {/* Timeline line */}
@@ -140,7 +140,7 @@ export default function ReputationTimeline({ userId }) {
             <div className="flex gap-4">
               {/* Icon dot */}
               <div className="relative flex-shrink-0 mt-1">
-                <div className="w-8 h-8 rounded-full bg-slate-800 border-2 border-indigo-500/50 flex items-center justify-center">
+                <div className="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 border-2 border-indigo-500/50 flex items-center justify-center">
                   {getReasonIcon(log.reason)}
                 </div>
               </div>
@@ -148,7 +148,7 @@ export default function ReputationTimeline({ userId }) {
               {/* Content */}
               <div className="flex-1 min-w-0">
                 <div className="flex items-baseline gap-2 flex-wrap">
-                  <h4 className="text-sm font-semibold text-white">
+                  <h4 className="text-sm font-semibold text-slate-900 dark:text-white">
                     {getReasonLabel(log.reason)}
                   </h4>
                   <p className="text-xs text-white/40">{formatDate(log.createdAt)}</p>
@@ -157,8 +157,8 @@ export default function ReputationTimeline({ userId }) {
                 {/* Score change */}
                 <div className="mt-2 flex items-center gap-3">
                   <div className="flex items-center gap-1">
-                    <span className="text-xs text-white/50">Score:</span>
-                    <span className="text-sm font-mono text-white">
+                    <span className="text-xs text-slate-500 dark:text-white/50">Score:</span>
+                    <span className="text-sm font-mono text-slate-900 dark:text-white">
                       {log.oldScore !== undefined ? log.oldScore.toFixed(1) : 'N/A'} → {log.newScore !== undefined ? log.newScore.toFixed(1) : 'N/A'}
                     </span>
                   </div>
@@ -181,12 +181,12 @@ export default function ReputationTimeline({ userId }) {
 
                 {/* Details */}
                 {log.details && Object.keys(log.details).length > 0 && (
-                  <div className="mt-2 p-2 bg-white/5 rounded border border-white/10">
-                    <div className="text-xs text-white/60 space-y-1">
+                  <div className="mt-2 p-2 bg-white dark:bg-white/5 shadow-sm dark:shadow-none rounded border border-slate-200 dark:border-white/10">
+                    <div className="text-xs text-slate-500 dark:text-white/60 space-y-1">
                       {Object.entries(log.details).map(([key, value]) => (
                         <div key={key} className="flex justify-between">
                           <span className="text-white/40">{key}:</span>
-                          <span className="text-white/70">{String(value)}</span>
+                          <span className="text-slate-600 dark:text-white/70">{String(value)}</span>
                         </div>
                       ))}
                     </div>
@@ -203,7 +203,7 @@ export default function ReputationTimeline({ userId }) {
         <button
           onClick={handleLoadMore}
           disabled={loading}
-          className="w-full py-2.5 px-4 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg text-white/70 text-sm font-semibold transition disabled:opacity-50 flex items-center justify-center gap-2"
+          className="w-full py-2.5 px-4 bg-white dark:bg-white/5 shadow-sm dark:shadow-none hover:bg-slate-50 dark:hover:bg-white/10 hover:shadow-sm dark:hover:shadow-none border border-slate-200 dark:border-white/10 rounded-lg text-slate-600 dark:text-white/70 text-sm font-semibold transition disabled:opacity-50 flex items-center justify-center gap-2"
         >
           {loading ? (
             <>

@@ -72,7 +72,7 @@ function RuleItem({ ok, label }) {
       className={`flex items-center gap-2 rounded-lg px-3 py-2 text-xs border ${
         ok
           ? "border-emerald-400/20 bg-emerald-400/10 text-emerald-100"
-          : "border-white/10 bg-white/5 text-white/60"
+          : "border-slate-200 dark:border-white/10 bg-white dark:bg-white/5 shadow-sm dark:shadow-none text-slate-500 dark:text-white/60"
       }`}
     >
       <span className="w-4 text-center">{ok ? "✓" : "•"}</span>
@@ -137,7 +137,7 @@ export default function RegisterPage() {
   const passedCount = passwordChecks.filter((rule) => rule.ok).length;
 
   const passwordStrength = useMemo(() => {
-    if (!passwordValue) return { label: "No password", width: "0%", tone: "bg-white/10" };
+    if (!passwordValue) return { label: "No password", width: "0%", tone: "bg-slate-50 dark:bg-white/10 shadow-sm dark:shadow-none" };
     if (passedCount <= 3) return { label: "Weak", width: "33%", tone: "bg-red-400" };
     if (passedCount <= 6) return { label: "Medium", width: "66%", tone: "bg-amber-400" };
     return { label: "Strong", width: "100%", tone: "bg-emerald-400" };
@@ -167,11 +167,11 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-10 text-white">
+    <div className="max-w-6xl mx-auto px-4 py-10 text-slate-900 dark:text-white">
       <div className="grid lg:grid-cols-2 gap-5 items-stretch">
-        <div className="rounded-3xl border border-white/10 bg-white/5 p-6 md:p-8 fade-up">
+        <div className="rounded-3xl border border-slate-200 dark:border-white/10 bg-white dark:bg-white/5 shadow-sm dark:shadow-none p-6 md:p-8 fade-up">
           <h2 className="text-2xl font-semibold">Create your account</h2>
-          <p className="text-white/70 text-sm mt-1">
+          <p className="text-slate-600 dark:text-white/70 text-sm mt-1">
             Register with your SLIIT Student ID to join EduSpark.
           </p>
 
@@ -192,10 +192,10 @@ export default function RegisterPage() {
 
           <form onSubmit={handleSubmit(onSubmit)} className="mt-6 space-y-4">
             <div>
-              <label className="text-sm text-white/80">Full name</label>
+              <label className="text-sm text-slate-700 dark:text-white/80">Full name</label>
               <input
                 {...register("fullName")}
-                className="mt-1 w-full rounded-xl bg-slate-950/40 border border-white/10 px-3 py-2.5 outline-none focus:border-white/30 focus:ring-2 focus:ring-white/10"
+                className="mt-1 w-full rounded-xl bg-white dark:bg-slate-950/40 shadow-sm dark:shadow-none border border-slate-200 dark:border-white/10 px-3 py-2.5 outline-none focus:border-white/30 focus:ring-2 focus:ring-white/10"
                 placeholder="Kamal Perera"
               />
               {errors.fullName && (
@@ -204,10 +204,10 @@ export default function RegisterPage() {
             </div>
 
             <div>
-              <label className="text-sm text-white/80">Email</label>
+              <label className="text-sm text-slate-700 dark:text-white/80">Email</label>
               <input
                 {...register("email")}
-                className="mt-1 w-full rounded-xl bg-slate-950/40 border border-white/10 px-3 py-2.5 outline-none focus:border-white/30 focus:ring-2 focus:ring-white/10"
+                className="mt-1 w-full rounded-xl bg-white dark:bg-slate-950/40 shadow-sm dark:shadow-none border border-slate-200 dark:border-white/10 px-3 py-2.5 outline-none focus:border-white/30 focus:ring-2 focus:ring-white/10"
                 placeholder="kamal@gmail.com"
               />
               {errors.email && (
@@ -216,32 +216,32 @@ export default function RegisterPage() {
             </div>
 
             <div>
-              <label className="text-sm text-white/80">Student ID</label>
+              <label className="text-sm text-slate-700 dark:text-white/80">Student ID</label>
               <input
                 {...register("studentId")}
-                className="mt-1 w-full rounded-xl uppercase bg-slate-950/40 border border-white/10 px-3 py-2.5 outline-none focus:border-white/30 focus:ring-2 focus:ring-white/10"
+                className="mt-1 w-full rounded-xl uppercase bg-white dark:bg-slate-950/40 shadow-sm dark:shadow-none border border-slate-200 dark:border-white/10 px-3 py-2.5 outline-none focus:border-white/30 focus:ring-2 focus:ring-white/10"
                 placeholder="IT23323452"
               />
               {errors.studentId && (
                 <p className="text-red-200 text-xs mt-1">{errors.studentId.message}</p>
               )}
-              <p className="text-white/50 text-xs mt-1">Format: IT/BM/EN/HS + 8 digits</p>
+              <p className="text-slate-500 dark:text-white/50 text-xs mt-1">Format: IT/BM/EN/HS + 8 digits</p>
             </div>
 
             <div>
-              <label className="text-sm text-white/80">Password</label>
+              <label className="text-sm text-slate-700 dark:text-white/80">Password</label>
               <div className="relative mt-1">
                 <input
                   type={showPw ? "text" : "password"}
                   {...register("password")}
                   onFocus={() => setShowPasswordGuide(true)}
-                  className="w-full rounded-xl bg-slate-950/40 border border-white/10 px-3 py-2.5 pr-24 outline-none focus:border-white/30 focus:ring-2 focus:ring-white/10"
+                  className="w-full rounded-xl bg-white dark:bg-slate-950/40 shadow-sm dark:shadow-none border border-slate-200 dark:border-white/10 px-3 py-2.5 pr-24 outline-none focus:border-white/30 focus:ring-2 focus:ring-white/10"
                   placeholder="••••••••"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPw((v) => !v)}
-                  className="absolute right-2 top-1/2 -translate-y-1/2 px-3 py-1.5 rounded-lg text-xs border border-white/15 bg-white/5 hover:bg-white/10"
+                  className="absolute right-2 top-1/2 -translate-y-1/2 px-3 py-1.5 rounded-lg text-xs border border-slate-200 dark:border-white/15 bg-white dark:bg-white/5 shadow-sm dark:shadow-none hover:bg-slate-50 dark:hover:bg-white/10 hover:shadow-sm dark:hover:shadow-none"
                 >
                   {showPw ? "Hide" : "Show"}
                 </button>
@@ -251,20 +251,20 @@ export default function RegisterPage() {
               )}
 
               {(showPasswordGuide || passwordValue.length > 0) && (
-                <div className="mt-3 rounded-2xl border border-white/10 bg-slate-950/30 p-4">
+                <div className="mt-3 rounded-2xl border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-slate-950/30 p-4">
                   <div className="flex items-center justify-between gap-3">
-                    <span className="text-sm text-white/80">Password strength</span>
-                    <span className="text-xs text-white/60">{passwordStrength.label}</span>
+                    <span className="text-sm text-slate-700 dark:text-white/80">Password strength</span>
+                    <span className="text-xs text-slate-500 dark:text-white/60">{passwordStrength.label}</span>
                   </div>
 
-                  <div className="mt-2 h-2 rounded-full bg-white/10 overflow-hidden">
+                  <div className="mt-2 h-2 rounded-full bg-slate-50 dark:bg-white/10 shadow-sm dark:shadow-none overflow-hidden">
                     <div
                       className={`h-full rounded-full transition-all duration-300 ${passwordStrength.tone}`}
                       style={{ width: passwordStrength.width }}
                     />
                   </div>
 
-                  <p className="text-white/50 text-xs mt-3">
+                  <p className="text-slate-500 dark:text-white/50 text-xs mt-3">
                     Use a strong password with letters, numbers, and symbols.
                   </p>
 
@@ -278,18 +278,18 @@ export default function RegisterPage() {
             </div>
 
             <div>
-              <label className="text-sm text-white/80">Confirm Password</label>
+              <label className="text-sm text-slate-700 dark:text-white/80">Confirm Password</label>
               <div className="relative mt-1">
                 <input
                   type={showConfirmPw ? "text" : "password"}
                   {...register("confirmPassword")}
-                  className="w-full rounded-xl bg-slate-950/40 border border-white/10 px-3 py-2.5 pr-24 outline-none focus:border-white/30 focus:ring-2 focus:ring-white/10"
+                  className="w-full rounded-xl bg-white dark:bg-slate-950/40 shadow-sm dark:shadow-none border border-slate-200 dark:border-white/10 px-3 py-2.5 pr-24 outline-none focus:border-white/30 focus:ring-2 focus:ring-white/10"
                   placeholder="••••••••"
                 />
                 <button
                   type="button"
                   onClick={() => setShowConfirmPw((v) => !v)}
-                  className="absolute right-2 top-1/2 -translate-y-1/2 px-3 py-1.5 rounded-lg text-xs border border-white/15 bg-white/5 hover:bg-white/10"
+                  className="absolute right-2 top-1/2 -translate-y-1/2 px-3 py-1.5 rounded-lg text-xs border border-slate-200 dark:border-white/15 bg-white dark:bg-white/5 shadow-sm dark:shadow-none hover:bg-slate-50 dark:hover:bg-white/10 hover:shadow-sm dark:hover:shadow-none"
                 >
                   {showConfirmPw ? "Hide" : "Show"}
                 </button>
@@ -318,25 +318,25 @@ export default function RegisterPage() {
             </button>
           </form>
 
-          <p className="mt-4 text-sm text-white/70">
+          <p className="mt-4 text-sm text-slate-600 dark:text-white/70">
             Already have an account?{" "}
-            <Link className="text-white underline" to="/login">
+            <Link className="text-slate-900 dark:text-white underline" to="/login">
               Login
             </Link>
           </p>
         </div>
 
-        <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-linear-to-b from-white/12 to-transparent p-8 hidden lg:block fade-up">
+        <div className="relative overflow-hidden rounded-3xl border border-slate-200 dark:border-white/10 bg-linear-to-b from-white/12 to-transparent p-8 hidden lg:block fade-up">
           <div className="blob b1 -top-10 -right-10 h-60 w-60 bg-indigo-400/35" />
           <div className="blob b2 -bottom-16 -left-16 h-64 w-64 bg-cyan-300/25" />
 
           <div className="relative">
-            <div className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3 py-1 text-xs text-white/80">
+            <div className="inline-flex items-center gap-2 rounded-full border border-slate-200 dark:border-white/15 bg-white dark:bg-white/5 shadow-sm dark:shadow-none px-3 py-1 text-xs text-slate-700 dark:text-white/80">
               <span className="h-2 w-2 rounded-full bg-emerald-400" />
               Join EduSpark
             </div>
             <h3 className="mt-5 text-2xl font-semibold">Students helping students</h3>
-            <p className="mt-3 text-white/70">
+            <p className="mt-3 text-slate-600 dark:text-white/70">
               Post clear micro-tasks, discover open requests, and collaborate through short, focused sessions.
             </p>
 
@@ -347,9 +347,9 @@ export default function RegisterPage() {
                 { t: "Fair platform", d: "Rules enforced" },
                 { t: "Secure accounts", d: "Strong password policy" },
               ].map((x) => (
-                <div key={x.t} className="rounded-2xl border border-white/10 bg-slate-950/30 p-4">
+                <div key={x.t} className="rounded-2xl border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-slate-950/30 p-4">
                   <div className="font-semibold text-sm">{x.t}</div>
-                  <div className="text-white/65 text-xs mt-1">{x.d}</div>
+                  <div className="text-slate-600 dark:text-white/65 text-xs mt-1">{x.d}</div>
                 </div>
               ))}
             </div>

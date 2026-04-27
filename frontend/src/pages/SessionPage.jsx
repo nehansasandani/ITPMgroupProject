@@ -41,13 +41,13 @@ function ElapsedTimer({ startedAt, endedAt }) {
       {hrs > 0 && (
         <>
           <span className="text-4xl font-bold tabular-nums">{pad(hrs)}</span>
-          <span className="text-white/50 text-xl mb-0.5">h</span>
+          <span className="text-slate-500 dark:text-white/50 text-xl mb-0.5">h</span>
         </>
       )}
       <span className="text-4xl font-bold tabular-nums">{pad(mins)}</span>
-      <span className="text-white/50 text-xl mb-0.5">m</span>
+      <span className="text-slate-500 dark:text-white/50 text-xl mb-0.5">m</span>
       <span className="text-4xl font-bold tabular-nums">{pad(secs)}</span>
-      <span className="text-white/50 text-xl mb-0.5">s</span>
+      <span className="text-slate-500 dark:text-white/50 text-xl mb-0.5">s</span>
     </div>
   );
 }
@@ -61,7 +61,7 @@ function CategoryBadge({ value }) {
     REVIEW: "bg-amber-400/10 border-amber-400/20 text-amber-300",
   };
   return (
-    <span className={`inline-flex px-2.5 py-1 rounded-full text-xs border ${map[value] || "bg-white/5 border-white/15 text-white/70"}`}>
+    <span className={`inline-flex px-2.5 py-1 rounded-full text-xs border ${map[value] || "bg-white dark:bg-white/5 shadow-sm dark:shadow-none border-slate-200 dark:border-white/15 text-slate-600 dark:text-white/70"}`}>
       {value}
     </span>
   );
@@ -71,7 +71,7 @@ function StatusDot({ status }) {
   return (
     <span className="flex items-center gap-1.5 text-sm">
       <span className={`inline-block h-2 w-2 rounded-full ${status === "ACTIVE" ? "bg-emerald-400 animate-pulse" : "bg-white/30"}`} />
-      <span className={status === "ACTIVE" ? "text-emerald-300" : "text-white/50"}>
+      <span className={status === "ACTIVE" ? "text-emerald-300" : "text-slate-500 dark:text-white/50"}>
         {status === "ACTIVE" ? "Session Active" : "Session Completed"}
       </span>
     </span>
@@ -80,9 +80,9 @@ function StatusDot({ status }) {
 
 function InfoPill({ label, value }) {
   return (
-    <div className="rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-center">
-      <div className="text-xs text-white/45 mb-0.5">{label}</div>
-      <div className="text-sm font-medium text-white/90">{value}</div>
+    <div className="rounded-xl border border-slate-200 dark:border-white/10 bg-white dark:bg-white/5 shadow-sm dark:shadow-none px-3 py-2 text-center">
+      <div className="text-xs text-slate-400 dark:text-white/45 mb-0.5">{label}</div>
+      <div className="text-sm font-medium text-slate-700 dark:text-white/90">{value}</div>
     </div>
   );
 }
@@ -92,19 +92,19 @@ function PersonCard({ label, user, accent }) {
   const ringColor = accent === "poster" ? "border-sky-400/30" : "border-violet-400/30";
   const labelColor = accent === "poster" ? "text-sky-300" : "text-violet-300";
   return (
-    <div className={`rounded-2xl border ${ringColor} bg-white/5 p-4 flex items-center gap-4`}>
-      <div className={`h-12 w-12 rounded-2xl flex items-center justify-center text-lg font-semibold border ${ringColor} bg-white/5 shrink-0`}>
+    <div className={`rounded-2xl border ${ringColor} bg-white dark:bg-white/5 shadow-sm dark:shadow-none p-4 flex items-center gap-4`}>
+      <div className={`h-12 w-12 rounded-2xl flex items-center justify-center text-lg font-semibold border ${ringColor} bg-white dark:bg-white/5 shadow-sm dark:shadow-none shrink-0`}>
         {(user.fullName || "?")[0].toUpperCase()}
       </div>
       <div className="min-w-0">
         <div className={`text-xs font-medium ${labelColor} mb-0.5`}>{label}</div>
         <div className="text-sm font-semibold truncate">{user.fullName}</div>
-        <div className="text-xs text-white/45">{user.studentId}</div>
+        <div className="text-xs text-slate-400 dark:text-white/45">{user.studentId}</div>
         {user.reputation !== undefined && (
           <div className="text-xs text-amber-400 mt-0.5">
             {"★".repeat(Math.floor(user.reputation))}
             <span className="text-white/30">{"★".repeat(5 - Math.floor(user.reputation))}</span>
-            <span className="text-white/50 ml-1">{Number(user.reputation).toFixed(1)}</span>
+            <span className="text-slate-500 dark:text-white/50 ml-1">{Number(user.reputation).toFixed(1)}</span>
             {user.completedTasksCount > 0 && (
               <span className="text-white/40 ml-2">{user.completedTasksCount} tasks done</span>
             )}
@@ -170,9 +170,9 @@ function ChatBox({ sessionId, sessionStatus, currentUserId }) {
   };
 
   return (
-    <div className="rounded-3xl border border-white/10 bg-white/5 flex flex-col overflow-hidden" style={{ height: "420px" }}>
+    <div className="rounded-3xl border border-slate-200 dark:border-white/10 bg-white dark:bg-white/5 shadow-sm dark:shadow-none flex flex-col overflow-hidden" style={{ height: "420px" }}>
       {/* Header */}
-      <div className="px-5 py-3 border-b border-white/10 flex items-center gap-2 shrink-0">
+      <div className="px-5 py-3 border-b border-slate-200 dark:border-white/10 flex items-center gap-2 shrink-0">
         <span className="text-sm font-semibold">Session Chat</span>
         <div className="flex-1" />
         {sessionStatus === "ACTIVE" ? (
@@ -208,7 +208,7 @@ function ChatBox({ sessionId, sessionStatus, currentUserId }) {
                 className={`max-w-xs rounded-2xl px-3.5 py-2 text-sm break-words ${
                   isMe
                     ? "bg-violet-600/30 border border-violet-400/20 text-violet-100"
-                    : "bg-white/10 border border-white/10 text-white/90"
+                    : "bg-slate-50 dark:bg-white/10 shadow-sm dark:shadow-none border border-slate-200 dark:border-white/10 text-slate-700 dark:text-white/90"
                 }`}
               >
                 {m.content}
@@ -227,7 +227,7 @@ function ChatBox({ sessionId, sessionStatus, currentUserId }) {
 
       {/* Input */}
       {sessionStatus === "ACTIVE" ? (
-        <div className="px-4 pb-4 pt-2 border-t border-white/10 flex gap-2 shrink-0">
+        <div className="px-4 pb-4 pt-2 border-t border-slate-200 dark:border-white/10 flex gap-2 shrink-0">
           <textarea
             value={input}
             onChange={(e) => setInput(e.target.value)}
@@ -235,7 +235,7 @@ function ChatBox({ sessionId, sessionStatus, currentUserId }) {
             placeholder="Type a message… (Enter to send)"
             rows={2}
             maxLength={1000}
-            className="flex-1 bg-slate-950/50 border border-white/10 rounded-xl px-3 py-2 text-sm outline-none focus:border-white/30 resize-none"
+            className="flex-1 bg-slate-950/50 border border-slate-200 dark:border-white/10 rounded-xl px-3 py-2 text-sm outline-none focus:border-white/30 resize-none"
           />
           <button
             onClick={handleSend}
@@ -246,7 +246,7 @@ function ChatBox({ sessionId, sessionStatus, currentUserId }) {
           </button>
         </div>
       ) : (
-        <div className="px-5 py-3 text-xs text-white/40 text-center border-t border-white/10 shrink-0">
+        <div className="px-5 py-3 text-xs text-white/40 text-center border-t border-slate-200 dark:border-white/10 shrink-0">
           Session ended — chat is read-only
         </div>
       )}
@@ -318,7 +318,7 @@ export default function SessionPage() {
   if (loading) {
     return (
       <div className={`${ui.page} flex items-center justify-center`}>
-        <div className="text-white/45 text-sm">Loading session…</div>
+        <div className="text-slate-400 dark:text-white/45 text-sm">Loading session…</div>
       </div>
     );
   }
@@ -382,7 +382,7 @@ export default function SessionPage() {
           <div className="flex items-center gap-3">
             <Link
               to={isHelper ? "/tasks/accepted-by-me" : "/tasks/mine"}
-              className="text-white/50 hover:text-white text-sm transition"
+              className="text-slate-500 dark:text-white/50 hover:text-slate-900 dark:hover:text-white text-sm transition"
             >
               ← Back
             </Link>
@@ -395,7 +395,7 @@ export default function SessionPage() {
         {/* Timer card */}
         <div className={`${ui.card} p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-6`}>
           <div className="space-y-2">
-            <div className="text-xs text-white/45 uppercase tracking-widest">
+            <div className="text-xs text-slate-400 dark:text-white/45 uppercase tracking-widest">
               {isActive ? "Time Elapsed" : "Total Duration"}
             </div>
             <ElapsedTimer startedAt={session.startedAt} endedAt={session.endedAt} />
@@ -414,7 +414,7 @@ export default function SessionPage() {
             </button>
           ) : (
             !isActive && (
-              <div className="text-sm text-white/50 border border-white/10 rounded-2xl px-5 py-3">
+              <div className="text-sm text-slate-500 dark:text-white/50 border border-slate-200 dark:border-white/10 rounded-2xl px-5 py-3">
                 ✓ Session completed
               </div>
             )
@@ -437,13 +437,13 @@ export default function SessionPage() {
                     )}
                     <CategoryBadge value={task?.category} />
                   </div>
-                  <p className="text-sm text-white/65 leading-relaxed">{task?.description}</p>
+                  <p className="text-sm text-slate-600 dark:text-white/65 leading-relaxed">{task?.description}</p>
                 </div>
               </div>
 
-              <div className="border-t border-white/10 pt-4">
-                <div className="text-xs text-white/45 uppercase tracking-wide mb-2">Expected Outcome</div>
-                <p className="text-sm text-white/80">{task?.expectedOutcome}</p>
+              <div className="border-t border-slate-200 dark:border-white/10 pt-4">
+                <div className="text-xs text-slate-400 dark:text-white/45 uppercase tracking-wide mb-2">Expected Outcome</div>
+                <p className="text-sm text-slate-700 dark:text-white/80">{task?.expectedOutcome}</p>
               </div>
             </div>
 
@@ -458,32 +458,32 @@ export default function SessionPage() {
 
           {/* People panel (1/3 width) */}
           <div className="space-y-3">
-            <div className="text-xs text-white/45 uppercase tracking-widest px-1">Participants</div>
+            <div className="text-xs text-slate-400 dark:text-white/45 uppercase tracking-widest px-1">Participants</div>
             <PersonCard label="Task Posted By" user={session.poster} accent="poster" />
             <PersonCard label="Helper (You)" user={session.helper} accent="helper" />
 
             <div className={`${ui.card2} p-4 space-y-2`}>
-              <div className="text-xs text-white/45 uppercase tracking-widest">Session Info</div>
+              <div className="text-xs text-slate-400 dark:text-white/45 uppercase tracking-widest">Session Info</div>
               <div className="space-y-1.5 text-sm">
                 <div className="flex justify-between">
-                  <span className="text-white/50">Mode</span>
-                  <span className="text-white/85">{session.mode}</span>
+                  <span className="text-slate-500 dark:text-white/50">Mode</span>
+                  <span className="text-slate-800 dark:text-white/85">{session.mode}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-white/50">Status</span>
-                  <span className={session.status === "ACTIVE" ? "text-emerald-300" : "text-white/55"}>
+                  <span className="text-slate-500 dark:text-white/50">Status</span>
+                  <span className={session.status === "ACTIVE" ? "text-emerald-300" : "text-slate-500 dark:text-white/55"}>
                     {session.status}
                   </span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-white/50">Started</span>
-                  <span className="text-white/85 text-xs">
+                  <span className="text-slate-500 dark:text-white/50">Started</span>
+                  <span className="text-slate-800 dark:text-white/85 text-xs">
                     {new Date(session.startedAt).toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit" })}
                   </span>
                 </div>
                 {session.venue && (
                   <div className="flex justify-between gap-2">
-                    <span className="text-white/50 shrink-0">📍 Venue</span>
+                    <span className="text-slate-500 dark:text-white/50 shrink-0">📍 Venue</span>
                     <span className="text-amber-200 text-xs text-right break-words">{session.venue}</span>
                   </div>
                 )}

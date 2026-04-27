@@ -98,7 +98,7 @@ export default function DashboardPage() {
             <p className="admin-chip bg-cyan-400/15 text-cyan-100 border border-cyan-200/35 w-fit mb-3">
               EduSpark Trust Command Center
             </p>
-            <h2 className="admin-title text-3xl md:text-4xl font-semibold text-white tracking-tight">
+            <h2 className="admin-title text-3xl md:text-4xl font-semibold text-slate-900 dark:text-white tracking-tight">
               System Signal Overview
             </h2>
             <p className="text-slate-300 mt-2 max-w-2xl text-sm md:text-base">
@@ -112,7 +112,7 @@ export default function DashboardPage() {
               <span className="admin-title text-4xl font-bold text-emerald-200">{trustIndex}</span>
               <span className="text-slate-300 text-sm pb-1">/ 100</span>
             </div>
-            <div className="mt-3 h-2 rounded-full bg-slate-800 overflow-hidden">
+            <div className="mt-3 h-2 rounded-full bg-slate-100 dark:bg-slate-800 overflow-hidden">
               <div
                 className="h-full rounded-full bg-gradient-to-r from-emerald-400 via-cyan-400 to-sky-300"
                 style={{ width: `${trustIndex}%` }}
@@ -133,9 +133,9 @@ export default function DashboardPage() {
               <div className="flex items-start justify-between gap-3">
                 <div>
                   <p className="text-xs uppercase tracking-[0.12em] text-slate-400">{stat.label}</p>
-                  <h3 className="admin-title mt-2 text-3xl font-bold text-white">{stat.value}</h3>
+                  <h3 className="admin-title mt-2 text-3xl font-bold text-slate-900 dark:text-white">{stat.value}</h3>
                 </div>
-                <div className="rounded-xl p-2.5 bg-white/5 border border-white/10">
+                <div className="rounded-xl p-2.5 bg-white dark:bg-white/5 shadow-sm dark:shadow-none border border-slate-200 dark:border-white/10">
                   <stat.icon size={20} className={stat.tone} />
                 </div>
               </div>
@@ -147,7 +147,7 @@ export default function DashboardPage() {
         <div className="relative z-10 grid grid-cols-1 xl:grid-cols-3 gap-5">
           <section className="admin-panel p-5 xl:col-span-2">
             <div className="flex items-center justify-between gap-3 mb-5">
-              <h3 className="admin-title text-lg text-white">Skill Demand Pulse</h3>
+              <h3 className="admin-title text-lg text-slate-900 dark:text-white">Skill Demand Pulse</h3>
               <span className="admin-chip bg-blue-300/10 text-blue-100 border border-blue-200/25">
                 Top Requested Learning Streams
               </span>
@@ -165,7 +165,7 @@ export default function DashboardPage() {
                         <span className="font-semibold text-slate-100">{skill._id || "Unknown"}</span>
                         <span className="text-slate-300">{skill.count} requests</span>
                       </div>
-                      <div className="h-2.5 rounded-full bg-slate-800 overflow-hidden">
+                      <div className="h-2.5 rounded-full bg-slate-100 dark:bg-slate-800 overflow-hidden">
                         <div
                           className="h-full rounded-full bg-gradient-to-r from-sky-400 via-cyan-300 to-emerald-300 transition-all duration-700"
                           style={{ width: `${width}%` }}
@@ -179,15 +179,15 @@ export default function DashboardPage() {
           </section>
 
           <section className="admin-panel p-5">
-            <h3 className="admin-title text-lg text-white mb-5">Resolution Momentum</h3>
+            <h3 className="admin-title text-lg text-slate-900 dark:text-white mb-5">Resolution Momentum</h3>
 
             <div className="mx-auto w-40 h-40 rounded-full relative mb-5"
               style={{
                 background: `conic-gradient(#34d399 0 ${Math.round((completedCount / safeTotalSessions) * 100)}%, #fbbf24 ${Math.round((completedCount / safeTotalSessions) * 100)}% ${Math.round(((completedCount + activeCount) / safeTotalSessions) * 100)}%, #334155 ${Math.round(((completedCount + activeCount) / safeTotalSessions) * 100)}% 100%)`,
               }}
             >
-              <div className="absolute inset-4 rounded-full bg-[var(--admin-bg)] border border-white/10 flex flex-col items-center justify-center">
-                <span className="admin-title text-3xl text-white">{momentum}</span>
+              <div className="absolute inset-4 rounded-full bg-[var(--admin-bg)] border border-slate-200 dark:border-white/10 flex flex-col items-center justify-center">
+                <span className="admin-title text-3xl text-slate-900 dark:text-white">{momentum}</span>
                 <span className="text-xs uppercase text-slate-400 tracking-[0.12em]">Flow Score</span>
               </div>
             </div>
@@ -204,7 +204,7 @@ export default function DashboardPage() {
           <section className="admin-panel p-5">
             <div className="flex items-center gap-2 mb-4">
               <FiZap className="text-cyan-200" />
-              <h3 className="admin-title text-lg text-white">Dispute Intelligence</h3>
+              <h3 className="admin-title text-lg text-slate-900 dark:text-white">Dispute Intelligence</h3>
             </div>
             {disputeTypes.length === 0 ? (
               <p className="text-slate-400 text-sm">No dispute patterns captured yet.</p>
@@ -213,7 +213,7 @@ export default function DashboardPage() {
                 {disputeTypes.slice(0, 4).map((item, index) => {
                   const level = index === 0 ? "High" : index === 1 ? "Medium" : "Watch";
                   return (
-                    <li key={`${item._id}-${index}`} className="flex items-center justify-between bg-slate-900/35 border border-slate-700/50 rounded-xl px-3 py-2.5">
+                    <li key={`${item._id}-${index}`} className="flex items-center justify-between bg-white dark:bg-slate-900 shadow-sm dark:shadow-none/35 border border-slate-700/50 rounded-xl px-3 py-2.5">
                       <div>
                         <div className="text-slate-100 font-medium text-sm">{item._id || "Unknown"}</div>
                         <div className="text-xs text-slate-400">{item.count} reported cases</div>
@@ -237,26 +237,26 @@ export default function DashboardPage() {
           <section className="admin-panel p-5">
             <div className="flex items-center gap-2 mb-4">
               <FiShield className="text-emerald-200" />
-              <h3 className="admin-title text-lg text-white">Operator Guidance</h3>
+              <h3 className="admin-title text-lg text-slate-900 dark:text-white">Operator Guidance</h3>
             </div>
 
             <div className="space-y-3 text-sm text-slate-200">
-              <div className="rounded-xl border border-white/10 bg-white/5 px-3 py-3 flex items-start gap-3">
+              <div className="rounded-xl border border-slate-200 dark:border-white/10 bg-white dark:bg-white/5 shadow-sm dark:shadow-none px-3 py-3 flex items-start gap-3">
                 <FiTrendingUp className="mt-0.5 text-cyan-200" />
                 <p>
-                  Session completion is at <span className="font-semibold text-white">{completionRate}%</span>. Continue pairing support in high-demand skills to keep this above 70%.
+                  Session completion is at <span className="font-semibold text-slate-900 dark:text-white">{completionRate}%</span>. Continue pairing support in high-demand skills to keep this above 70%.
                 </p>
               </div>
-              <div className="rounded-xl border border-white/10 bg-white/5 px-3 py-3 flex items-start gap-3">
+              <div className="rounded-xl border border-slate-200 dark:border-white/10 bg-white dark:bg-white/5 shadow-sm dark:shadow-none px-3 py-3 flex items-start gap-3">
                 <FiAlertTriangle className="mt-0.5 text-amber-200" />
                 <p>
-                  Queue pressure is <span className="font-semibold text-white">{disputePressure}%</span>. Prioritize repeated reason categories to prevent trust score drop.
+                  Queue pressure is <span className="font-semibold text-slate-900 dark:text-white">{disputePressure}%</span>. Prioritize repeated reason categories to prevent trust score drop.
                 </p>
               </div>
-              <div className="rounded-xl border border-white/10 bg-white/5 px-3 py-3 flex items-start gap-3">
+              <div className="rounded-xl border border-slate-200 dark:border-white/10 bg-white dark:bg-white/5 shadow-sm dark:shadow-none px-3 py-3 flex items-start gap-3">
                 <FiShield className="mt-0.5 text-emerald-200" />
                 <p>
-                  Trust index currently at <span className="font-semibold text-white">{trustIndex}/100</span>. Keep unresolved disputes below 10% of session volume for stable health.
+                  Trust index currently at <span className="font-semibold text-slate-900 dark:text-white">{trustIndex}/100</span>. Keep unresolved disputes below 10% of session volume for stable health.
                 </p>
               </div>
             </div>

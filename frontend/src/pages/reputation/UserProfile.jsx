@@ -66,7 +66,7 @@ const CircularScoreGauge = ({ score }) => {
         />
       </svg>
       <div className="absolute flex flex-col items-center justify-center">
-        <span className="text-3xl font-black font-mono text-white tracking-tighter">{score}</span>
+        <span className="text-3xl font-black font-mono text-slate-900 dark:text-white tracking-tighter">{score}</span>
       </div>
     </div>
   );
@@ -298,7 +298,7 @@ export default function UserProfile() {
           onClick={() => setSidebarOpen(!sidebarOpen)}
           className={`flex items-center justify-center w-12 h-12 rounded-xl transition ${
             sidebarOpen 
-              ? "bg-indigo-500 text-white" 
+              ? "bg-indigo-500 text-slate-900 dark:text-white" 
               : "bg-indigo-500/20 text-indigo-400 border border-indigo-500/30 hover:bg-indigo-500/30"
           }`}
           title="Toggle sidebar menu"
@@ -317,7 +317,7 @@ export default function UserProfile() {
       
       
       {/* 1. Header Banner */}
-      <div className="bg-slate-900 border border-slate-800 rounded-t-3xl overflow-hidden shadow-2xl relative">
+      <div className="bg-white dark:bg-slate-900 shadow-sm dark:shadow-none border border-slate-800 rounded-t-3xl overflow-hidden shadow-2xl relative">
         <div className="h-40 bg-linear-to-r from-indigo-900 via-indigo-800 to-slate-900 relative overflow-hidden">
           <div className="absolute inset-0 opacity-30 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-indigo-300 via-slate-900 to-black"></div>
           {/* Decorative glowing orb */}
@@ -325,7 +325,7 @@ export default function UserProfile() {
         </div>
         
         <div className="px-6 md:px-10 pb-8 pt-20 md:pt-20 relative">
-          <div className="absolute -top-16 left-6 md:left-10 w-32 h-32 rounded-full border-4 border-slate-900 bg-slate-800 flex items-center justify-center text-5xl text-white font-bold shadow-2xl shadow-black/80 z-10 overflow-hidden">
+          <div className="absolute -top-16 left-6 md:left-10 w-32 h-32 rounded-full border-4 border-slate-900 bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-5xl text-slate-900 dark:text-white font-bold shadow-2xl shadow-black/80 z-10 overflow-hidden">
             {user.profilePic ? (
               <img src={`/src/pages/images/${user.profilePic}`} alt="Profile" className="w-full h-full object-cover" />
             ) : (
@@ -335,7 +335,7 @@ export default function UserProfile() {
           
           <div className="flex flex-col md:flex-row md:items-start justify-between mt-4 gap-6">
             <div className="md:ml-2">
-              <h1 className="text-3xl font-bold text-white flex items-center gap-3">
+              <h1 className="text-3xl font-bold text-slate-900 dark:text-white flex items-center gap-3">
                 {user.fullName}
                 <button onClick={() => setIsEditingProfile(true)} className="text-slate-400 hover:text-indigo-400 transition ml-2 p-1" title="Edit Profile">
                   <FiEdit3 size={18} />
@@ -349,12 +349,12 @@ export default function UserProfile() {
 
               <div className="flex gap-4 mt-3">
                 {user.githubUrl && (
-                  <a href={user.githubUrl} target="_blank" rel="noreferrer" className="flex items-center gap-1.5 text-xs text-slate-400 hover:text-white transition">
+                  <a href={user.githubUrl} target="_blank" rel="noreferrer" className="flex items-center gap-1.5 text-xs text-slate-400 hover:text-slate-900 dark:hover:text-white transition">
                     <FiGithub /> GitHub
                   </a>
                 )}
                 {user.linkedinUrl && (
-                  <a href={user.linkedinUrl} target="_blank" rel="noreferrer" className="flex items-center gap-1.5 text-xs text-slate-400 hover:text-white transition">
+                  <a href={user.linkedinUrl} target="_blank" rel="noreferrer" className="flex items-center gap-1.5 text-xs text-slate-400 hover:text-slate-900 dark:hover:text-white transition">
                     <FiLinkedin /> LinkedIn
                   </a>
                 )}
@@ -398,13 +398,13 @@ export default function UserProfile() {
             sidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
           }`}
         >
-          <div className="bg-slate-900 border border-slate-800 rounded-3xl p-4 sticky top-20 shadow-lg lg:shadow-none lg:border-l-0 lg:rounded-none">
+          <div className="bg-white dark:bg-slate-900 shadow-sm dark:shadow-none border border-slate-800 rounded-3xl p-4 sticky top-20 shadow-lg lg:shadow-none lg:border-l-0 lg:rounded-none">
             {/* Close button on mobile */}
             <div className="lg:hidden flex justify-between items-center mb-4 pb-4 border-b border-slate-800">
-              <h3 className="font-bold text-white">Navigation</h3>
+              <h3 className="font-bold text-slate-900 dark:text-white">Navigation</h3>
               <button
                 onClick={() => setSidebarOpen(false)}
-                className="text-slate-400 hover:text-white transition p-1"
+                className="text-slate-400 hover:text-slate-900 dark:hover:text-white transition p-1"
               >
                 <FiX size={20} />
               </button>
@@ -427,7 +427,7 @@ export default function UserProfile() {
                   className={`w-full flex items-center gap-3 px-5 py-4 rounded-2xl transition font-medium text-sm ${
                     activeTab === item.id
                       ? "bg-indigo-500/20 text-indigo-400 border border-indigo-500/30 shadow-lg shadow-indigo-500/10"
-                      : "text-slate-400 hover:text-white hover:bg-slate-800/60 border border-transparent"
+                      : "text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800/60 border border-transparent"
                   }`}
                 >
                   {item.icon}
@@ -449,7 +449,7 @@ export default function UserProfile() {
             <div className="grid md:grid-cols-2 gap-6">
               
               {/* Score Card */}
-              <div className="bg-slate-900 border border-slate-800 rounded-3xl p-8 flex flex-col items-center text-center shadow-lg relative overflow-hidden">
+              <div className="bg-white dark:bg-slate-900 shadow-sm dark:shadow-none border border-slate-800 rounded-3xl p-8 flex flex-col items-center text-center shadow-lg relative overflow-hidden">
                 <div className="absolute top-0 right-0 p-4 opacity-10">
                   <FiActivity size={100} />
                 </div>
@@ -464,15 +464,15 @@ export default function UserProfile() {
 
               {/* Quick Metrics - Vertical Stack */}
               <div className="space-y-4">
-                <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6">
-                  <div className="text-3xl font-bold font-mono text-white mb-2">{ratings.length}</div>
+                <div className="bg-white dark:bg-slate-900 shadow-sm dark:shadow-none border border-slate-800 rounded-3xl p-6">
+                  <div className="text-3xl font-bold font-mono text-slate-900 dark:text-white mb-2">{ratings.length}</div>
                   <div className="text-xs text-slate-400 font-semibold uppercase tracking-widest">Total Ratings</div>
                 </div>
-                <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6">
+                <div className="bg-white dark:bg-slate-900 shadow-sm dark:shadow-none border border-slate-800 rounded-3xl p-6">
                   <div className="text-3xl font-bold font-mono text-emerald-400 mb-2">{skills.filter(s=>s.isVerified).length}</div>
                   <div className="text-xs text-slate-400 font-semibold uppercase tracking-widest">Verified Skills</div>
                 </div>
-                <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6">
+                <div className="bg-white dark:bg-slate-900 shadow-sm dark:shadow-none border border-slate-800 rounded-3xl p-6">
                   <div className="text-3xl font-bold font-mono text-orange-400 mb-2">{reputation.noShowCount}</div>
                   <div className="text-xs text-slate-400 font-semibold uppercase tracking-widest">Penalty Strikes</div>
                 </div>
@@ -500,7 +500,7 @@ export default function UserProfile() {
                   <p className="text-xs text-red-500/80 mb-4">You are currently suspended due to accumulating No-Shows. You cannot apply for tasks.</p>
                   <div className="bg-red-500/20 border border-red-500/30 rounded-lg p-3 text-center">
                     <span className="text-xs font-bold text-red-400 uppercase tracking-widest">Lifts On</span>
-                    <div className="font-mono font-bold text-white mt-1">{new Date(reputation.cooldownUntil).toLocaleString()}</div>
+                    <div className="font-mono font-bold text-slate-900 dark:text-white mt-1">{new Date(reputation.cooldownUntil).toLocaleString()}</div>
                   </div>
                 </>
               ) : (
@@ -517,14 +517,14 @@ export default function UserProfile() {
             </div>
 
             {/* Recent Endorsements */}
-            <div className="bg-slate-900 border border-slate-800 rounded-3xl p-8 shadow-sm">
-              <h2 className="text-xl font-bold text-white mb-6">Recent Endorsements</h2>
+            <div className="bg-white dark:bg-slate-900 shadow-sm dark:shadow-none border border-slate-800 rounded-3xl p-8 shadow-sm">
+              <h2 className="text-xl font-bold text-slate-900 dark:text-white mb-6">Recent Endorsements</h2>
               <div className="space-y-4">
                 {ratings.filter(r => r.comment).length === 0 ? (
                   <div className="text-slate-500 text-center py-6 border border-dashed border-slate-700 rounded-xl">No written reviews received yet.</div>
                 ) : (
                   ratings.filter(r => r.comment).slice(0, 3).map((r, i) => (
-                    <div key={i} className="p-5 bg-slate-800/40 border-l-4 border-l-indigo-500 rounded-r-xl rounded-l-md text-slate-300">
+                    <div key={i} className="p-5 bg-slate-100 dark:bg-slate-800/40 border-l-4 border-l-indigo-500 rounded-r-xl rounded-l-md text-slate-300">
                       <p className="italic text-sm">"{r.comment}"</p>
                       <div className="flex items-center gap-4 mt-3">
                         <p className="text-[11px] text-slate-500 font-medium uppercase tracking-wider">
@@ -543,15 +543,15 @@ export default function UserProfile() {
 
         {/* ================= SKILLS PORTFOLIO TAB ================= */}
         {activeTab === "Skills Portfolio" && (
-          <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 md:p-8 shadow-sm">
+          <div className="bg-white dark:bg-slate-900 shadow-sm dark:shadow-none border border-slate-800 rounded-3xl p-6 md:p-8 shadow-sm">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
               <div>
-                <h2 className="text-2xl font-bold text-white mb-1">Skills & Certifications</h2>
+                <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-1">Skills & Certifications</h2>
                 <p className="text-sm text-slate-400">Map your technical proficiencies and verify them to build trust.</p>
               </div>
               <button 
                 onClick={toggleAddSkill}
-                className="flex items-center gap-2 px-6 py-3 bg-indigo-500 text-white hover:bg-indigo-600 rounded-xl transition shadow-lg shadow-indigo-500/20 font-medium text-sm"
+                className="flex items-center gap-2 px-6 py-3 bg-indigo-500 text-slate-900 dark:text-white hover:bg-indigo-600 rounded-xl transition shadow-lg shadow-indigo-500/20 font-medium text-sm"
               >
                 {isAddingSkill ? <FiX size={18} /> : <FiPlus className="text-lg" />} 
                 {isAddingSkill ? "Cancel" : "Add New Skill"}
@@ -560,8 +560,8 @@ export default function UserProfile() {
 
             {/* Multi-Step Premium Skill Selector */}
             {isAddingSkill && (
-              <div className="mb-10 p-0.5 bg-slate-800/10 border border-slate-800/50 rounded-3xl overflow-hidden animate-in zoom-in-95 duration-500 shadow-2xl">
-                <div className="bg-slate-900 rounded-[1.4rem] p-6 md:p-8 border border-white/5">
+              <div className="mb-10 p-0.5 bg-slate-100 dark:bg-slate-800/10 border border-slate-800/50 rounded-3xl overflow-hidden animate-in zoom-in-95 duration-500 shadow-2xl">
+                <div className="bg-white dark:bg-slate-900 shadow-sm dark:shadow-none rounded-[1.4rem] p-6 md:p-8 border border-white/5">
                   
                   {/* Step Indicators / Breadcrumbs */}
                   <div className="flex items-center gap-2 mb-8 overflow-x-auto pb-2 scrollbar-hide">
@@ -577,7 +577,7 @@ export default function UserProfile() {
                           disabled={idx >= selectionStep}
                           className={`flex items-center gap-2 px-3 py-1.5 rounded-full transition-all ${
                             selectionStep === idx 
-                              ? "bg-indigo-500 text-white shadow-lg shadow-indigo-500/20" 
+                              ? "bg-indigo-500 text-slate-900 dark:text-white shadow-lg shadow-indigo-500/20" 
                               : idx < selectionStep ? "text-indigo-400 hover:bg-indigo-500/10 cursor-pointer" : "text-slate-600 cursor-default"
                           }`}
                         >
@@ -588,7 +588,7 @@ export default function UserProfile() {
                             {idx < selectionStep ? step.value : step.label}
                           </span>
                         </button>
-                        {idx < 3 && <div className={`w-8 h-px mx-1 ${idx < selectionStep ? "bg-indigo-500/50" : "bg-slate-800"}`}></div>}
+                        {idx < 3 && <div className={`w-8 h-px mx-1 ${idx < selectionStep ? "bg-indigo-500/50" : "bg-slate-100 dark:bg-slate-800"}`}></div>}
                       </div>
                     ))}
                   </div>
@@ -596,18 +596,18 @@ export default function UserProfile() {
                   {/* STEP 0: Category Selection */}
                   {selectionStep === 0 && (
                     <div className="animate-in fade-in slide-in-from-bottom-2 duration-300">
-                      <h3 className="text-lg font-bold text-white mb-6">Select a Field</h3>
+                      <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-6">Select a Field</h3>
                       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                         {Object.keys(SKILL_CATEGORIES).map(cat => (
                           <button
                             key={cat}
                             onClick={() => { setSelectedCategory(cat); setSelectionStep(1); }}
-                            className="group p-4 bg-slate-800/20 border border-slate-800 hover:border-indigo-500/30 hover:bg-indigo-500/5 rounded-xl transition-all text-center flex flex-col items-center gap-3"
+                            className="group p-4 bg-slate-100 dark:bg-slate-800/20 border border-slate-800 hover:border-indigo-500/30 hover:bg-indigo-500/5 rounded-xl transition-all text-center flex flex-col items-center gap-3"
                           >
-                            <div className="w-10 h-10 rounded-lg bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-500 group-hover:text-indigo-400 transition-colors">
+                            <div className="w-10 h-10 rounded-lg bg-white dark:bg-slate-900 shadow-sm dark:shadow-none border border-slate-800 flex items-center justify-center text-slate-500 group-hover:text-indigo-400 transition-colors">
                               <FiActivity size={20} />
                             </div>
-                            <span className="text-xs font-bold text-slate-400 group-hover:text-white">{cat}</span>
+                            <span className="text-xs font-bold text-slate-400 group-hover:text-slate-900 dark:group-hover:text-white">{cat}</span>
                           </button>
                         ))}
                       </div>
@@ -617,8 +617,8 @@ export default function UserProfile() {
                   {/* STEP 1: Subcategory Selection */}
                   {selectionStep === 1 && (
                     <div className="animate-in fade-in slide-in-from-right-4 duration-300">
-                      <h3 className="text-lg font-bold text-white mb-6 flex items-center gap-2">
-                        <button onClick={() => setSelectionStep(0)} className="p-2 hover:bg-slate-800 rounded-lg transition text-slate-500 hover:text-white"><FiEdit3 size={16} /></button>
+                      <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-2">
+                        <button onClick={() => setSelectionStep(0)} className="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition text-slate-500 hover:text-slate-900 dark:hover:text-white"><FiEdit3 size={16} /></button>
                         Select Specialty
                       </h3>
                       <div className="flex flex-wrap gap-3">
@@ -626,7 +626,7 @@ export default function UserProfile() {
                           <button
                             key={sub}
                             onClick={() => { setSelectedSubCategory(sub); setSelectionStep(2); }}
-                            className="px-5 py-3 bg-slate-800/20 border border-slate-800 hover:border-indigo-500/30 hover:bg-indigo-500/5 rounded-xl text-slate-400 hover:text-white font-bold transition-all text-xs"
+                            className="px-5 py-3 bg-slate-100 dark:bg-slate-800/20 border border-slate-800 hover:border-indigo-500/30 hover:bg-indigo-500/5 rounded-xl text-slate-400 hover:text-slate-900 dark:hover:text-white font-bold transition-all text-xs"
                           >
                             {sub}
                           </button>
@@ -638,13 +638,13 @@ export default function UserProfile() {
                   {/* STEP 2: Skill Selection */}
                   {selectionStep === 2 && (
                     <div className="animate-in fade-in slide-in-from-right-4 duration-300">
-                      <h3 className="text-lg font-bold text-white mb-6">Which technology?</h3>
+                      <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-6">Which technology?</h3>
                       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
                         {skillOptions.map(opt => (
                           <button
                             key={opt}
                             onClick={() => { setSelectedSkill(opt); setSelectionStep(3); }}
-                            className="p-3 bg-slate-800/20 border border-slate-800 hover:border-indigo-500/30 hover:bg-indigo-500/5 rounded-xl text-slate-400 hover:text-white font-bold transition-all text-xs flex items-center justify-center gap-2"
+                            className="p-3 bg-slate-100 dark:bg-slate-800/20 border border-slate-800 hover:border-indigo-500/30 hover:bg-indigo-500/5 rounded-xl text-slate-400 hover:text-slate-900 dark:hover:text-white font-bold transition-all text-xs flex items-center justify-center gap-2"
                           >
                             {opt}
                           </button>
@@ -660,7 +660,7 @@ export default function UserProfile() {
                   {/* STEP 3: Expertise Picker */}
                   {selectionStep === 3 && (
                     <div className="animate-in fade-in zoom-in-95 duration-300">
-                      <h3 className="text-lg font-bold text-white mb-6 text-center">Self-Assessment: <span className="text-indigo-400">{selectedSkill}</span></h3>
+                      <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-6 text-center">Self-Assessment: <span className="text-indigo-400">{selectedSkill}</span></h3>
                       <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
                         {[
                           { id: "Beginner", icon: <FiUnlock />, desc: "Focusing on fundamentals and learning the basics." },
@@ -673,10 +673,10 @@ export default function UserProfile() {
                             className={`p-5 rounded-2xl border transition-all flex flex-col items-center text-center gap-3 ${
                               selectedLevel === lvl.id 
                                 ? "bg-indigo-500/5 border-indigo-500/50 shadow-sm" 
-                                : "bg-slate-800/20 border-slate-800 hover:border-slate-700"
+                                : "bg-slate-100 dark:bg-slate-800/20 border-slate-800 hover:border-slate-700"
                             }`}
                           >
-                            <div className={`w-12 h-12 rounded-full flex items-center justify-center text-xl ${selectedLevel === lvl.id ? "bg-indigo-500 text-white" : "bg-slate-900 text-slate-500"}`}>
+                            <div className={`w-12 h-12 rounded-full flex items-center justify-center text-xl ${selectedLevel === lvl.id ? "bg-indigo-500 text-slate-900 dark:text-white" : "bg-white dark:bg-slate-900 shadow-sm dark:shadow-none text-slate-500"}`}>
                               {lvl.icon}
                             </div>
                             <div>
@@ -690,13 +690,13 @@ export default function UserProfile() {
                       <div className="mt-10 flex justify-center gap-4">
                         <button 
                           onClick={() => setSelectionStep(2)} 
-                          className="px-8 py-3 rounded-xl border border-white/10 text-slate-400 hover:text-white transition font-medium"
+                          className="px-8 py-3 rounded-xl border border-slate-200 dark:border-white/10 text-slate-400 hover:text-slate-900 dark:hover:text-white transition font-medium"
                         >
                           Back
                         </button>
                         <button 
                           onClick={handleAddSkill} 
-                          className="px-10 py-3 rounded-xl bg-indigo-500 hover:bg-indigo-600 text-white font-bold transition shadow-xl shadow-indigo-500/20"
+                          className="px-10 py-3 rounded-xl bg-indigo-500 hover:bg-indigo-600 text-slate-900 dark:text-white font-bold transition shadow-xl shadow-indigo-500/20"
                         >
                           Finalize Portfolio Addition
                         </button>
@@ -719,18 +719,18 @@ export default function UserProfile() {
                 skills.map(s => {
                   const avg = getSkillAverage(s.skill);
                   return (
-                    <div key={s._id} className="group relative flex flex-col p-6 bg-slate-800/40 border border-slate-700 hover:border-slate-500 rounded-2xl transition overflow-hidden">
+                    <div key={s._id} className="group relative flex flex-col p-6 bg-slate-100 dark:bg-slate-800/40 border border-slate-700 hover:border-slate-500 rounded-2xl transition overflow-hidden">
                       {s.isVerified && <div className="absolute top-0 right-0 w-16 h-16 bg-emerald-500/10 rounded-bl-full pointer-events-none"></div>}
                       
                       <div className="flex items-start justify-between mb-4 z-10">
                         <div>
                           <div className="flex items-center gap-2 mb-1">
-                            <h3 className="text-white font-bold text-xl">{s.skill}</h3>
+                            <h3 className="text-slate-900 dark:text-white font-bold text-xl">{s.skill}</h3>
                             {s.isVerified && <FiCheckCircle className="text-emerald-400 drop-shadow-md" title="Verified Skill" size={18} />}
                           </div>
                           <span className="inline-block px-2 py-0.5 bg-slate-700/50 text-slate-300 text-[10px] uppercase tracking-wider font-semibold rounded">{s.category} / {s.subCategory}</span>
                         </div>
-                        <button onClick={() => handleDeleteSkill(s._id)} className="text-slate-500 hover:text-red-400 opacity-0 group-hover:opacity-100 transition p-1.5 bg-slate-900/50 rounded-lg">
+                        <button onClick={() => handleDeleteSkill(s._id)} className="text-slate-500 hover:text-red-400 opacity-0 group-hover:opacity-100 transition p-1.5 bg-white dark:bg-slate-900 shadow-sm dark:shadow-none/50 rounded-lg">
                           <FiTrash2 />
                         </button>
                       </div>
@@ -747,7 +747,7 @@ export default function UserProfile() {
                         </div>
                         <div className="flex flex-col items-end justify-center">
                           {!s.isVerified ? (
-                            <button onClick={() => { setActiveSkillForQuiz({ name: s.skill, id: s._id }); setQuizModalOpen(true); }} className="px-4 py-2 text-xs font-bold bg-indigo-500/15 text-indigo-400 hover:bg-indigo-500 hover:text-white border border-indigo-500/30 rounded-lg transition text-center shadow-sm w-full">Verify Now</button>
+                            <button onClick={() => { setActiveSkillForQuiz({ name: s.skill, id: s._id }); setQuizModalOpen(true); }} className="px-4 py-2 text-xs font-bold bg-indigo-500/15 text-indigo-400 hover:bg-indigo-500 hover:text-slate-900 dark:hover:text-white border border-indigo-500/30 rounded-lg transition text-center shadow-sm w-full">Verify Now</button>
                           ) : (
                             <span className="px-4 py-2 text-xs font-bold text-emerald-400 bg-emerald-400/5 border border-emerald-500/20 rounded-lg text-center w-full uppercase tracking-wider flex items-center justify-center gap-1.5 shadow-[inset_0_0_10px_rgba(16,185,129,0.05)]">
                               <FiCheckCircle className="animate-in zoom-in duration-500" /> Verified
@@ -765,8 +765,8 @@ export default function UserProfile() {
 
         {/* ================= TROPHY ROOM TAB ================= */}
         {activeTab === "Trophy Room" && (
-          <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 md:p-10 shadow-sm relative overflow-hidden">
-            <h2 className="text-2xl font-bold text-white mb-2 relative z-10">Trophy Room</h2>
+          <div className="bg-white dark:bg-slate-900 shadow-sm dark:shadow-none border border-slate-800 rounded-3xl p-6 md:p-10 shadow-sm relative overflow-hidden">
+            <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-2 relative z-10">Trophy Room</h2>
             <p className="text-sm text-slate-400 mb-10 relative z-10">Unlock prestige badges by maintaining excellent collaborative ratings.</p>
 
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 relative z-10">
@@ -775,7 +775,7 @@ export default function UserProfile() {
                 <div className="text-6xl mb-6 flex items-center justify-center text-emerald-400 drop-shadow-lg">
                   <FiAward />
                 </div>
-                <h3 className="text-lg font-bold text-center mb-2 text-white">Expertise</h3>
+                <h3 className="text-lg font-bold text-center mb-2 text-slate-900 dark:text-white">Expertise</h3>
                 <p className="text-xs text-center text-slate-400 mb-4">{skills.filter(s => s.isVerified).length} Verified Skills</p>
                 <div className="mt-auto w-full pt-4 border-t border-emerald-500/10">
                   <p className="text-[10px] text-center font-semibold uppercase tracking-wider text-emerald-400">Certifications Earned</p>
@@ -785,7 +785,7 @@ export default function UserProfile() {
               {ALL_SYSTEM_BADGES.map(badgeDef => {
                 const earned = reputation.badges.includes(badgeDef.id);
                 return (
-                  <div key={badgeDef.id} className={`relative flex flex-col items-center p-8 rounded-3xl border transition-all duration-500 ${earned ? `bg-slate-800/80 border-slate-700 shadow-xl ${badgeDef.glow}` : 'bg-slate-900/50 border-slate-800/50 grayscale opacity-60'}`}>
+                  <div key={badgeDef.id} className={`relative flex flex-col items-center p-8 rounded-3xl border transition-all duration-500 ${earned ? `bg-slate-100 dark:bg-slate-800/80 border-slate-700 shadow-xl ${badgeDef.glow}` : 'bg-white dark:bg-slate-900 shadow-sm dark:shadow-none/50 border-slate-800/50 grayscale opacity-60'}`}>
                     {/* Earned/Locked Status Icon */}
                     <div className="absolute top-4 right-4">
                       {earned ? <FiUnlock className="text-slate-500" /> : <FiLock className="text-slate-600" />}
@@ -795,7 +795,7 @@ export default function UserProfile() {
                       {badgeDef.icon}
                     </div>
                     
-                    <h3 className={`text-lg font-bold text-center mb-2 ${earned ? 'text-white' : 'text-slate-400'}`}>{badgeDef.id}</h3>
+                    <h3 className={`text-lg font-bold text-center mb-2 ${earned ? 'text-slate-900 dark:text-white' : 'text-slate-400'}`}>{badgeDef.id}</h3>
                     <p className="text-xs text-center text-slate-400 mb-4">{badgeDef.desc}</p>
                     
                     <div className={`mt-auto w-full pt-4 border-t ${earned ? 'border-slate-700/50' : 'border-slate-800'}`}>
@@ -815,8 +815,8 @@ export default function UserProfile() {
           <div className="grid lg:grid-cols-2 gap-6">
             
             {/* Left: Overall Averages Visualized */}
-            <div className="bg-slate-900 border border-slate-800 rounded-3xl p-8 shadow-sm">
-              <h2 className="text-xl font-bold text-white mb-8">Performance Spectrum</h2>
+            <div className="bg-white dark:bg-slate-900 shadow-sm dark:shadow-none border border-slate-800 rounded-3xl p-8 shadow-sm">
+              <h2 className="text-xl font-bold text-slate-900 dark:text-white mb-8">Performance Spectrum</h2>
               {ratings.length === 0 ? (
                 <p className="text-sm text-slate-500 text-center py-6">Data gathering in progress. Complete tasks to see your spectrum.</p>
               ) : (
@@ -838,7 +838,7 @@ export default function UserProfile() {
                             {avg} / 5.0
                           </span>
                         </div>
-                        <div className="w-full h-4 bg-slate-950 rounded-full overflow-hidden shadow-inner flex border border-white/5">
+                        <div className="w-full h-4 bg-slate-50 dark:bg-slate-950 rounded-full overflow-hidden shadow-inner flex border border-white/5">
                           <div 
                             className={`h-full bg-linear-to-r ${field.color} rounded-full transition-all duration-1000 ease-out`} 
                             style={{ width: `${(avg / 5) * 100}%` }}
@@ -852,14 +852,14 @@ export default function UserProfile() {
             </div>
 
             {/* Right: Historical Timeline */}
-            <div className="bg-slate-900 border border-slate-800 rounded-3xl p-8 shadow-sm">
-              <h2 className="text-xl font-bold text-white mb-6">Rating Timeline</h2>
+            <div className="bg-white dark:bg-slate-900 shadow-sm dark:shadow-none border border-slate-800 rounded-3xl p-8 shadow-sm">
+              <h2 className="text-xl font-bold text-slate-900 dark:text-white mb-6">Rating Timeline</h2>
               <div className="space-y-4 max-h-[500px] overflow-y-auto scrollbar-thin scrollbar-thumb-slate-700 scrollbar-track-transparent pr-2">
                 {ratings.length === 0 ? (
                   <div className="text-slate-500 text-center py-12 border border-dashed border-slate-800 rounded-2xl">No ratings recorded on tasks.</div>
                 ) : (
                   ratings.map((r, i) => (
-                    <div key={i} className="p-5 bg-slate-800/40 border border-slate-700/60 rounded-2xl transition hover:bg-slate-800">
+                    <div key={i} className="p-5 bg-slate-100 dark:bg-slate-800/40 border border-slate-700/60 rounded-2xl transition hover:bg-slate-100 dark:hover:bg-slate-800">
                       <div className="flex justify-between items-start mb-3">
                         <div>
                           <span className="inline-block px-2.5 py-1 bg-indigo-500/20 text-indigo-300 text-[10px] uppercase font-bold tracking-wider rounded border border-indigo-500/20 mb-2">
@@ -867,13 +867,13 @@ export default function UserProfile() {
                           </span>
                           <div className="text-[11px] text-slate-400 font-medium">{new Date(r.createdAt).toLocaleString()}</div>
                         </div>
-                        <div className="text-lg font-bold font-mono text-white bg-slate-900 px-3 py-1.5 rounded-lg border border-slate-700 shadow-inner flex items-center gap-1.5">
+                        <div className="text-lg font-bold font-mono text-slate-900 dark:text-white bg-white dark:bg-slate-900 shadow-sm dark:shadow-none px-3 py-1.5 rounded-lg border border-slate-700 shadow-inner flex items-center gap-1.5">
                           <FiStar className="fill-amber-400 text-amber-400" size={14} />
                           {((r.clarity + r.effort + r.timeCommitment + r.communication) / 4).toFixed(1)}
                         </div>
                       </div>
                       {r.comment && (
-                        <div className="text-sm text-slate-300 italic mb-4 bg-slate-900/50 p-4 rounded-xl border border-slate-800 border-l-2 border-l-indigo-400">
+                        <div className="text-sm text-slate-300 italic mb-4 bg-white dark:bg-slate-900 shadow-sm dark:shadow-none/50 p-4 rounded-xl border border-slate-800 border-l-2 border-l-indigo-400">
                           "{r.comment}"
                         </div>
                       )}
@@ -911,22 +911,22 @@ export default function UserProfile() {
       {/* ================= EDIT PROFILE MODAL ================= */}
       {isEditingProfile && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md p-4 animate-in fade-in duration-200">
-          <div className="max-w-md w-full bg-slate-900 border border-slate-700 rounded-3xl shadow-2xl p-8 relative">
-            <button onClick={() => { setIsEditingProfile(false); setFormErrors({}); }} className="absolute top-6 right-6 text-slate-500 hover:text-white transition">
+          <div className="max-w-md w-full bg-white dark:bg-slate-900 shadow-sm dark:shadow-none border border-slate-700 rounded-3xl shadow-2xl p-8 relative">
+            <button onClick={() => { setIsEditingProfile(false); setFormErrors({}); }} className="absolute top-6 right-6 text-slate-500 hover:text-slate-900 dark:hover:text-white transition">
               <FiX size={24} />
             </button>
-            <h2 className="text-2xl font-bold text-white mb-2">Edit Profile</h2>
+            <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">Edit Profile</h2>
             <p className="text-slate-400 text-sm mb-6">Update your professional bio and links.</p>
 
             <div className="flex flex-col items-center gap-2 mb-6">
-              <label className="relative w-24 h-24 rounded-full bg-slate-800 border-2 border-slate-700 flex items-center justify-center overflow-hidden group cursor-pointer shadow-lg hover:border-indigo-500 transition">
+              <label className="relative w-24 h-24 rounded-full bg-slate-100 dark:bg-slate-800 border-2 border-slate-700 flex items-center justify-center overflow-hidden group cursor-pointer shadow-lg hover:border-indigo-500 transition">
                 {previewPic ? (
                   <img src={previewPic} alt="Preview" className="w-full h-full object-cover" />
                 ) : (
                   <span className="text-3xl font-bold text-slate-500">{user.fullName.charAt(0)}</span>
                 )}
                 <div className="absolute inset-0 bg-black/60 hidden group-hover:flex items-center justify-center transition">
-                  <FiEdit3 className="text-white text-xl" />
+                  <FiEdit3 className="text-slate-900 dark:text-white text-xl" />
                 </div>
                 <input type="file" accept="image/jpeg, image/png, image/webp" className="hidden" onChange={handlePicChange} />
               </label>
@@ -944,7 +944,7 @@ export default function UserProfile() {
                 <textarea 
                   value={editBio} 
                   onChange={e => setEditBio(e.target.value)} 
-                  className={`bg-slate-950 border p-3 rounded-xl text-white outline-none focus:ring-1 transition resize-none h-24 text-sm ${(formErrors.bio || editBio.length > 200) ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : 'border-slate-700 focus:border-indigo-500 focus:ring-indigo-500'}`}
+                  className={`bg-slate-50 dark:bg-slate-950 border p-3 rounded-xl text-slate-900 dark:text-white outline-none focus:ring-1 transition resize-none h-24 text-sm ${(formErrors.bio || editBio.length > 200) ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : 'border-slate-700 focus:border-indigo-500 focus:ring-indigo-500'}`}
                   placeholder="Tell peers what you're best at..."
                 />
                 {formErrors.bio && <span className="text-xs text-red-500 mt-1 flex items-center gap-1 font-medium bg-red-500/10 p-2 rounded-lg border border-red-500/20">{formErrors.bio}</span>}
@@ -956,7 +956,7 @@ export default function UserProfile() {
                   type="url" 
                   value={editGithub} 
                   onChange={e => setEditGithub(e.target.value)} 
-                  className={`bg-slate-950 border px-4 py-2.5 rounded-xl text-white outline-none transition text-sm ${formErrors.githubUrl ? 'border-red-500 focus:ring-1 focus:ring-red-500' : 'border-slate-700 focus:border-indigo-500'}`}
+                  className={`bg-slate-50 dark:bg-slate-950 border px-4 py-2.5 rounded-xl text-slate-900 dark:text-white outline-none transition text-sm ${formErrors.githubUrl ? 'border-red-500 focus:ring-1 focus:ring-red-500' : 'border-slate-700 focus:border-indigo-500'}`}
                   placeholder="https://github.com/username"
                 />
                 {formErrors.githubUrl && <span className="text-xs text-red-500 mt-1 flex items-center gap-1 font-medium bg-red-500/10 p-2 rounded-lg border border-red-500/20">{formErrors.githubUrl}</span>}
@@ -968,7 +968,7 @@ export default function UserProfile() {
                   type="url" 
                   value={editLinkedin} 
                   onChange={e => setEditLinkedin(e.target.value)} 
-                  className={`bg-slate-950 border px-4 py-2.5 rounded-xl text-white outline-none transition text-sm ${formErrors.linkedinUrl ? 'border-red-500 focus:ring-1 focus:ring-red-500' : 'border-slate-700 focus:border-indigo-500'}`}
+                  className={`bg-slate-50 dark:bg-slate-950 border px-4 py-2.5 rounded-xl text-slate-900 dark:text-white outline-none transition text-sm ${formErrors.linkedinUrl ? 'border-red-500 focus:ring-1 focus:ring-red-500' : 'border-slate-700 focus:border-indigo-500'}`}
                   placeholder="https://linkedin.com/in/username"
                 />
                 {formErrors.linkedinUrl && <span className="text-xs text-red-500 mt-1 flex items-center gap-1 font-medium bg-red-500/10 p-2 rounded-lg border border-red-500/20">{formErrors.linkedinUrl}</span>}
@@ -986,7 +986,7 @@ export default function UserProfile() {
             <button 
               onClick={handleSaveProfile} 
               disabled={isSavingName}
-              className="w-full py-3 bg-indigo-500 hover:bg-indigo-600 text-white font-bold rounded-xl transition disabled:opacity-50 shadow-lg shadow-indigo-500/20"
+              className="w-full py-3 bg-indigo-500 hover:bg-indigo-600 text-slate-900 dark:text-white font-bold rounded-xl transition disabled:opacity-50 shadow-lg shadow-indigo-500/20"
             >
               {isSavingName ? "Saving..." : "Save Changes"}
             </button>

@@ -84,13 +84,13 @@ export default function ReputationDashboard({ reputation, ratings, skills }) {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-slate-900 border border-slate-800 rounded-2xl p-6">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-white dark:bg-slate-900 shadow-sm dark:shadow-none border border-slate-800 rounded-2xl p-6">
         <div>
-          <h2 className="text-2xl font-bold text-white mb-1">Reputation Analytics Dashboard</h2>
+          <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-1">Reputation Analytics Dashboard</h2>
           <p className="text-sm text-slate-400">Real-time performance metrics and insights</p>
         </div>
         <div className="flex items-center gap-3">
-          <label className="flex items-center gap-2 text-sm text-white/70 cursor-pointer">
+          <label className="flex items-center gap-2 text-sm text-slate-600 dark:text-white/70 cursor-pointer">
             <input
               type="checkbox"
               checked={autoRefresh}
@@ -112,10 +112,10 @@ export default function ReputationDashboard({ reputation, ratings, skills }) {
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <div className="bg-gradient-to-br from-indigo-500/10 to-indigo-500/5 border border-indigo-500/20 rounded-xl p-5">
           <div className="flex items-center justify-between mb-3">
-            <span className="text-xs text-white/60 font-bold uppercase tracking-widest">Current Score</span>
+            <span className="text-xs text-slate-500 dark:text-white/60 font-bold uppercase tracking-widest">Current Score</span>
             <FiActivity className="text-indigo-400" size={18} />
           </div>
-          <div className="text-3xl font-bold text-white">{reputation?.score || 0}</div>
+          <div className="text-3xl font-bold text-slate-900 dark:text-white">{reputation?.score || 0}</div>
           <div className="text-xs text-indigo-400 mt-2">
             {reputation?.score >= 80 ? '🚀 Elite' : reputation?.score >= 60 ? '⭐ Trusted' : '📈 Growing'}
           </div>
@@ -123,10 +123,10 @@ export default function ReputationDashboard({ reputation, ratings, skills }) {
 
         <div className="bg-gradient-to-br from-emerald-500/10 to-emerald-500/5 border border-emerald-500/20 rounded-xl p-5">
           <div className="flex items-center justify-between mb-3">
-            <span className="text-xs text-white/60 font-bold uppercase tracking-widest">Total Ratings</span>
+            <span className="text-xs text-slate-500 dark:text-white/60 font-bold uppercase tracking-widest">Total Ratings</span>
             <FiAward className="text-emerald-400" size={18} />
           </div>
-          <div className="text-3xl font-bold text-white">{ratings?.length || 0}</div>
+          <div className="text-3xl font-bold text-slate-900 dark:text-white">{ratings?.length || 0}</div>
           <div className="text-xs text-emerald-400 mt-2">
             {ratings?.length} peer reviews
           </div>
@@ -134,10 +134,10 @@ export default function ReputationDashboard({ reputation, ratings, skills }) {
 
         <div className="bg-gradient-to-br from-amber-500/10 to-amber-500/5 border border-amber-500/20 rounded-xl p-5">
           <div className="flex items-center justify-between mb-3">
-            <span className="text-xs text-white/60 font-bold uppercase tracking-widest">Avg Rating</span>
+            <span className="text-xs text-slate-500 dark:text-white/60 font-bold uppercase tracking-widest">Avg Rating</span>
             <FiTrendingUp className="text-amber-400" size={18} />
           </div>
-          <div className="text-3xl font-bold text-white">
+          <div className="text-3xl font-bold text-slate-900 dark:text-white">
             {ratings?.length > 0
               ? ((ratings.reduce((sum, r) => sum + (r.clarity + r.effort + r.timeCommitment + r.communication) / 4, 0) / ratings.length).toFixed(1))
               : '—'}
@@ -147,10 +147,10 @@ export default function ReputationDashboard({ reputation, ratings, skills }) {
 
         <div className="bg-gradient-to-br from-purple-500/10 to-purple-500/5 border border-purple-500/20 rounded-xl p-5">
           <div className="flex items-center justify-between mb-3">
-            <span className="text-xs text-white/60 font-bold uppercase tracking-widest">Verified Skills</span>
+            <span className="text-xs text-slate-500 dark:text-white/60 font-bold uppercase tracking-widest">Verified Skills</span>
             <FiActivity className="text-purple-400" size={18} />
           </div>
-          <div className="text-3xl font-bold text-white">{skills?.filter(s => s.isVerified).length || 0}</div>
+          <div className="text-3xl font-bold text-slate-900 dark:text-white">{skills?.filter(s => s.isVerified).length || 0}</div>
           <div className="text-xs text-purple-400 mt-2">
             {skills?.length || 0} total
           </div>
@@ -161,8 +161,8 @@ export default function ReputationDashboard({ reputation, ratings, skills }) {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         
         {/* Performance Breakdown - Pie Chart */}
-        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-lg">
-          <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+        <div className="bg-white dark:bg-slate-900 shadow-sm dark:shadow-none border border-slate-800 rounded-2xl p-6 shadow-lg">
+          <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
             <div className="w-3 h-3 bg-indigo-500 rounded-full" />
             Performance Breakdown
           </h3>
@@ -202,8 +202,8 @@ export default function ReputationDashboard({ reputation, ratings, skills }) {
         </div>
 
         {/* Performance vs Target - Bar Chart */}
-        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-lg">
-          <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+        <div className="bg-white dark:bg-slate-900 shadow-sm dark:shadow-none border border-slate-800 rounded-2xl p-6 shadow-lg">
+          <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
             <div className="w-3 h-3 bg-emerald-500 rounded-full" />
             Performance vs Target
           </h3>
@@ -235,8 +235,8 @@ export default function ReputationDashboard({ reputation, ratings, skills }) {
         </div>
 
         {/* Rating Trend - Line Chart */}
-        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-lg lg:col-span-2">
-          <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+        <div className="bg-white dark:bg-slate-900 shadow-sm dark:shadow-none border border-slate-800 rounded-2xl p-6 shadow-lg lg:col-span-2">
+          <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
             <div className="w-3 h-3 bg-cyan-500 rounded-full" />
             Rating Trend Over Time
           </h3>
@@ -287,8 +287,8 @@ export default function ReputationDashboard({ reputation, ratings, skills }) {
 
         {/* Skill Distribution - Bar Chart */}
         {chartData.skillDistribution.length > 0 && (
-          <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-lg lg:col-span-2">
-            <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+          <div className="bg-white dark:bg-slate-900 shadow-sm dark:shadow-none border border-slate-800 rounded-2xl p-6 shadow-lg lg:col-span-2">
+            <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
               <div className="w-3 h-3 bg-purple-500 rounded-full" />
               Top Rated Skills
             </h3>
@@ -313,8 +313,8 @@ export default function ReputationDashboard({ reputation, ratings, skills }) {
       </div>
 
       {/* Legend & Info */}
-      <div className="bg-slate-900/40 border border-slate-800 rounded-xl p-4">
-        <p className="text-xs text-white/60 leading-relaxed">
+      <div className="bg-white dark:bg-slate-900 shadow-sm dark:shadow-none/40 border border-slate-800 rounded-xl p-4">
+        <p className="text-xs text-slate-500 dark:text-white/60 leading-relaxed">
           📊 <strong>Dashboard Info:</strong> Charts update automatically every 5 seconds. Pie chart shows your average ratings across key metrics. 
           Line chart displays recent rating trends. Bar charts compare your actual performance vs targets. Use this data to identify improvement areas and track your progress toward your reputation goals.
         </p>

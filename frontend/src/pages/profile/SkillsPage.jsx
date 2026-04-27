@@ -25,7 +25,7 @@ function LevelBadge({ level }) {
   return (
     <span
       className={`inline-flex items-center px-3 py-1 rounded-lg text-xs border font-semibold tracking-wide uppercase ${
-        LEVEL_COLORS[level] || "border-white/10 bg-white/5 text-white/50"
+        LEVEL_COLORS[level] || "border-slate-200 dark:border-white/10 bg-white dark:bg-white/5 shadow-sm dark:shadow-none text-slate-500 dark:text-white/50"
       }`}
     >
       <span className="w-1.5 h-1.5 rounded-full mr-2 bg-current animate-pulse" />
@@ -135,13 +135,13 @@ export default function SkillsPage() {
   );
 
   const selectCls =
-    "mt-2 w-full rounded-2xl bg-white/10 border border-white/20 px-4 py-4 text-white outline-none focus:border-cyan-400 focus:ring-4 focus:ring-cyan-400/20 transition-all duration-300 backdrop-blur-md appearance-none font-medium";
+    "mt-2 w-full rounded-2xl bg-slate-50 dark:bg-white/10 shadow-sm dark:shadow-none border border-slate-300 dark:border-white/20 px-4 py-4 text-slate-900 dark:text-white outline-none focus:border-cyan-400 focus:ring-4 focus:ring-cyan-400/20 transition-all duration-300 backdrop-blur-md appearance-none font-medium";
 
   return (
-    <div className={`${ui.page} relative min-h-screen text-white font-sans selection:bg-cyan-500/30`}>
+    <div className={`${ui.page} relative min-h-screen text-slate-900 dark:text-white font-sans selection:bg-cyan-500/30`}>
       {/* Dynamic Background with Modern Image Overlay */}
       <div className="fixed inset-0 pointer-events-none z-0">
-        <div className="absolute inset-0 bg-slate-950/40 z-10 backdrop-blur-[2px]" />
+        <div className="absolute inset-0 bg-white dark:bg-slate-950/40 shadow-sm dark:shadow-none z-10 backdrop-blur-[2px]" />
         <img
           src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=2000&q=80"
           alt=""
@@ -162,7 +162,7 @@ export default function SkillsPage() {
           <h1 className="text-5xl md:text-7xl font-black tracking-tighter mb-4 bg-gradient-to-r from-white via-cyan-100 to-white/40 bg-clip-text text-transparent italic">
             Skill Lab
           </h1>
-          <p className="text-white/50 text-xl max-w-2xl font-medium leading-relaxed">
+          <p className="text-slate-500 dark:text-white/50 text-xl max-w-2xl font-medium leading-relaxed">
             Architect your professional identity with high-fidelity skills and precision matches.
           </p>
         </div>
@@ -170,12 +170,12 @@ export default function SkillsPage() {
         <div className="grid lg:grid-cols-12 gap-10 items-start">
           {/* ── Add Skill Form ── */}
           <div className="lg:col-span-12 xl:col-span-8">
-            <div className="relative overflow-hidden rounded-[3rem] border border-white/20 bg-white/5 p-10 backdrop-blur-3xl shadow-[0_0_100px_rgba(0,0,0,0.5)] transition-all duration-500 hover:border-cyan-500/30 group">
+            <div className="relative overflow-hidden rounded-[3rem] border border-slate-300 dark:border-white/20 bg-white dark:bg-white/5 shadow-sm dark:shadow-none p-10 backdrop-blur-3xl shadow-[0_0_100px_rgba(0,0,0,0.5)] transition-all duration-500 hover:border-cyan-500/30 group">
               {/* Inner Glow Decorative Element */}
               <div className="absolute -top-24 -right-24 w-48 h-48 bg-cyan-500/10 rounded-full blur-3xl group-hover:bg-cyan-500/20 transition-colors" />
               
               <div className="flex items-center gap-4 mb-10">
-                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center text-white shadow-lg shadow-cyan-500/20">
+                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center text-slate-900 dark:text-white shadow-lg shadow-cyan-500/20">
                   <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M13 10V3L4 14h7v7l9-11h-7z" />
                   </svg>
@@ -218,9 +218,9 @@ export default function SkillsPage() {
                         }}
                         className={selectCls}
                       >
-                        <option value="" className="bg-slate-900">— CATEGORY —</option>
+                        <option value="" className="bg-white dark:bg-slate-900 shadow-sm dark:shadow-none">— CATEGORY —</option>
                         {skillData.map((c) => (
-                          <option key={c.category} value={c.category} className="bg-slate-900 py-4">
+                          <option key={c.category} value={c.category} className="bg-white dark:bg-slate-900 shadow-sm dark:shadow-none py-4">
                             {c.category}
                           </option>
                         ))}
@@ -244,9 +244,9 @@ export default function SkillsPage() {
                         disabled={!category}
                         className={selectCls}
                       >
-                        <option value="" className="bg-slate-900">— TRACK —</option>
+                        <option value="" className="bg-white dark:bg-slate-900 shadow-sm dark:shadow-none">— TRACK —</option>
                         {subCategories.map((s) => (
-                          <option key={s.name} value={s.name} className="bg-slate-900 py-4">
+                          <option key={s.name} value={s.name} className="bg-white dark:bg-slate-900 shadow-sm dark:shadow-none py-4">
                             {s.name}
                           </option>
                         ))}
@@ -270,9 +270,9 @@ export default function SkillsPage() {
                       disabled={!subCategory}
                       className={selectCls}
                     >
-                      <option value="" className="bg-slate-900">— IDENTIFIED SKILL —</option>
+                      <option value="" className="bg-white dark:bg-slate-900 shadow-sm dark:shadow-none">— IDENTIFIED SKILL —</option>
                       {skillsList.map((sk) => (
-                        <option key={sk} value={sk} className="bg-slate-900 py-4">
+                        <option key={sk} value={sk} className="bg-white dark:bg-slate-900 shadow-sm dark:shadow-none py-4">
                           {sk}
                         </option>
                       ))}
@@ -302,10 +302,10 @@ export default function SkillsPage() {
                           className={`relative group px-8 py-10 rounded-[2.5rem] border transition-all duration-500 flex flex-col items-center gap-3 overflow-hidden ${
                             active 
                               ? `bg-gradient-to-br ${colors[lvl]} scale-[1.05] z-10 border-white/40 shadow-2xl` 
-                              : "bg-white/5 border-white/10 text-white/40 hover:bg-white/10 hover:border-white/20"
+                              : "bg-white dark:bg-white/5 shadow-sm dark:shadow-none border-slate-200 dark:border-white/10 text-white/40 hover:bg-slate-50 dark:hover:bg-white/10 hover:shadow-sm dark:hover:shadow-none hover:border-slate-300 dark:hover:border-white/20"
                           }`}
                         >
-                          <div className={`w-12 h-12 rounded-full flex items-center justify-center mb-2 transition-transform duration-500 group-hover:rotate-12 ${active ? 'bg-white/20' : 'bg-white/5'}`}>
+                          <div className={`w-12 h-12 rounded-full flex items-center justify-center mb-2 transition-transform duration-500 group-hover:rotate-12 ${active ? 'bg-slate-200 dark:bg-white/20' : 'bg-white dark:bg-white/5 shadow-sm dark:shadow-none'}`}>
                             {lvl === "Beginner" && "L1"}
                             {lvl === "Intermediate" && "L2"}
                             {lvl === "Expert" && "L3"}
@@ -344,7 +344,7 @@ export default function SkillsPage() {
 
           {/* ── Stats sidebar ── */}
           <div className="lg:col-span-12 xl:col-span-4 space-y-8">
-            <div className="rounded-[3rem] border border-white/20 bg-gradient-to-b from-white/10 to-transparent p-10 backdrop-blur-3xl">
+            <div className="rounded-[3rem] border border-slate-300 dark:border-white/20 bg-gradient-to-b from-white/10 to-transparent p-10 backdrop-blur-3xl">
               <div className="text-center mb-10">
                 <span className="text-6xl font-black text-cyan-400 block mb-2">{skills.length}</span>
                 <span className="text-xs font-black text-white/40 uppercase tracking-[0.4em]">Active Modules</span>
@@ -359,10 +359,10 @@ export default function SkillsPage() {
                   return (
                     <div key={lvl} className="space-y-3">
                       <div className="flex justify-between items-end">
-                        <span className="text-xs font-black text-white/50 uppercase tracking-widest italic">{lvl}</span>
-                        <span className="text-lg font-black text-white">{count}</span>
+                        <span className="text-xs font-black text-slate-500 dark:text-white/50 uppercase tracking-widest italic">{lvl}</span>
+                        <span className="text-lg font-black text-slate-900 dark:text-white">{count}</span>
                       </div>
-                      <div className="h-2 w-full bg-white/5 rounded-full overflow-hidden border border-white/10">
+                      <div className="h-2 w-full bg-white dark:bg-white/5 shadow-sm dark:shadow-none rounded-full overflow-hidden border border-slate-200 dark:border-white/10">
                         <div 
                           className={`h-full transition-all duration-1000 ease-out ${barColor}`} 
                           style={{ width: `${percentage}%` }}
@@ -407,7 +407,7 @@ export default function SkillsPage() {
                   placeholder="FILTER REPOSITORY..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full rounded-3xl bg-white/5 border border-white/20 pl-16 pr-8 py-5 text-sm font-black uppercase tracking-widest outline-none focus:border-cyan-400 focus:bg-white/10 transition-all backdrop-blur-3xl"
+                  className="w-full rounded-3xl bg-white dark:bg-white/5 shadow-sm dark:shadow-none border border-slate-300 dark:border-white/20 pl-16 pr-8 py-5 text-sm font-black uppercase tracking-widest outline-none focus:border-cyan-400 focus:bg-slate-50 dark:focus:bg-white/10 focus:shadow-sm dark:focus:shadow-none transition-all backdrop-blur-3xl"
                 />
               </div>
             )}
@@ -420,8 +420,8 @@ export default function SkillsPage() {
                 <span className="text-xs font-black uppercase tracking-[0.5em] text-cyan-500 animate-pulse">Syncing Database...</span>
               </div>
             ) : filteredSkills.length === 0 ? (
-              <div className="py-40 flex flex-col items-center text-center rounded-[4rem] border border-dashed border-white/10 bg-white/[0.02]">
-                <div className="w-32 h-32 rounded-[2.5rem] bg-white/5 border border-white/10 flex items-center justify-center text-white/10 mb-8 transform hover:scale-110 transition-transform duration-700">
+              <div className="py-40 flex flex-col items-center text-center rounded-[4rem] border border-dashed border-slate-200 dark:border-white/10 bg-white/[0.02]">
+                <div className="w-32 h-32 rounded-[2.5rem] bg-white dark:bg-white/5 shadow-sm dark:shadow-none border border-slate-200 dark:border-white/10 flex items-center justify-center text-white/10 mb-8 transform hover:scale-110 transition-transform duration-700">
                   <svg className="w-16 h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" strokeWidth="2"/></svg>
                 </div>
                 <h3 className="text-2xl font-black uppercase italic mb-3 tracking-widest">Repository Empty</h3>
@@ -434,7 +434,7 @@ export default function SkillsPage() {
                 {filteredSkills.map((s) => (
                   <div
                     key={s._id}
-                    className="group relative overflow-hidden rounded-[3rem] border border-white/10 bg-white/5 p-10 transition-all duration-700 hover:scale-[1.02] hover:bg-white/[0.08] hover:border-cyan-500/40 hover:shadow-[0_40px_80px_rgba(0,0,0,0.4)]"
+                    className="group relative overflow-hidden rounded-[3rem] border border-slate-200 dark:border-white/10 bg-white dark:bg-white/5 shadow-sm dark:shadow-none p-10 transition-all duration-700 hover:scale-[1.02] hover:bg-white/[0.08] hover:border-cyan-500/40 hover:shadow-[0_40px_80px_rgba(0,0,0,0.4)]"
                   >
                     {/* Background Icon Watermark */}
                     <div className="absolute -bottom-10 -right-10 text-[120px] opacity-[0.03] transition-transform duration-700 group-hover:scale-150 rotate-[-20deg]">
@@ -443,14 +443,14 @@ export default function SkillsPage() {
                     
                     <div className="relative z-10">
                       <div className="flex justify-between items-start mb-8">
-                        <div className="w-20 h-20 rounded-[1.5rem] bg-gradient-to-br from-white/10 to-transparent border border-white/10 flex items-center justify-center text-5xl transition-transform duration-700 group-hover:rotate-12">
+                        <div className="w-20 h-20 rounded-[1.5rem] bg-gradient-to-br from-white/10 to-transparent border border-slate-200 dark:border-white/10 flex items-center justify-center text-5xl transition-transform duration-700 group-hover:rotate-12">
                           {CATEGORY_ICONS[s.category] || "⭐"}
                         </div>
                         <LevelBadge level={s.level} />
                       </div>
 
                       <div className="space-y-2">
-                        <h4 className="text-2xl font-black tracking-tight text-white group-hover:text-cyan-400 transition-colors">
+                        <h4 className="text-2xl font-black tracking-tight text-slate-900 dark:text-white group-hover:text-cyan-400 transition-colors">
                           {s.skill}
                         </h4>
                         <div className="flex flex-col gap-1">

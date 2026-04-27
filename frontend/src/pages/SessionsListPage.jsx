@@ -37,27 +37,27 @@ export default function SessionsListPage() {
   const completedCt = sessions.filter((s) => s.status === "COMPLETED").length;
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-10 text-white">
+    <div className="max-w-6xl mx-auto px-4 py-10 text-slate-900 dark:text-white">
       <div>
         <h1 className="text-2xl md:text-3xl font-semibold">My Sessions</h1>
-        <p className="text-white/70 text-sm mt-1">
+        <p className="text-slate-600 dark:text-white/70 text-sm mt-1">
           View all your active and completed help sessions.
         </p>
       </div>
 
       {/* Stats */}
       <div className="mt-6 grid grid-cols-3 gap-3">
-        <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
+        <div className="rounded-2xl border border-slate-200 dark:border-white/10 bg-white dark:bg-white/5 shadow-sm dark:shadow-none p-4">
           <div className="text-2xl font-semibold">{sessions.length}</div>
-          <div className="text-white/60 text-sm mt-1">Total</div>
+          <div className="text-slate-500 dark:text-white/60 text-sm mt-1">Total</div>
         </div>
         <div className="rounded-2xl border border-emerald-400/20 bg-emerald-400/5 p-4">
           <div className="text-2xl font-semibold text-emerald-300">{activeCt}</div>
-          <div className="text-white/60 text-sm mt-1">Active</div>
+          <div className="text-slate-500 dark:text-white/60 text-sm mt-1">Active</div>
         </div>
-        <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
+        <div className="rounded-2xl border border-slate-200 dark:border-white/10 bg-white dark:bg-white/5 shadow-sm dark:shadow-none p-4">
           <div className="text-2xl font-semibold">{completedCt}</div>
-          <div className="text-white/60 text-sm mt-1">Completed</div>
+          <div className="text-slate-500 dark:text-white/60 text-sm mt-1">Completed</div>
         </div>
       </div>
 
@@ -70,7 +70,7 @@ export default function SessionsListPage() {
             className={`px-3 py-2 rounded-xl text-sm border transition ${
               filter === f
                 ? "bg-white text-slate-900 border-white"
-                : "border-white/15 bg-white/5 hover:bg-white/10 text-white/85"
+                : "border-slate-200 dark:border-white/15 bg-white dark:bg-white/5 shadow-sm dark:shadow-none hover:bg-slate-50 dark:hover:bg-white/10 hover:shadow-sm dark:hover:shadow-none text-slate-800 dark:text-white/85"
             }`}
           >
             {f}
@@ -79,11 +79,11 @@ export default function SessionsListPage() {
       </div>
 
       {/* Session list */}
-      <div className="mt-6 rounded-3xl border border-white/10 bg-white/5 overflow-hidden">
+      <div className="mt-6 rounded-3xl border border-slate-200 dark:border-white/10 bg-white dark:bg-white/5 shadow-sm dark:shadow-none overflow-hidden">
         {loading ? (
-          <div className="p-6 text-white/70">Loading...</div>
+          <div className="p-6 text-slate-600 dark:text-white/70">Loading...</div>
         ) : filtered.length === 0 ? (
-          <div className="p-8 text-white/70">No sessions found.</div>
+          <div className="p-8 text-slate-600 dark:text-white/70">No sessions found.</div>
         ) : (
           <div className="divide-y divide-white/10">
             {filtered.map((s) => {
@@ -92,7 +92,7 @@ export default function SessionsListPage() {
               const role = isPoster ? "Seeker" : "Helper";
 
               return (
-                <div key={s._id} className="p-5 hover:bg-white/5 transition">
+                <div key={s._id} className="p-5 hover:bg-white dark:hover:bg-white/5 hover:shadow-sm dark:hover:shadow-none transition">
                   <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4">
                     <div className="min-w-0">
                       {/* Task title & status */}
@@ -104,7 +104,7 @@ export default function SessionsListPage() {
                           className={`text-xs px-2 py-0.5 rounded-full border ${
                             s.status === "ACTIVE"
                               ? "border-emerald-400/20 bg-emerald-400/10 text-emerald-100"
-                              : "border-white/10 bg-white/5 text-white/65"
+                              : "border-slate-200 dark:border-white/10 bg-white dark:bg-white/5 shadow-sm dark:shadow-none text-slate-600 dark:text-white/65"
                           }`}
                         >
                           {s.status}
@@ -115,13 +115,13 @@ export default function SessionsListPage() {
                       </div>
 
                       {/* Other person */}
-                      <div className="text-white/60 text-sm mt-2">
+                      <div className="text-slate-500 dark:text-white/60 text-sm mt-2">
                         {isPoster ? "Helper" : "Seeker"}:{" "}
-                        <span className="text-white/80">
+                        <span className="text-slate-700 dark:text-white/80">
                           {otherPerson?.fullName || "Unknown"}
                         </span>
                         {otherPerson?.studentId && (
-                          <span className="text-white/50">
+                          <span className="text-slate-500 dark:text-white/50">
                             {" "}
                             ({otherPerson.studentId})
                           </span>
@@ -129,20 +129,20 @@ export default function SessionsListPage() {
                       </div>
 
                       {/* Meta pills */}
-                      <div className="mt-3 flex flex-wrap gap-2 text-xs text-white/70">
-                        <span className="px-2 py-1 rounded-full border border-white/10 bg-white/5">
+                      <div className="mt-3 flex flex-wrap gap-2 text-xs text-slate-600 dark:text-white/70">
+                        <span className="px-2 py-1 rounded-full border border-slate-200 dark:border-white/10 bg-white dark:bg-white/5 shadow-sm dark:shadow-none">
                           {s.task?.category}
                         </span>
-                        <span className="px-2 py-1 rounded-full border border-white/10 bg-white/5">
+                        <span className="px-2 py-1 rounded-full border border-slate-200 dark:border-white/10 bg-white dark:bg-white/5 shadow-sm dark:shadow-none">
                           Skill: {s.task?.skillRequired}
                         </span>
-                        <span className="px-2 py-1 rounded-full border border-white/10 bg-white/5">
+                        <span className="px-2 py-1 rounded-full border border-slate-200 dark:border-white/10 bg-white dark:bg-white/5 shadow-sm dark:shadow-none">
                           Mode: {s.mode}
                         </span>
-                        <span className="px-2 py-1 rounded-full border border-white/10 bg-white/5">
+                        <span className="px-2 py-1 rounded-full border border-slate-200 dark:border-white/10 bg-white dark:bg-white/5 shadow-sm dark:shadow-none">
                           {s.task?.duration}m session
                         </span>
-                        <span className="px-2 py-1 rounded-full border border-white/10 bg-white/5">
+                        <span className="px-2 py-1 rounded-full border border-slate-200 dark:border-white/10 bg-white dark:bg-white/5 shadow-sm dark:shadow-none">
                           ⏱ {formatDuration(s.startedAt, s.endedAt)}
                         </span>
                         {s.venue && (

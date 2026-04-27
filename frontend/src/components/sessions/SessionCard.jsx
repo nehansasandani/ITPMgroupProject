@@ -109,14 +109,14 @@ export default function SessionCard({ session: initialSession }) {
               <button onClick={() => handleAction('arrive')} className="flex-1 py-2 px-4 shadow-sm border border-gray-200 bg-white text-gray-700 text-sm font-medium rounded-md hover:bg-gray-50">
                 I have arrived
               </button>
-              <button onClick={() => handleAction('start')} className="flex-1 py-2 px-4 bg-blue-600 text-white shadow-sm text-sm font-medium rounded-md hover:bg-blue-700">
+              <button onClick={() => handleAction('start')} className="flex-1 py-2 px-4 bg-blue-600 text-slate-900 dark:text-white shadow-sm text-sm font-medium rounded-md hover:bg-blue-700">
                 Start Session
               </button>
             </>
           )}
 
           {session.status === 'In Progress' && (
-            <button onClick={() => handleAction('end')} className="flex-1 py-2 px-4 bg-green-600 text-white shadow-sm text-sm font-medium rounded-md hover:bg-green-700">
+            <button onClick={() => handleAction('end')} className="flex-1 py-2 px-4 bg-green-600 text-slate-900 dark:text-white shadow-sm text-sm font-medium rounded-md hover:bg-green-700">
               Complete Session
             </button>
           )}

@@ -170,14 +170,14 @@ export default function NotificationCenter() {
       {/* Bell Icon Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="relative p-2 hover:bg-slate-800/50 rounded-lg transition text-slate-400 hover:text-white"
+        className="relative p-2 hover:bg-slate-100 dark:hover:bg-slate-800/50 rounded-lg transition text-slate-400 hover:text-slate-900 dark:hover:text-white"
         title="Notifications"
       >
         <FiBell size={20} />
 
         {/* Unread Badge */}
         {unreadCount > 0 && (
-          <span className="absolute top-0 right-0 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center font-bold">
+          <span className="absolute top-0 right-0 w-5 h-5 bg-red-500 text-slate-900 dark:text-white text-xs rounded-full flex items-center justify-center font-bold">
             {unreadCount > 99 ? '99+' : unreadCount}
           </span>
         )}
@@ -185,10 +185,10 @@ export default function NotificationCenter() {
 
       {/* Notification Panel */}
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-96 bg-slate-900 border border-slate-700 rounded-2xl shadow-2xl z-50 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200">
+        <div className="absolute right-0 mt-2 w-96 bg-white dark:bg-slate-900 shadow-sm dark:shadow-none border border-slate-700 rounded-2xl shadow-2xl z-50 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200">
           {/* Header */}
-          <div className="px-6 py-4 bg-slate-800/50 border-b border-slate-700 flex justify-between items-center">
-            <h3 className="text-lg font-bold text-white">Notifications</h3>
+          <div className="px-6 py-4 bg-slate-100 dark:bg-slate-800/50 border-b border-slate-700 flex justify-between items-center">
+            <h3 className="text-lg font-bold text-slate-900 dark:text-white">Notifications</h3>
             <button
               onClick={() => setIsOpen(false)}
               className="p-1 hover:bg-slate-700 rounded-lg transition"
@@ -212,7 +212,7 @@ export default function NotificationCenter() {
               notifications.map((notification) => (
                 <div
                   key={notification._id}
-                  className={`px-6 py-4 border-b border-slate-700/30 transition hover:bg-slate-800/30 ${
+                  className={`px-6 py-4 border-b border-slate-700/30 transition hover:bg-slate-100 dark:hover:bg-slate-800/30 ${
                     !notification.isRead ? 'bg-indigo-500/5' : ''
                   }`}
                 >
@@ -225,7 +225,7 @@ export default function NotificationCenter() {
                     {/* Content */}
                     <div className="flex-1 min-w-0">
                       <div className="flex items-start justify-between gap-2 mb-1">
-                        <h4 className="font-semibold text-white text-sm">
+                        <h4 className="font-semibold text-slate-900 dark:text-white text-sm">
                           {notification.title}
                         </h4>
                         {!notification.isRead && (
@@ -269,11 +269,11 @@ export default function NotificationCenter() {
 
           {/* Footer Actions */}
           {notifications.length > 0 && (
-            <div className="px-6 py-3 bg-slate-800/30 border-t border-slate-700 flex gap-2">
+            <div className="px-6 py-3 bg-slate-100 dark:bg-slate-800/30 border-t border-slate-700 flex gap-2">
               {unreadCount > 0 && (
                 <button
                   onClick={handleMarkAllAsRead}
-                  className="flex-1 text-xs py-2 px-3 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg transition flex items-center justify-center gap-1"
+                  className="flex-1 text-xs py-2 px-3 bg-indigo-600 hover:bg-indigo-500 text-slate-900 dark:text-white rounded-lg transition flex items-center justify-center gap-1"
                 >
                   <FiCheck size={14} />
                   Mark All Read

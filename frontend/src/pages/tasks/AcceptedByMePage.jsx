@@ -5,22 +5,22 @@ import WarningModal from "../../components/WarningModal";
 
 const STATUS_COLORS = {
   MATCHED: "border-cyan-400/20 bg-cyan-400/10 text-cyan-100",
-  COMPLETED: "border-white/15 bg-white/5 text-white/80",
+  COMPLETED: "border-slate-200 dark:border-white/15 bg-white dark:bg-white/5 shadow-sm dark:shadow-none text-slate-700 dark:text-white/80",
   CANCELLED: "border-red-400/20 bg-red-400/10 text-red-100",
   EXPIRED: "border-amber-400/20 bg-amber-400/10 text-amber-100",
   OPEN: "border-emerald-400/20 bg-emerald-400/10 text-emerald-100",
 };
 
 function StatusChip({ status }) {
-  const cls = STATUS_COLORS[status] || "border-white/10 bg-white/5 text-white/70";
+  const cls = STATUS_COLORS[status] || "border-slate-200 dark:border-white/10 bg-white dark:bg-white/5 shadow-sm dark:shadow-none text-slate-600 dark:text-white/70";
   return <span className={`text-xs px-2 py-1 rounded-full border ${cls}`}>{status}</span>;
 }
 
 function StatCard({ label, value }) {
   return (
-    <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
+    <div className="rounded-2xl border border-slate-200 dark:border-white/10 bg-white dark:bg-white/5 shadow-sm dark:shadow-none p-4">
       <div className="text-2xl font-semibold">{value}</div>
-      <div className="text-white/60 text-sm mt-1">{label}</div>
+      <div className="text-slate-500 dark:text-white/60 text-sm mt-1">{label}</div>
     </div>
   );
 }
@@ -99,7 +99,7 @@ export default function AcceptedByMePage() {
   };
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-10 text-white">
+    <div className="max-w-6xl mx-auto px-4 py-10 text-slate-900 dark:text-white">
       <WarningModal
         open={confirmCompleteOpen}
         title="Mark this task as completed?"
@@ -120,7 +120,7 @@ export default function AcceptedByMePage() {
       <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
         <div>
           <h1 className="text-2xl md:text-3xl font-semibold">Accepted By Me</h1>
-          <p className="text-white/70 text-sm mt-1">
+          <p className="text-slate-600 dark:text-white/70 text-sm mt-1">
             These are the tasks you accepted to help with.
           </p>
         </div>
@@ -128,7 +128,7 @@ export default function AcceptedByMePage() {
         <div className="flex flex-wrap gap-2">
           <Link
             to="/tasks/browse"
-            className="px-4 py-2 rounded-xl border border-white/15 bg-white/5 hover:bg-white/10 text-sm"
+            className="px-4 py-2 rounded-xl border border-slate-200 dark:border-white/15 bg-white dark:bg-white/5 shadow-sm dark:shadow-none hover:bg-slate-50 dark:hover:bg-white/10 hover:shadow-sm dark:hover:shadow-none text-sm"
           >
             Browse Tasks
           </Link>
@@ -150,13 +150,13 @@ export default function AcceptedByMePage() {
         <StatCard label="Cancelled" value={stats.cancelled} />
       </div>
 
-      <div className="mt-6 rounded-3xl border border-white/10 bg-white/5 overflow-hidden">
+      <div className="mt-6 rounded-3xl border border-slate-200 dark:border-white/10 bg-white dark:bg-white/5 shadow-sm dark:shadow-none overflow-hidden">
         {loading ? (
-          <div className="p-6 text-white/70">Loading...</div>
+          <div className="p-6 text-slate-600 dark:text-white/70">Loading...</div>
         ) : items.length === 0 ? (
           <div className="p-8">
-            <div className="text-white/85 font-semibold">No accepted tasks yet</div>
-            <p className="text-white/60 text-sm mt-1">
+            <div className="text-slate-800 dark:text-white/85 font-semibold">No accepted tasks yet</div>
+            <p className="text-slate-500 dark:text-white/60 text-sm mt-1">
               Browse open tasks and accept one you can help with.
             </p>
             <Link
@@ -169,36 +169,36 @@ export default function AcceptedByMePage() {
         ) : (
           <div className="divide-y divide-white/10">
             {items.map((t) => (
-              <div key={t._id} className="p-5 hover:bg-white/5 transition">
+              <div key={t._id} className="p-5 hover:bg-white dark:hover:bg-white/5 hover:shadow-sm dark:hover:shadow-none transition">
                 <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4">
                   <div className="min-w-0">
                     <div className="flex flex-wrap items-center gap-2">
                       <div className="font-semibold">{t.title}</div>
                       <StatusChip status={t.status} />
-                      <span className="text-xs px-2 py-1 rounded-full border border-white/10 bg-white/5 text-white/65">
+                      <span className="text-xs px-2 py-1 rounded-full border border-slate-200 dark:border-white/10 bg-white dark:bg-white/5 shadow-sm dark:shadow-none text-slate-600 dark:text-white/65">
                         {t.category}
                       </span>
                       <span
                         className={`text-xs px-2 py-1 rounded-full border ${
                           t.urgency === "URGENT"
                             ? "border-amber-300/20 bg-amber-300/10 text-amber-100"
-                            : "border-white/10 bg-white/5 text-white/65"
+                            : "border-slate-200 dark:border-white/10 bg-white dark:bg-white/5 shadow-sm dark:shadow-none text-slate-600 dark:text-white/65"
                         }`}
                       >
                         {t.urgency}
                       </span>
                     </div>
 
-                    <div className="text-white/70 text-sm mt-2 line-clamp-3">
+                    <div className="text-slate-600 dark:text-white/70 text-sm mt-2 line-clamp-3">
                       {t.description}
                     </div>
 
-                    <div className="text-white/60 text-xs mt-2">
-                      Outcome: <span className="text-white/75">{t.expectedOutcome}</span>
+                    <div className="text-slate-500 dark:text-white/60 text-xs mt-2">
+                      Outcome: <span className="text-slate-600 dark:text-white/75">{t.expectedOutcome}</span>
                     </div>
 
                     {t.attachmentUrl && (
-                      <div className="text-white/60 text-xs mt-2">
+                      <div className="text-slate-500 dark:text-white/60 text-xs mt-2">
                         Attachment:{" "}
                         <a
                           href={t.attachmentUrl}
@@ -211,30 +211,30 @@ export default function AcceptedByMePage() {
                       </div>
                     )}
 
-                    <div className="text-white/60 text-xs mt-2">
+                    <div className="text-slate-500 dark:text-white/60 text-xs mt-2">
                       Task owner:{" "}
-                      <span className="text-white/75">
+                      <span className="text-slate-600 dark:text-white/75">
                         {t.createdBy?.fullName || "Unknown"}
                       </span>
                       {t.createdBy?.studentId && (
-                        <span className="text-white/55"> ({t.createdBy.studentId})</span>
+                        <span className="text-slate-500 dark:text-white/55"> ({t.createdBy.studentId})</span>
                       )}
                     </div>
 
-                    <div className="mt-3 flex flex-wrap gap-2 text-xs text-white/70">
-                      <span className="px-2 py-1 rounded-full border border-white/10 bg-white/5">
+                    <div className="mt-3 flex flex-wrap gap-2 text-xs text-slate-600 dark:text-white/70">
+                      <span className="px-2 py-1 rounded-full border border-slate-200 dark:border-white/10 bg-white dark:bg-white/5 shadow-sm dark:shadow-none">
                         Skill: {t.skillRequired}
                       </span>
-                      <span className="px-2 py-1 rounded-full border border-white/10 bg-white/5">
+                      <span className="px-2 py-1 rounded-full border border-slate-200 dark:border-white/10 bg-white dark:bg-white/5 shadow-sm dark:shadow-none">
                         Mode: {t.mode}
                       </span>
-                      <span className="px-2 py-1 rounded-full border border-white/10 bg-white/5">
+                      <span className="px-2 py-1 rounded-full border border-slate-200 dark:border-white/10 bg-white dark:bg-white/5 shadow-sm dark:shadow-none">
                         Session: {t.duration}m
                       </span>
-                      <span className="px-2 py-1 rounded-full border border-white/10 bg-white/5">
+                      <span className="px-2 py-1 rounded-full border border-slate-200 dark:border-white/10 bg-white dark:bg-white/5 shadow-sm dark:shadow-none">
                         Deadline: {t.deadlineDays} days
                       </span>
-                      <span className="px-2 py-1 rounded-full border border-white/10 bg-white/5">
+                      <span className="px-2 py-1 rounded-full border border-slate-200 dark:border-white/10 bg-white dark:bg-white/5 shadow-sm dark:shadow-none">
                         {formatRemaining(t.expireAt)}
                       </span>
                       {t.mode === "Meet" && t.venue && (
@@ -263,7 +263,7 @@ export default function AcceptedByMePage() {
                         </button>
                       </>
                     ) : (
-                      <button className="px-4 py-2 rounded-xl border border-white/15 bg-white/5 text-sm text-white/70">
+                      <button className="px-4 py-2 rounded-xl border border-slate-200 dark:border-white/15 bg-white dark:bg-white/5 shadow-sm dark:shadow-none text-sm text-slate-600 dark:text-white/70">
                         {t.status}
                       </button>
                     )}

@@ -53,11 +53,11 @@ function Field({ label, hint, error, children, right }) {
   return (
     <div>
       <div className="flex items-end justify-between gap-3">
-        <label className="text-sm text-white/80">{label}</label>
+        <label className="text-sm text-slate-700 dark:text-white/80">{label}</label>
         {right}
       </div>
       {children}
-      {hint && <p className="text-xs text-white/50 mt-1">{hint}</p>}
+      {hint && <p className="text-xs text-slate-500 dark:text-white/50 mt-1">{hint}</p>}
       {error && <p className="text-xs text-red-200 mt-1">{error}</p>}
     </div>
   );
@@ -146,7 +146,7 @@ export default function CreateTaskPage() {
   };
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-10 text-white">
+    <div className="max-w-6xl mx-auto px-4 py-10 text-slate-900 dark:text-white">
       <WarningModal
         open={popupOpen}
         title={popupTitle}
@@ -161,21 +161,21 @@ export default function CreateTaskPage() {
       <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
         <div>
           <h1 className="text-2xl md:text-3xl font-semibold">Create Task</h1>
-          <p className="text-white/70 text-sm mt-1">
+          <p className="text-slate-600 dark:text-white/70 text-sm mt-1">
             Build a clear, time-boxed task with both session duration and expiry deadline.
           </p>
         </div>
 
         <Link
           to="/tasks/mine"
-          className="px-4 py-2 rounded-xl border border-white/15 bg-white/5 hover:bg-white/10 text-sm"
+          className="px-4 py-2 rounded-xl border border-slate-200 dark:border-white/15 bg-white dark:bg-white/5 shadow-sm dark:shadow-none hover:bg-slate-50 dark:hover:bg-white/10 hover:shadow-sm dark:hover:shadow-none text-sm"
         >
           View My Tasks
         </Link>
       </div>
 
       <div className="grid lg:grid-cols-3 gap-5 mt-6 items-start">
-        <div className="lg:col-span-2 rounded-3xl border border-white/10 bg-white/5 backdrop-blur p-6 md:p-8">
+        <div className="lg:col-span-2 rounded-3xl border border-slate-200 dark:border-white/10 bg-white dark:bg-white/5 shadow-sm dark:shadow-none backdrop-blur p-6 md:p-8">
           {serverError && (
             <div className="mb-4 p-4 rounded-2xl bg-red-500/10 border border-red-500/20 text-red-200 text-sm">
               <div className="font-semibold">Cannot create task</div>
@@ -198,11 +198,11 @@ export default function CreateTaskPage() {
               label="Task Title"
               hint="Make the title specific and short."
               error={errors.title?.message}
-              right={<span className="text-xs text-white/50">{titleLen}/80</span>}
+              right={<span className="text-xs text-slate-500 dark:text-white/50">{titleLen}/80</span>}
             >
               <input
                 {...register("title")}
-                className="mt-1 w-full rounded-xl bg-slate-950/40 border border-white/10 px-3 py-2.5 outline-none focus:border-white/30 focus:ring-2 focus:ring-white/10"
+                className="mt-1 w-full rounded-xl bg-white dark:bg-slate-950/40 shadow-sm dark:shadow-none border border-slate-200 dark:border-white/10 px-3 py-2.5 outline-none focus:border-white/30 focus:ring-2 focus:ring-white/10"
                 placeholder="e.g. Fix React form validation issue"
               />
             </Field>
@@ -211,12 +211,12 @@ export default function CreateTaskPage() {
               label="Task Description"
               hint="Explain the problem and relevant context."
               error={errors.description?.message}
-              right={<span className="text-xs text-white/50">{descLen}/800</span>}
+              right={<span className="text-xs text-slate-500 dark:text-white/50">{descLen}/800</span>}
             >
               <textarea
                 {...register("description")}
                 rows={5}
-                className="mt-1 w-full rounded-xl bg-slate-950/40 border border-white/10 px-3 py-2.5 outline-none focus:border-white/30 focus:ring-2 focus:ring-white/10"
+                className="mt-1 w-full rounded-xl bg-white dark:bg-slate-950/40 shadow-sm dark:shadow-none border border-slate-200 dark:border-white/10 px-3 py-2.5 outline-none focus:border-white/30 focus:ring-2 focus:ring-white/10"
                 placeholder="Describe the issue clearly..."
               />
             </Field>
@@ -225,11 +225,11 @@ export default function CreateTaskPage() {
               label="Expected Outcome"
               hint="Describe the exact result you want after help is given."
               error={errors.expectedOutcome?.message}
-              right={<span className="text-xs text-white/50">{outLen}/200</span>}
+              right={<span className="text-xs text-slate-500 dark:text-white/50">{outLen}/200</span>}
             >
               <input
                 {...register("expectedOutcome")}
-                className="mt-1 w-full rounded-xl bg-slate-950/40 border border-white/10 px-3 py-2.5 outline-none focus:border-white/30 focus:ring-2 focus:ring-white/10"
+                className="mt-1 w-full rounded-xl bg-white dark:bg-slate-950/40 shadow-sm dark:shadow-none border border-slate-200 dark:border-white/10 px-3 py-2.5 outline-none focus:border-white/30 focus:ring-2 focus:ring-white/10"
                 placeholder="e.g. Form should submit and show success without resetting inputs"
               />
             </Field>
@@ -247,7 +247,7 @@ export default function CreateTaskPage() {
                         className={`rounded-xl px-3 py-3 text-sm border transition ${
                           active
                             ? "bg-white text-slate-900 border-white"
-                            : "border-white/15 bg-white/5 hover:bg-white/10 text-white/85"
+                            : "border-slate-200 dark:border-white/15 bg-white dark:bg-white/5 shadow-sm dark:shadow-none hover:bg-slate-50 dark:hover:bg-white/10 hover:shadow-sm dark:hover:shadow-none text-slate-800 dark:text-white/85"
                         }`}
                       >
                         {cat.label}
@@ -271,7 +271,7 @@ export default function CreateTaskPage() {
                             ? u === "URGENT"
                               ? "bg-amber-200 text-slate-900 border-amber-200"
                               : "bg-white text-slate-900 border-white"
-                            : "border-white/15 bg-white/5 hover:bg-white/10 text-white/85"
+                            : "border-slate-200 dark:border-white/15 bg-white dark:bg-white/5 shadow-sm dark:shadow-none hover:bg-slate-50 dark:hover:bg-white/10 hover:shadow-sm dark:hover:shadow-none text-slate-800 dark:text-white/85"
                         }`}
                       >
                         {u}
@@ -286,7 +286,7 @@ export default function CreateTaskPage() {
               <Field label="Skill Required" hint="Example: React, Node, UI/UX." error={errors.skillRequired?.message}>
                 <input
                   {...register("skillRequired")}
-                  className="mt-1 w-full rounded-xl bg-slate-950/40 border border-white/10 px-3 py-2.5 outline-none focus:border-white/30 focus:ring-2 focus:ring-white/10"
+                  className="mt-1 w-full rounded-xl bg-white dark:bg-slate-950/40 shadow-sm dark:shadow-none border border-slate-200 dark:border-white/10 px-3 py-2.5 outline-none focus:border-white/30 focus:ring-2 focus:ring-white/10"
                   placeholder="React"
                 />
               </Field>
@@ -294,7 +294,7 @@ export default function CreateTaskPage() {
               <Field label="Preferred Mode" hint="How the session should happen." error={errors.mode?.message}>
                 <select
                   {...register("mode")}
-                  className="mt-1 w-full rounded-xl bg-slate-950/40 border border-white/10 px-3 py-2.5 outline-none focus:border-white/30 focus:ring-2 focus:ring-white/10"
+                  className="mt-1 w-full rounded-xl bg-white dark:bg-slate-950/40 shadow-sm dark:shadow-none border border-slate-200 dark:border-white/10 px-3 py-2.5 outline-none focus:border-white/30 focus:ring-2 focus:ring-white/10"
                 >
                   {MODES.map((m) => (
                     <option key={m} value={m}>
@@ -321,7 +321,7 @@ export default function CreateTaskPage() {
                       className={`px-3 py-2 rounded-xl text-sm border transition ${
                         active
                           ? "bg-white text-slate-900 border-white"
-                          : "border-white/15 bg-white/5 hover:bg-white/10 text-white/85"
+                          : "border-slate-200 dark:border-white/15 bg-white dark:bg-white/5 shadow-sm dark:shadow-none hover:bg-slate-50 dark:hover:bg-white/10 hover:shadow-sm dark:hover:shadow-none text-slate-800 dark:text-white/85"
                       }`}
                     >
                       {d} min
@@ -347,7 +347,7 @@ export default function CreateTaskPage() {
                       className={`px-3 py-2 rounded-xl text-sm border transition ${
                         active
                           ? "bg-white text-slate-900 border-white"
-                          : "border-white/15 bg-white/5 hover:bg-white/10 text-white/85"
+                          : "border-slate-200 dark:border-white/15 bg-white dark:bg-white/5 shadow-sm dark:shadow-none hover:bg-slate-50 dark:hover:bg-white/10 hover:shadow-sm dark:hover:shadow-none text-slate-800 dark:text-white/85"
                       }`}
                     >
                       {d} days
@@ -364,7 +364,7 @@ export default function CreateTaskPage() {
             >
               <input
                 {...register("attachmentUrl")}
-                className="mt-1 w-full rounded-xl bg-slate-950/40 border border-white/10 px-3 py-2.5 outline-none focus:border-white/30 focus:ring-2 focus:ring-white/10"
+                className="mt-1 w-full rounded-xl bg-white dark:bg-slate-950/40 shadow-sm dark:shadow-none border border-slate-200 dark:border-white/10 px-3 py-2.5 outline-none focus:border-white/30 focus:ring-2 focus:ring-white/10"
                 placeholder="https://..."
               />
             </Field>
@@ -377,7 +377,7 @@ export default function CreateTaskPage() {
               >
                 <input
                   {...register("venue")}
-                  className="mt-1 w-full rounded-xl bg-slate-950/40 border border-amber-400/20 px-3 py-2.5 outline-none focus:border-amber-400/40 focus:ring-2 focus:ring-amber-400/10"
+                  className="mt-1 w-full rounded-xl bg-white dark:bg-slate-950/40 shadow-sm dark:shadow-none border border-amber-400/20 px-3 py-2.5 outline-none focus:border-amber-400/40 focus:ring-2 focus:ring-amber-400/10"
                   placeholder="e.g. Library Study Room 3B"
                   maxLength={100}
                 />
@@ -391,55 +391,55 @@ export default function CreateTaskPage() {
               {isSubmitting ? "Creating..." : "Create Task"}
             </button>
 
-            <p className="text-xs text-white/50">
+            <p className="text-xs text-slate-500 dark:text-white/50">
               Your task will be validated for clarity, fairness, and scope before it enters the system.
             </p>
           </form>
         </div>
 
         <div className="space-y-4">
-          <div className="rounded-3xl border border-white/10 bg-white/5 p-5">
+          <div className="rounded-3xl border border-slate-200 dark:border-white/10 bg-white dark:bg-white/5 shadow-sm dark:shadow-none p-5">
             <div className="text-sm font-semibold">Live Preview</div>
 
-            <div className="mt-3 rounded-2xl border border-white/10 bg-slate-950/30 p-4">
+            <div className="mt-3 rounded-2xl border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-slate-950/30 p-4">
               <div className="flex items-center justify-between gap-3">
-                <div className="font-semibold text-white">
+                <div className="font-semibold text-slate-900 dark:text-white">
                   {values.title?.trim() || "Task title preview"}
                 </div>
-                <span className="text-xs px-2 py-1 rounded-full border border-white/10 bg-white/5 text-white/70">
+                <span className="text-xs px-2 py-1 rounded-full border border-slate-200 dark:border-white/10 bg-white dark:bg-white/5 shadow-sm dark:shadow-none text-slate-600 dark:text-white/70">
                   {values.category}
                 </span>
               </div>
 
-              <p className="mt-3 text-sm text-white/70 whitespace-pre-wrap">
+              <p className="mt-3 text-sm text-slate-600 dark:text-white/70 whitespace-pre-wrap">
                 {values.description?.trim() || "Task description preview..."}
               </p>
 
-              <div className="mt-3 text-xs text-white/65">
+              <div className="mt-3 text-xs text-slate-600 dark:text-white/65">
                 <div>
-                  <span className="text-white/75">Expected outcome:</span>{" "}
+                  <span className="text-slate-600 dark:text-white/75">Expected outcome:</span>{" "}
                   {values.expectedOutcome?.trim() || "—"}
                 </div>
               </div>
 
               <div className="mt-4 flex flex-wrap gap-2 text-xs">
-                <span className="px-2 py-1 rounded-full border border-white/10 bg-white/5 text-white/70">
+                <span className="px-2 py-1 rounded-full border border-slate-200 dark:border-white/10 bg-white dark:bg-white/5 shadow-sm dark:shadow-none text-slate-600 dark:text-white/70">
                   Skill: {values.skillRequired || "—"}
                 </span>
-                <span className="px-2 py-1 rounded-full border border-white/10 bg-white/5 text-white/70">
+                <span className="px-2 py-1 rounded-full border border-slate-200 dark:border-white/10 bg-white dark:bg-white/5 shadow-sm dark:shadow-none text-slate-600 dark:text-white/70">
                   Mode: {values.mode}
                 </span>
-                <span className="px-2 py-1 rounded-full border border-white/10 bg-white/5 text-white/70">
+                <span className="px-2 py-1 rounded-full border border-slate-200 dark:border-white/10 bg-white dark:bg-white/5 shadow-sm dark:shadow-none text-slate-600 dark:text-white/70">
                   Session: {values.duration}m
                 </span>
-                <span className="px-2 py-1 rounded-full border border-white/10 bg-white/5 text-white/70">
+                <span className="px-2 py-1 rounded-full border border-slate-200 dark:border-white/10 bg-white dark:bg-white/5 shadow-sm dark:shadow-none text-slate-600 dark:text-white/70">
                   Deadline: {values.deadlineDays} days
                 </span>
                 <span
                   className={`px-2 py-1 rounded-full border ${
                     values.urgency === "URGENT"
-                      ? "border-amber-300/20 bg-amber-300/10 text-amber-100"
-                      : "border-white/10 bg-white/5 text-white/70"
+                      ? "border-amber-300/20 bg-amber-300/10 text-amber-700 dark:text-amber-100"
+                      : "border-slate-200 dark:border-white/10 bg-white dark:bg-white/5 shadow-sm dark:shadow-none text-slate-600 dark:text-white/70"
                   }`}
                 >
                   {values.urgency}
@@ -448,29 +448,29 @@ export default function CreateTaskPage() {
             </div>
           </div>
 
-          <div className="rounded-3xl border border-white/10 bg-white/5 p-5">
+          <div className="rounded-3xl border border-slate-200 dark:border-white/10 bg-white dark:bg-white/5 shadow-sm dark:shadow-none p-5">
             <div className="text-sm font-semibold">Scope Control Checks</div>
-            <p className="text-xs text-white/60 mt-1">
+            <p className="text-xs text-slate-500 dark:text-white/60 mt-1">
               Frontend warnings help you improve the task before submission.
             </p>
 
             <div className="mt-4 space-y-2">
-              <div className="rounded-xl border border-white/10 bg-slate-950/30 p-3 text-xs text-white/75">
+              <div className="rounded-xl border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-slate-950/30 p-3 text-xs text-slate-600 dark:text-white/75">
                 ✅ Session duration is limited to 15 / 30 / 45 / 60 minutes
               </div>
 
-              <div className="rounded-xl border border-white/10 bg-slate-950/30 p-3 text-xs text-white/75">
+              <div className="rounded-xl border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-slate-950/30 p-3 text-xs text-slate-600 dark:text-white/75">
                 ✅ Deadline is limited to 2 or 3 days
               </div>
 
-              <div className="rounded-xl border border-white/10 bg-slate-950/30 p-3 text-xs text-white/75">
+              <div className="rounded-xl border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-slate-950/30 p-3 text-xs text-slate-600 dark:text-white/75">
                 ✅ Expected outcome is required to prevent scope creep
               </div>
 
               {scopeWarnings.length > 0 ? (
                 <div className="rounded-xl border border-amber-400/20 bg-amber-400/10 p-3">
-                  <div className="text-xs text-amber-100 font-semibold">⚠ Improve clarity</div>
-                  <ul className="mt-2 list-disc pl-5 text-amber-100/90">
+                  <div className="text-xs text-amber-700 dark:text-amber-100 font-semibold">⚠ Improve clarity</div>
+                  <ul className="mt-2 list-disc pl-5 text-amber-700/90 dark:text-amber-100/90">
                     {scopeWarnings.map((w, i) => (
                       <li key={i} className="text-xs mt-1">
                         {w}
@@ -480,8 +480,8 @@ export default function CreateTaskPage() {
                 </div>
               ) : (
                 <div className="rounded-xl border border-emerald-400/20 bg-emerald-400/10 p-3">
-                  <div className="text-xs text-emerald-100 font-semibold">✅ Looks clear</div>
-                  <div className="text-xs text-emerald-100/80 mt-1">
+                  <div className="text-xs text-emerald-700 dark:text-emerald-100 font-semibold">✅ Looks clear</div>
+                  <div className="text-xs text-emerald-700/80 dark:text-emerald-100/80 mt-1">
                     Your task seems specific enough to post.
                   </div>
                 </div>

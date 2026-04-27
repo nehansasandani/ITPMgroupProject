@@ -107,7 +107,7 @@ export default function UsersPage() {
             <p className="admin-chip bg-indigo-400/15 text-indigo-100 border border-indigo-200/35 mb-3 w-fit">
               User Trust Operations
             </p>
-            <h2 className="admin-title text-3xl font-semibold text-white">User Management Console</h2>
+            <h2 className="admin-title text-3xl font-semibold text-slate-900 dark:text-white">User Management Console</h2>
             <p className="text-slate-300 text-sm mt-2 max-w-2xl">
               Moderate account health by reputation, suspension state, and trust behavior trends across student participants.
             </p>
@@ -133,7 +133,7 @@ export default function UsersPage() {
               <div className="flex justify-between items-start">
                 <div>
                   <p className="text-xs uppercase tracking-[0.12em] text-slate-400">{card.label}</p>
-                  <p className="admin-title text-3xl text-white mt-2">{card.value}</p>
+                  <p className="admin-title text-3xl text-slate-900 dark:text-white mt-2">{card.value}</p>
                 </div>
                 <card.icon className={card.tone} />
               </div>
@@ -155,7 +155,7 @@ export default function UsersPage() {
               className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all border ${
                 statusFilter === item.id
                   ? "bg-cyan-300/20 text-cyan-100 border-cyan-200/40"
-                  : "bg-slate-900/40 text-slate-300 border-slate-600/60 hover:border-slate-400"
+                  : "bg-white dark:bg-slate-900 shadow-sm dark:shadow-none/40 text-slate-300 border-slate-600/60 hover:border-slate-400"
               }`}
             >
               {item.label}
@@ -189,7 +189,7 @@ export default function UsersPage() {
                     const reputationPercent = Math.max(4, Math.min((reputation / 5) * 100, 100));
                     const suspended = isSuspended(user);
                     return (
-                      <tr key={user._id} className="border-b border-slate-800/70 hover:bg-slate-900/25 transition-colors">
+                      <tr key={user._id} className="border-b border-slate-800/70 hover:bg-white dark:hover:bg-slate-900 hover:shadow-sm dark:hover:shadow-none/25 transition-colors">
                         <td className="p-4">
                           <div className="flex items-center gap-3">
                             <div className="h-9 w-9 rounded-full bg-gradient-to-br from-cyan-400/70 to-blue-500/70 text-slate-900 font-bold flex items-center justify-center text-sm">
@@ -207,7 +207,7 @@ export default function UsersPage() {
                             <span className="text-slate-300">{reputation.toFixed(1)} / 5</span>
                             <span className="text-slate-400">Trust</span>
                           </div>
-                          <div className="h-2 bg-slate-800 rounded-full overflow-hidden">
+                          <div className="h-2 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
                             <div
                               className={`h-full rounded-full ${
                                 reputation >= 4

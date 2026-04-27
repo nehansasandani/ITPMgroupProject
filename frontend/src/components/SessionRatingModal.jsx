@@ -129,15 +129,15 @@ export default function SessionRatingModal({
   if (status === "success") {
     return (
       <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
-        <div className="bg-slate-900 border border-slate-700 rounded-3xl p-8 max-w-md w-full text-center shadow-2xl">
+        <div className="bg-white dark:bg-slate-900 shadow-sm dark:shadow-none border border-slate-700 rounded-3xl p-8 max-w-md w-full text-center shadow-2xl">
           <div className="flex justify-center mb-6">
             <div className="w-16 h-16 bg-emerald-500/20 border-2 border-emerald-500 rounded-full flex items-center justify-center animate-pulse">
               <FiCheck className="text-emerald-400 text-2xl" />
             </div>
           </div>
-          <h3 className="text-2xl font-bold text-white mb-2">Rating Submitted!</h3>
+          <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">Rating Submitted!</h3>
           <p className="text-slate-400 mb-6">
-            Your feedback for <span className="text-white font-semibold">{ratedUserName}</span> has been recorded and their reputation updated.
+            Your feedback for <span className="text-slate-900 dark:text-white font-semibold">{ratedUserName}</span> has been recorded and their reputation updated.
           </p>
           <div className="text-sm text-slate-500">Completing session...</div>
         </div>
@@ -147,11 +147,11 @@ export default function SessionRatingModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 animate-in fade-in">
-      <div className="bg-slate-900 border border-slate-700 rounded-3xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+      <div className="bg-white dark:bg-slate-900 shadow-sm dark:shadow-none border border-slate-700 rounded-3xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
         {/* Header */}
-        <div className="sticky top-0 flex items-center justify-between p-6 border-b border-slate-700 bg-slate-900">
+        <div className="sticky top-0 flex items-center justify-between p-6 border-b border-slate-700 bg-white dark:bg-slate-900 shadow-sm dark:shadow-none">
           <div>
-            <h2 className="text-2xl font-bold text-white">Rate Collaborator</h2>
+            <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Rate Collaborator</h2>
             <p className="text-sm text-slate-400 mt-1">
               Rate {ratedUserName} for: <span className="text-indigo-300 font-semibold">{taskTitle}</span>
             </p>
@@ -159,7 +159,7 @@ export default function SessionRatingModal({
           <button
             onClick={onClose}
             disabled={loading}
-            className="text-slate-400 hover:text-white transition disabled:opacity-50"
+            className="text-slate-400 hover:text-slate-900 dark:hover:text-white transition disabled:opacity-50"
           >
             <FiX size={24} />
           </button>
@@ -182,7 +182,7 @@ export default function SessionRatingModal({
                 {criteria.map((crit) => (
                   <div key={crit.key} className="space-y-2">
                     <div className="flex items-center justify-between">
-                      <label className="text-sm font-semibold text-white">{crit.label}</label>
+                      <label className="text-sm font-semibold text-slate-900 dark:text-white">{crit.label}</label>
                       <span className="text-xs text-slate-400">{ratings[crit.key] > 0 ? `${ratings[crit.key]} stars` : "Not rated"}</span>
                     </div>
                     <p className="text-xs text-slate-500 mb-2">{crit.desc}</p>
@@ -201,7 +201,7 @@ export default function SessionRatingModal({
                 <select
                   value={selectedCategory}
                   onChange={(e) => setSelectedCategory(e.target.value)}
-                  className="w-full bg-slate-950 border border-slate-700 rounded-2xl px-4 py-3 text-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition outline-none"
+                  className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-700 rounded-2xl px-4 py-3 text-slate-900 dark:text-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition outline-none"
                 >
                   <option value="">Select a category...</option>
                   {Object.keys(SKILL_CATEGORIES).map((cat) => (
@@ -218,7 +218,7 @@ export default function SessionRatingModal({
                   <select
                     value={selectedSubCategory}
                     onChange={(e) => setSelectedSubCategory(e.target.value)}
-                    className="w-full bg-slate-950 border border-slate-700 rounded-2xl px-4 py-3 text-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition outline-none"
+                    className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-700 rounded-2xl px-4 py-3 text-slate-900 dark:text-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition outline-none"
                   >
                     <option value="">Select a subcategory...</option>
                     {subCategories.map((sub) => (
@@ -236,7 +236,7 @@ export default function SessionRatingModal({
                   <select
                     value={selectedSkill}
                     onChange={(e) => setSelectedSkill(e.target.value)}
-                    className="w-full bg-slate-950 border border-slate-700 rounded-2xl px-4 py-3 text-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition outline-none"
+                    className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-700 rounded-2xl px-4 py-3 text-slate-900 dark:text-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition outline-none"
                   >
                     <option value="">Select a skill...</option>
                     {skills.map((skill) => (
@@ -259,7 +259,7 @@ export default function SessionRatingModal({
                 onChange={(e) => setComment(e.target.value)}
                 placeholder="Share your experience working with them..."
                 maxLength={500}
-                className="w-full bg-slate-950 border border-slate-700 rounded-2xl px-4 py-3 text-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition outline-none resize-none h-24 text-sm"
+                className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-700 rounded-2xl px-4 py-3 text-slate-900 dark:text-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition outline-none resize-none h-24 text-sm"
               />
               <div className="flex justify-between items-center">
                 <p className="text-xs text-slate-500">
@@ -272,18 +272,18 @@ export default function SessionRatingModal({
         </div>
 
         {/* Footer */}
-        <div className="sticky bottom-0 flex gap-3 p-6 border-t border-slate-700 bg-slate-900">
+        <div className="sticky bottom-0 flex gap-3 p-6 border-t border-slate-700 bg-white dark:bg-slate-900 shadow-sm dark:shadow-none">
           <button
             onClick={onClose}
             disabled={loading}
-            className="flex-1 px-6 py-3 bg-slate-800 hover:bg-slate-700 text-white rounded-2xl font-semibold transition disabled:opacity-50"
+            className="flex-1 px-6 py-3 bg-slate-100 dark:bg-slate-800 hover:bg-slate-700 text-slate-900 dark:text-white rounded-2xl font-semibold transition disabled:opacity-50"
           >
             Cancel
           </button>
           <button
             onClick={handleSubmit}
             disabled={!canSubmit || loading}
-            className="flex-1 px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-2xl font-semibold transition disabled:opacity-50 flex items-center justify-center gap-2"
+            className="flex-1 px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-slate-900 dark:text-white rounded-2xl font-semibold transition disabled:opacity-50 flex items-center justify-center gap-2"
           >
             {loading ? (
               <>

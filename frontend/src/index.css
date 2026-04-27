@@ -1,8 +1,9 @@
 @import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
 
 /* Modern baseline */
 :root {
-  color-scheme: dark;
+  color-scheme: light dark;
   text-rendering: geometricPrecision;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -16,8 +17,7 @@ body,
 
 body {
   margin: 0;
-  background: #020617; /* slate-950 */
-  color: rgba(255, 255, 255, 0.92);
+  @apply bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-white/90;
 }
 
 html {
