@@ -3,12 +3,13 @@ import { getReputation, getUserRatings } from "../../api/Reputation.js";
 import { getMySkills, addSkill, removeSkill } from "../../api/skillApi.js";
 import axiosInstance from "../../api/axiosInstance.js";
 import { useAuth } from "../../context/AuthContext";
-import { FiCheckCircle, FiPlus, FiTrash2, FiAward, FiMessageSquare, FiClock, FiActivity, FiStar, FiEdit3, FiX, FiLock, FiUnlock, FiShield, FiGithub, FiLinkedin, FiBarChart2, FiTrendingUp, FiBook, FiMenu, FiCpu } from "react-icons/fi";
+import { FiCheckCircle, FiPlus, FiTrash2, FiAward, FiMessageSquare, FiClock, FiActivity, FiStar, FiEdit3, FiX, FiLock, FiUnlock, FiShield, FiGithub, FiLinkedin, FiBarChart2, FiTrendingUp, FiBook, FiMenu, FiCpu, FiBriefcase } from "react-icons/fi";
 import SkillQuizModal from "../../components/SkillQuizModal";
 import ReputationTimeline from "../../components/reputation/ReputationTimeline";
 import ScoreVisibilitySettings from "../../components/reputation/ScoreVisibilitySettings";
 import ReputationInsights from "../../components/reputation/ReputationInsights";
 import ReputationDashboard from "../../components/reputation/ReputationDashboard";
+import UserProfileTasks from "../../components/reputation/UserProfileTasks";
 
 const ALL_SYSTEM_BADGES = [
   { id: "Reliable", icon: <FiCheckCircle />, desc: "High consistency in attending tasks.", requirement: "Complete 10+ tasks with zero no-shows.", color: "text-emerald-500", glow: "shadow-emerald-500/50" },
@@ -416,6 +417,7 @@ export default function UserProfile() {
                 { id: "Skills Portfolio", label: "Skills Portfolio", icon: <FiBook size={18} /> },
                 { id: "Trophy Room", label: "Trophy Room", icon: <FiAward size={18} /> },
                 { id: "Performance History", label: "Performance History", icon: <FiBarChart2 size={18} /> },
+                { id: "My Tasks", label: "My Tasks", icon: <FiBriefcase size={18} /> },
                 { id: "AI Insights", label: "AI Reputation Guide", icon: <FiCpu size={18} /> }
               ].map((item) => (
                 <button
@@ -513,7 +515,14 @@ export default function UserProfile() {
 
             {/* AI Reputation Insights */}
             <div>
-              <ReputationInsights userId={user?.id} />
+              <ReputationInsights 
+                userId={user?.id} 
+                onNavigate={(tab) => {
+                  setActiveTab(tab);               // use raw value — matches sidebar IDs exactly
+                  if(typeof setSidebarOpen === 'function') setSidebarOpen(false);
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
+              />
             </div>
 
             {/* Recent Endorsements */}
@@ -901,7 +910,21 @@ export default function UserProfile() {
         {/* ================= AI INSIGHTS TAB ================= */}
         {activeTab === "AI Insights" && (
           <div className="space-y-6">
-            <ReputationInsights userId={user?.id} />
+            <ReputationInsights 
+              userId={user?.id}
+              onNavigate={(tab) => {
+                setActiveTab(tab);
+                if(typeof setSidebarOpen === 'function') setSidebarOpen(false);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+            />
+          </div>
+        )}
+
+        {/* ================= MY TASKS TAB ================= */}
+        {activeTab === "My Tasks" && (
+          <div className="animate-in fade-in slide-in-from-bottom-4 duration-300">
+            <UserProfileTasks />
           </div>
         )}
         </div>
