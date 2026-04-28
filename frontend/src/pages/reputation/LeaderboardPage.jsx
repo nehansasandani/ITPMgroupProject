@@ -450,15 +450,9 @@ function PerformanceCardModal({ userObj, onClose }) {
   }, [userObj._id]);
 
   return (
-<<<<<<< Updated upstream
     <div className="fixed inset-0 z-50 flex items-center justify-center p-6 bg-[#020617]/90 backdrop-blur-xl animate-in fade-in duration-300">
       <div className="bg-slate-900 border border-white/10 w-full max-w-4xl rounded-[3rem] overflow-hidden shadow-2xl relative">
         <button onClick={onClose} className="absolute top-8 right-8 p-3 rounded-2xl bg-white/5 text-slate-400 hover:text-white transition-all z-10">
-=======
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-6 bg-black/70 backdrop-blur-lg animate-in fade-in duration-300">
-      <div className="bg-white dark:bg-slate-900 shadow-2xl border border-slate-300 dark:border-white/10 w-full max-w-4xl rounded-[3rem] overflow-hidden relative">
-        <button onClick={onClose} className="absolute top-8 right-8 p-3 rounded-2xl bg-slate-200 dark:bg-white/10 text-slate-600 dark:text-white/60 hover:bg-slate-300 dark:hover:bg-white/20 hover:text-slate-900 dark:text-white transition-all z-10">
->>>>>>> Stashed changes
           <FiX size={20} />
         </button>
 
@@ -480,15 +474,9 @@ function PerformanceCardModal({ userObj, onClose }) {
           <div className="flex flex-col md:flex-row h-full">
             
             {/* Sidebar Stats */}
-<<<<<<< Updated upstream
             <div className="w-full md:w-80 bg-slate-950 p-10 border-r border-white/5 flex flex-col items-center text-center">
                <div className="w-32 h-32 rounded-full border-4 border-indigo-500/20 p-1 mb-6 relative group">
                   <div className="w-full h-full rounded-full bg-slate-800 overflow-hidden shadow-2xl">
-=======
-            <div className="w-full md:w-80 bg-slate-100 dark:bg-slate-950 shadow-sm dark:shadow-none p-10 border-r border-slate-300 dark:border-white/10 flex flex-col items-center text-center">
-               <div className="w-32 h-32 rounded-full border-4 border-indigo-500/20 p-1 mb-6 relative group">
-                  <div className="w-full h-full rounded-full bg-gradient-to-br from-slate-100 to-slate-200 dark:bg-slate-800 overflow-hidden shadow-2xl">
->>>>>>> Stashed changes
                      {userObj.profilePic ? (
                         <img src={`/src/pages/images/${userObj.profilePic}`} alt={userObj.fullName} className="w-full h-full object-cover" onError={(e) => { e.target.style.display = 'none'; }} />
                      ) : (
@@ -500,15 +488,9 @@ function PerformanceCardModal({ userObj, onClose }) {
                   </div>
                </div>
                
-<<<<<<< Updated upstream
                <h2 className="text-2xl font-black tracking-tight text-white mb-1">{userObj.fullName}</h2>
                <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest leading-loose mb-2">
                   {userObj.studentId} &bull; {userObj.role}
-=======
-               <h2 className="text-2xl font-black tracking-tight text-slate-900 dark:text-white mb-1">{userObj.fullName || "User"}</h2>
-               <p className="text-[10px] font-bold text-slate-600 dark:text-white/40 uppercase tracking-widest leading-loose mb-2">
-                  {userObj.studentId || "N/A"} &bull; {userObj.role || "Member"}
->>>>>>> Stashed changes
                </p>
                <div className="px-4 py-1.5 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-600 dark:text-indigo-400 text-[9px] font-black uppercase tracking-widest mb-10">
                   {userObj.department || "No Department"}
@@ -524,35 +506,20 @@ function PerformanceCardModal({ userObj, onClose }) {
             {/* Main Skills Analytics */}
             <div className="flex-1 p-10 overflow-y-auto max-h-[70vh] scrollbar-hide bg-white dark:bg-slate-900">
               <div className="flex items-center justify-between mb-8">
-<<<<<<< Updated upstream
                  <h3 className="text-lg font-black tracking-tight text-white flex items-center gap-2">
                    <FiActivity className="text-indigo-500" /> Skill Competencies
                  </h3>
                  <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Global Index</div>
-=======
-                 <h3 className="text-lg font-black tracking-tight text-slate-900 dark:text-white flex items-center gap-2">
-                   <FiActivity className="text-indigo-600 dark:text-indigo-500" /> Skill Competencies
-                 </h3>
-                 <div className="text-[10px] font-bold text-slate-600 dark:text-white/40 uppercase tracking-widest">Global Index</div>
->>>>>>> Stashed changes
               </div>
 
               <div className="grid gap-4">
                 {rep?.categoryScores && rep.categoryScores.length > 0 ? (
                   rep.categoryScores.map((cs, i) => (
-<<<<<<< Updated upstream
                     <div key={i} className="p-6 bg-white/5 border border-white/5 rounded-3xl group hover:border-indigo-500/30 transition-all">
                        <div className="flex justify-between items-start mb-6">
                           <div>
                              <div className="text-white font-black text-base uppercase tracking-tight mb-1">{cs.skillName}</div>
                              <div className="text-[9px] font-bold text-slate-500 uppercase tracking-widest">Metric Analysis</div>
-=======
-                    <div key={i} className="p-6 bg-slate-50 dark:bg-slate-800 border-2 border-slate-300 dark:border-white/10 rounded-3xl group hover:border-indigo-600 dark:hover:border-indigo-500 transition-all shadow-sm">
-                       <div className="flex justify-between items-start mb-6">
-                          <div>
-                             <div className="text-slate-900 dark:text-white font-black text-base uppercase tracking-tight mb-1">{cs.skillName}</div>
-                             <div className="text-[9px] font-bold text-slate-600 dark:text-white/40 uppercase tracking-widest">Metric Analysis</div>
->>>>>>> Stashed changes
                           </div>
                           <div className="text-3xl font-black text-indigo-700 dark:text-indigo-400 font-mono">{cs.overallAvg.toFixed(1)}</div>
                        </div>
@@ -565,15 +532,9 @@ function PerformanceCardModal({ userObj, onClose }) {
                     </div>
                   ))
                 ) : (
-<<<<<<< Updated upstream
                   <div className="py-20 text-center bg-white/5 rounded-[2rem] border border-dashed border-white/10">
                     <FiNavigation size={32} className="mx-auto mb-4 text-slate-700" />
                     <p className="text-xs font-bold text-slate-500 uppercase tracking-[0.2em]">No Verified Metrics Yet</p>
-=======
-                  <div className="py-20 text-center bg-slate-50 dark:bg-slate-800 rounded-[2rem] border-2 border-dashed border-slate-400 dark:border-white/10">
-                    <FiNavigation size={32} className="mx-auto mb-4 text-slate-500" />
-                    <p className="text-xs font-bold text-slate-700 dark:text-white/40 uppercase tracking-[0.2em]">No Verified Metrics Yet</p>
->>>>>>> Stashed changes
                   </div>
                 )}
               </div>
@@ -588,17 +549,10 @@ function PerformanceCardModal({ userObj, onClose }) {
 
 function MiniStat({ icon, label, value }) {
   return (
-<<<<<<< Updated upstream
     <div className="flex items-center justify-between p-4 bg-white/5 border border-white/5 rounded-2xl w-full">
        <div className="flex items-center gap-3">
           {icon}
           <span className="text-[9px] font-black uppercase tracking-widest text-slate-500">{label}</span>
-=======
-    <div className="flex items-center justify-between p-4 bg-white dark:bg-slate-800 border border-slate-300 dark:border-white/10 rounded-2xl w-full">
-       <div className="flex items-center gap-3">
-          {icon}
-          <span className="text-[9px] font-black uppercase tracking-widest text-slate-700 dark:text-white/50">{label}</span>
->>>>>>> Stashed changes
        </div>
        <span className="text-sm font-black text-white font-mono">{value}</span>
     </div>
@@ -614,21 +568,12 @@ function SmallBar({ label, value = 0, color }) {
   const displayValue = typeof value === 'number' ? value : 0;
   return (
     <div>
-<<<<<<< Updated upstream
        <div className="flex justify-between text-[8px] font-black uppercase tracking-widest text-slate-500 mb-2">
-=======
-       <div className="flex justify-between text-[8px] font-black uppercase tracking-widest text-slate-700 dark:text-white/40 mb-2">
->>>>>>> Stashed changes
           <span>{label}</span>
           <span className="text-slate-700 dark:text-slate-300 font-mono">{displayValue.toFixed(1)}</span>
        </div>
-<<<<<<< Updated upstream
        <div className="h-1.5 bg-slate-950 rounded-full overflow-hidden border border-white/5">
           <div className={`h-full ${colors[color]} rounded-full transition-all duration-1000`} style={{ width: `${(value/5)*100}%` }}></div>
-=======
-       <div className="h-2 bg-slate-300 dark:bg-slate-700 rounded-full overflow-hidden border border-slate-400 dark:border-white/10">
-          <div className={`h-full ${colors[color]} rounded-full transition-all duration-1000`} style={{ width: `${(displayValue/5)*100}%` }}></div>
->>>>>>> Stashed changes
        </div>
     </div>
   );
