@@ -39,8 +39,9 @@ export default function SkillQuizModal({ isOpen, onClose, skillName, skillId, on
       setQuizPhase("ACTIVE");
       setTimeLeft(30);
     } catch (err) {
-      console.error(err);
-      alert("Failed to initialize AI Assessment. Please try again.");
+      console.error("Quiz loading error:", err);
+      const errorMsg = err.response?.data?.message || err.message || "Failed to initialize AI Assessment. Please try again.";
+      alert(`Error: ${errorMsg}`);
     } finally {
       setLoading(false);
     }
@@ -116,7 +117,7 @@ export default function SkillQuizModal({ isOpen, onClose, skillName, skillId, on
   const handleSubmit = async () => {
     setSubmitting(true);
     try {
-      const res = await submitSkillQuiz(answers, skillId);
+      const res = await submitSkillQuiz({ skillId, answers, skillName });
       setResult({ 
         passed: res.passed, 
         score: res.score, 

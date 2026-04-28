@@ -90,7 +90,7 @@ const userSchema = new mongoose.Schema(
       type: Number,
       default: 0,
       min: 0,
-      max: 5,
+      // max removed — reputation is now tracked 0-100 via the separate Reputation model
     },
 
     completedTasksCount: {
@@ -112,6 +112,16 @@ const userSchema = new mongoose.Schema(
     lastActive: {
       type: Date,
       default: Date.now,
+    },
+
+    // Score Visibility Settings
+    scoreVisibility: {
+      type: String,
+      enum: ['public', 'tier_only', 'private'],
+      default: 'public',
+      // public: show score and tier
+      // tier_only: show only tier, hide score
+      // private: hide both score and tier
     },
   },
   { timestamps: true }

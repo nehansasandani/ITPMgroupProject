@@ -182,13 +182,21 @@ export async function login(req, res) {
 
 export async function updateProfile(req, res) {
   try {
-    const { bio, githubUrl, linkedinUrl, profilePic } = req.body;
+    const { fullName, bio, githubUrl, linkedinUrl, profilePic } = req.body;
 
-    const updateData = { 
-      bio: bio?.slice(0, 200) || "", 
-      githubUrl: githubUrl || "", 
-      linkedinUrl: linkedinUrl || "" 
-    };
+    const updateData = {};
+    
+    if (fullName) {
+      const cleanName = fullName.trim().replace(/\s+/g, " ");
+      if (cleanName.length < 3 || cleanName.length > 60) {
+        return res.status(400).json({ message: "Full name must be between 3 and 60 characters." });
+      }
+      updateData.fullName = cleanName;
+    }
+
+    if (bio !== undefined) updateData.bio = bio?.slice(0, 200) || "";
+    if (githubUrl !== undefined) updateData.githubUrl = githubUrl || "";
+    if (linkedinUrl !== undefined) updateData.linkedinUrl = linkedinUrl || "";
 
     if (profilePic !== undefined) {
       updateData.profilePic = profilePic;

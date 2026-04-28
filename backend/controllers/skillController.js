@@ -1,6 +1,7 @@
 import Skill from "../models/Skill.js";
 import Quiz from "../models/Quiz.js";
 import { generateQuiz } from "../utils/gemini.js";
+import { notifySkillVerified, notifySkillAdded } from "../utils/notificationHelper.js";
 
 // GET all skills for logged in user
 export const getMySkills = async (req, res) => {
@@ -30,6 +31,10 @@ export const addSkill = async (req, res) => {
     }
 
     await Skill.create({ userId, category, subCategory, skill, level });
+    
+    // Send notification
+    await notifySkillAdded(userId, skill, level);
+
     const skills = await Skill.find({ userId }).sort({ createdAt: -1 });
     res.status(201).json({ skills });
   } catch (err) {
@@ -62,7 +67,7 @@ export const getQuizForSkill = async (req, res) => {
       return res.status(404).json({ message: "Skill not found" });
     }
 
-    // Generate questions using Gemini
+    // Generate questions using Groq
     console.log(`Generating AI quiz for ${skillObj.skill} (${skillObj.level})`);
     const questionsWithAnswers = await generateQuiz(skillObj.skill, skillObj.level);
 
@@ -83,9 +88,10 @@ export const getQuizForSkill = async (req, res) => {
       options: q.options
     }));
 
+    console.log(`✅ Quiz generated successfully for ${skillObj.skill}`);
     res.status(200).json(questionsForFrontend);
   } catch (err) {
-    console.error("Quiz Generation Error:", err.message);
+    console.error("❌ Quiz Generation Error:", err.message);
     res.status(500).json({ message: err.message });
   }
 };
@@ -116,16 +122,25 @@ export const submitQuiz = async (req, res) => {
     
     // Pass condition: 4/5 or more
     const passed = score >= 4;
+    const percentage = Math.round((score / 5) * 100);
 
     if (passed) {
-      await Skill.findOneAndUpdate(
+      await Skill.updateOne(
         { _id: skillId, userId },
         { isVerified: true }
       );
+      
+      // Find the skill name for notification
+      const skill = await Skill.findById(skillId);
+      
+      // Send notification
+      await notifySkillVerified(userId, skill.skill, percentage);
+      
       // Clean up quiz after successful verification
       await Quiz.deleteOne({ _id: storedQuiz._id });
     }
     
+    // Fetch fresh list after potential update
     const skills = await Skill.find({ userId }).sort({ createdAt: -1 });
     res.status(200).json({ 
       score, 
